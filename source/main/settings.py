@@ -77,14 +77,19 @@ WSGI_APPLICATION = 'main.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'aba_db',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
+        'NAME': 'user',
+        'USER': 'user',
+        'PASSWORD': 'user',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 
 }
+try:
+    from .settings_local import *
+except ImportError:
+    pass
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -124,7 +129,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-try:
-    from .settings_local import *
-except ImportError:
-    pass
