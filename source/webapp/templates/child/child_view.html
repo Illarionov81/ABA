@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Личные данные ребенка{% endblock %}
+
+{% block menu %}
+
+{% endblock %}
+
+{% block content %}
+     <h1>Личные  данные ребенка</h1>
+    <div class="box">
+       <p>Имя: {{ child.first_name }}</p>
+        <p>Фамилия: {{ child.last_name }}</p>
+        <p>Отчество: {{ child.third_name }}</p>
+        <p>Дата рождения: {{ child.birthday }}</p>
+        <p>Возраст: {{ child.age}}</p>
+        <p>Фамилия: {{ child.address }}</p>
+        <p>Характеристика на ребенка: {{ child.characteristic }}</p>
+        <p>Предпочтения ребенка: {{ child.preferences }}</p>
+        <p>Родитель: {{ child.first_parent }}</p>
+        <p>Второй родитель: {{ child.second_parent }}</p>
+        <p>Контакты ребенка: {{ child.contacts }}</p>
+        <p>Система коммуникации: {{ child.communication_system }}</p>
+    </div>
+    <a class="btn btn-primary" href="#" role="button">Проведения теста</a>
+    <br>
+    <br>
+    <a class="btn btn-primary" href="#" role="button">Список тестов</a>
+{% endblock %}
