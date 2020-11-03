@@ -251,9 +251,6 @@ class Test(models.Model):
     edited_date = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name="Дата редактирования")
     deleted_date = models.DateTimeField(blank=True, null=True, verbose_name="Дата удаления")
 
-
-
-
     class Meta:
         verbose_name = 'Первоначальное тестирование'
         verbose_name_plural = 'Первоначальное тестирование'

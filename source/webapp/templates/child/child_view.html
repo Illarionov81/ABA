@@ -4,7 +4,7 @@
 {% block title %}Личные данные ребенка{% endblock %}
 
 {% block menu %}
-
+    <li><a class="btn btn-primary" href="{% url 'webapp:child_tests' child.pk %}">Оценка навыков</a></li>
 {% endblock %}
 
 {% block content %}
@@ -23,8 +23,4 @@
         <p>Контакты ребенка: {{ child.contacts }}</p>
         <p>Система коммуникации: {{ child.communication_system }}</p>
     </div>
-    <a class="btn btn-primary" href="#" role="button">Проведения теста</a>
-    <br>
-    <br>
-    <a class="btn btn-primary" href="#" role="button">Список тестов</a>
 {% endblock %}
