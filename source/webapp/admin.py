@@ -104,8 +104,8 @@ class SessionModelAdmin(admin.ModelAdmin):
 
 
 admin.site.site_header = 'Administrate your website'
-admin.site.unregister(User)
-admin.site.register(User, UserInfoAdmin)
+# admin.site.unregister(User)
+# admin.site.register(User, UserInfoAdmin)
 admin.site.register(Skill, SkillModelAdmin)
 admin.site.register(SessionSkill)
 admin.site.register(StudyMethod)
