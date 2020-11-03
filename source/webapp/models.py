@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from main import settings
+
 PROGRAM_STATUS_OPEN = 'open'
 PROGRAM_STATUS_CLOSED = 'closed'
 PROGRAM_STATUS_CHOICES = (
@@ -32,7 +34,7 @@ class SoftDeleteManager(models.Manager):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.PROTECT, related_name='profile', verbose_name='Пользователь')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='profile', verbose_name='Пользователь')
     phone = models.CharField(max_length=50, null=False, blank=False, verbose_name='Телефон пользователя')
     children = models.ManyToManyField('Child', through='Therapy', blank=True, related_name='therapists',
                                       verbose_name='Ребенок')

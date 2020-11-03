@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from .settings_local import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'webapp',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -77,18 +79,14 @@ WSGI_APPLICATION = 'main.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'user',
-        'USER': 'user',
-        'PASSWORD': 'user',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': BD_NAME,
+        'USER': BD_USER,
+        'PASSWORD': BD_PASSWORD,
+        'HOST': BD_HOST,
+        'PORT': BD_PORT,
     }
 
 }
-try:
-    from .settings_local import *
-except ImportError:
-    pass
 
 
 # Password validation
@@ -129,3 +127,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+AUTH_USER_MODEL = 'accounts.User'
