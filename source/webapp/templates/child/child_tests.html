@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Оценка навыков{% endblock %}
+
+{% block menu %}
+    <li><a class="btn btn-primary" href="#" role="button">Провести тестирование</a></li>
+{% endblock %}
+
+
+{% block content %}
+    <div class="box">
+        <h3>Список тестов:</h3>
+         {% for test in Test %}
+             <div class="box">
+                 <p><b><a href="#">Test № {{ test.pk }}</a></b></p>
+                 <p>Ребенок: <a href="{% url 'webapp:child_view' test.child.pk %}">{{ test.child }}</a> | Терапист: {{ test.attending_therapist}}</p>
+                 <p> Дата проведения {{ test.created_date | date:"Y-m-d H:m:s" }} | <b>Статус: {{ test.status }}</b></p>
+                 <p>Дата редактирования: {{ test.edited_date }}</p>
+                 <p>Удаленно: {{ test.deleted_date }}</p>
+             </div>
+         {% endfor %}
+    </div>
+{% endblock %}
+
+
