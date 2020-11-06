@@ -19,4 +19,5 @@ class ChildTestsView(ListView):
         context = super().get_context_data(**kwargs)
         test = Test.objects.filter(child_id=self.kwargs.get('pk'))
         context['Test'] = test
+        context['child_pk'] = self.kwargs.get('pk')
         return context

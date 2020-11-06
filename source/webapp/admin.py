@@ -71,10 +71,9 @@ class TestResultModelAdmin(admin.ModelAdmin):
 
 
 class TestModelAdmin(admin.ModelAdmin):
-    list_display = ['child', 'attending_therapist', 'status']
+    list_display = ['pk', 'previus_test', 'child', 'therapist', 'created_date']
     search_fields = ['child']
-    list_filter = ['created_date', 'edited_date', 'child']
-    exclude = ('deleted_date',)
+    list_filter = ['created_date', 'child']
 
 
 class ProgramModelAdmin(admin.ModelAdmin):

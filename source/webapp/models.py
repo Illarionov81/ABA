@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from main import settings
+from main.settings import AUTH_USER_MODEL
 
 PROGRAM_STATUS_OPEN = 'open'
 PROGRAM_STATUS_CLOSED = 'closed'
@@ -246,16 +247,15 @@ class SessionSkillExtras(models.Model):
 class Test(models.Model):
     child = models.ForeignKey('Child', on_delete=models.PROTECT, related_name='child_test',
                               verbose_name='Ребенок')
-    attending_therapist = models.ForeignKey(UserProfile, on_delete=models.PROTECT, null=True,
-                                            related_name='attending_test')
-    status = models.BooleanField(default=True, verbose_name='Статус')
+    therapist = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT, null=True,
+                                  related_name='therapist')
+    previus_test = models.OneToOneField('Test', on_delete=models.PROTECT, null=True, blank=True,
+                                        related_name='next_test', verbose_name='previus_test')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-    edited_date = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name="Дата редактирования")
-    deleted_date = models.DateTimeField(blank=True, null=True, verbose_name="Дата удаления")
 
     class Meta:
-        verbose_name = 'Первоначальное тестирование'
-        verbose_name_plural = 'Первоначальное тестирование'
+        verbose_name = 'Тестирование'
+        verbose_name_plural = 'Тестирование'
 
 
 class TestResult(models.Model):
