@@ -12,24 +12,66 @@
     {% block links %}{% endblock %}
 </head>
 <body>
-    <nav class="navbar">
-       <div class="container">
-           <ul class="menu">
-               <a href="{% url 'webapp:child_view' %}">Child</a>
-               <a href="{% url 'webapp:child_test' %}">Test</a>
-           </ul>
+   <header>
+		<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #00a1e3;">
+			<div class="container">
+				<a class="navbar-brand" href="#">
+					<img src={% static "img/logo.png" %} class="logo">
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
 
-        </div>
-    </nav>
+				<div class="collapse navbar-collapse " id="navbarSupportedContent">
+					<ul class="navbar-nav navbar-txt mr-auto ">
+						<li class="nav-item active mx-3">
+							<a class="nav-link" href="#">Link1 </a>
+						</li>
+						<li class="nav-item active mx-3">
+							<a class="nav-link" href="#">link2</a>
+						</li>
+						<li class="nav-item active mx-3">
+							<a class="nav-link" href="#">link3</a>
+						</li>
+						<li class="nav-item active mx-3">
+							<a class="nav-link" href="#">Link4</a>
+						</li>
+					</ul>
+					<form class="form-inline my-2 my-lg-0">
+						<button type="button" class="btn btn-success  px-5">
+							<a href="#" data-toggle="modal" data-target="#login-modal" class="btn-txt">Login</a>
+							<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+								<div class="modal-dialog">
+									<div class="loginmodal-container">
+										<p class="login-txt">Login </p>
+										<form>
+											<input type="text" required name="user" placeholder="Username">
+											<input type="password" required name="pass" placeholder="Password">
+											<input type="submit" name="Enter" class="btn login loginmodal-submit" value="Enter">
+										</form>
+
+										<div class="login-help">
+											<a href="#">Register</a> - <a href="#">Forgot Password</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</button>
+
+					</form>
+				</div>
+			</div>
+		</nav>
+	</header>
     <div class="container">
         {% block content %}{% endblock %}
     </div>
 
 
 
-<footer class="page-footer font-small blue">
+<footer class="footer fixed-bottom" style="background-color: #00a1e3;">
   <div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <a href="https://mdbootstrap.com/"> Attractor school</a>
+    <a href="#"> Attractor school</a>
   </div>
 </footer>
 
