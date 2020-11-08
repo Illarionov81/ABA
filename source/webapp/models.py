@@ -37,8 +37,7 @@ class SoftDeleteManager(models.Manager):
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='profile', verbose_name='Пользователь')
     phone = models.CharField(max_length=50, null=False, blank=False, verbose_name='Телефон пользователя')
-    children = models.ManyToManyField('Child', through='Therapy', blank=True, related_name='therapists',
-                                      verbose_name='Ребенок')
+
 
     def __str__(self):
         return "%s" % self.user.username
@@ -60,6 +59,8 @@ class Child(models.Model):
     edited_date = models.DateTimeField(auto_now=True, null=True, blank=True, verbose_name='Дата редактирования')
     deleted_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата удаления')
     communication_system = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Система коммуникации')
+    therapy = models.ManyToManyField(AUTH_USER_MODEL, on_delete=models.PROTECT, null=True, through='Therapy', blank=True, related_name='therapists',
+                                      verbose_name='Ребенок')
     is_deleted = models.BooleanField(default=False)
 
     objects = SoftDeleteManager()
