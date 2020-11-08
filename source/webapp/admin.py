@@ -64,10 +64,9 @@ class UsersChildModelAdmin(admin.ModelAdmin):
 
 
 class TestResultModelAdmin(admin.ModelAdmin):
-    list_display = ['test', 'skill', 'level']
+    list_display = ['test', 'skill_level', 'created_date']
     search_fields = ['test']
-    list_filter = ['created_date', 'edited_date', 'test']
-    exclude = ('deleted_date',)
+    list_filter = ['created_date',  'test']
 
 
 class TestModelAdmin(admin.ModelAdmin):
@@ -117,3 +116,4 @@ admin.site.register(Child, ChildrenModelAdmin)
 admin.site.register(Category, CategoryModelAdmin)
 admin.site.register(TestResult, TestResultModelAdmin)
 admin.site.register(Test, TestModelAdmin)
+admin.site.register(SkillLevel)

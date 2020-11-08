@@ -99,8 +99,6 @@ class Category(models.Model):
         verbose_name_plural = 'Секции'
 
 
-
-
 class Skill(models.Model):
     code = models.CharField(max_length=5, verbose_name='Код навыка')
     name = models.CharField(max_length=255, verbose_name='Название навыка')
@@ -176,9 +174,6 @@ class Session(models.Model):
     deleted_date = models.DateTimeField(blank=True, null=True, verbose_name="Дата удаления")
     status = models.CharField(max_length=20, choices=SESSION_STATUS_CHOICES, default=SESSION_STATUS_OPEN,
                               verbose_name='Статус')
-
-
-
 
     def __str__(self):
         return "{} {} ({})".format(self.child, self.created_date.strftime('%d.%m.%Y'), self.therapist)
@@ -261,17 +256,13 @@ class Test(models.Model):
 class TestResult(models.Model):
     test = models.ForeignKey('Test', on_delete=models.PROTECT, related_name='test_result',
                              verbose_name='Тест')
-    skill = models.ForeignKey('Skill', on_delete=models.PROTECT, related_name='test_skill',
-                              verbose_name='Навык')
-    level = models.PositiveSmallIntegerField(default=0, verbose_name="Уровень владения навыком")
-    status = models.BooleanField(default=True, verbose_name='Статус')
+    skill_level = models.ForeignKey('SkillLevel', on_delete=models.PROTECT, related_name='test_skill_level',
+                                    verbose_name='Уровень навыка')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-    edited_date = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name="Дата редактирования")
-    deleted_date = models.DateTimeField(blank=True, null=True, verbose_name="Дата удаления")
 
     class Meta:
-        verbose_name = 'Результаты первоначального тестирования'
-        verbose_name_plural = 'Результаты первоначального тестирования'
+        verbose_name = 'Результаты тестирования'
+        verbose_name_plural = 'Результаты  тестирования'
 
 
 class StudyMethod(models.Model):
