@@ -59,7 +59,7 @@ class Child(models.Model):
     edited_date = models.DateTimeField(auto_now=True, null=True, blank=True, verbose_name='Дата редактирования')
     deleted_date = models.DateTimeField(null=True, blank=True, verbose_name='Дата удаления')
     communication_system = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Система коммуникации')
-    therapy = models.ManyToManyField(AUTH_USER_MODEL, on_delete=models.PROTECT, null=True, through='Therapy', blank=True, related_name='therapists',
+    therapy = models.ManyToManyField(AUTH_USER_MODEL, through='Therapy', blank=True, related_name='therapists',
                                       verbose_name='Ребенок')
     is_deleted = models.BooleanField(default=False)
 
@@ -74,10 +74,10 @@ class Child(models.Model):
 
 
 class Therapy(models.Model):
-    user = models.ForeignKey(UserProfile, related_name='related_to_user', on_delete=models.CASCADE,
+    user = models.ForeignKey(AUTH_USER_MODEL, related_name='related_to_user', on_delete=models.CASCADE, null=True,
                              verbose_name='Терапист')
-    child = models.ForeignKey(Child, null=True, blank=True, related_name='child_in_user', on_delete=models.CASCADE,
-                              verbose_name='Ребенок')
+    child = models.ForeignKey(Child, blank=True, related_name='child_in_user', on_delete=models.CASCADE, null=True,
+                              verbose_name='Ребенок', )
 
     def __str__(self):
         return self.user.user.username
