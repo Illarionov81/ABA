@@ -135,3 +135,18 @@ body {
     margin: 10px;
     padding: 10px;
 }
+
+.test1 {
+    width: 75px;
+    height: 15px;
+    border: solid black 1px;
+    background-color: #22b2a6;
+    display: inline-block;
+}
+.test2 {
+    width: 75px;
+    height: 15px;
+    border: solid black 1px;
+    background-color: greenyellow;
+    display: inline-block;
+}
