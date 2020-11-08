@@ -240,12 +240,12 @@ class SessionSkillExtras(models.Model):
 
 
 class Test(models.Model):
-    child = models.ForeignKey('Child', on_delete=models.PROTECT, related_name='child_test',
+    child = models.ForeignKey('Child', on_delete=models.PROTECT, related_name='test',
                               verbose_name='Ребенок')
     therapist = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT, null=True,
                                   related_name='therapist')
     previus_test = models.OneToOneField('Test', on_delete=models.PROTECT, null=True, blank=True,
-                                        related_name='next_test', verbose_name='previus_test')
+                                        verbose_name='previus_test')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
 
     class Meta:
@@ -254,7 +254,7 @@ class Test(models.Model):
 
 
 class TestResult(models.Model):
-    test = models.ForeignKey('Test', on_delete=models.PROTECT, related_name='test_result',
+    test = models.ForeignKey('Test', on_delete=models.PROTECT, related_name='result',
                              verbose_name='Тест')
     skill_level = models.ForeignKey('SkillLevel', on_delete=models.PROTECT, related_name='test_skill_level',
                                     verbose_name='Уровень навыка')
