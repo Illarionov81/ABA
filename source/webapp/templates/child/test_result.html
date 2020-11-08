@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+
+{% block title %}результаты теста{% endblock %}
+
+{% block menu %}
+    <li><a class="btn btn-primary" href="#" role="button">Новый тест для : {{ test.child.first_name}}</a></li>
+{% endblock %}
+
+
+{% block content %}
+    <div class="box">
+        <h3>Результаты тестов: <a href="{% url 'webapp:child_view' test.child.pk %}">Ребенок - {{ test.child.first_name }}</a></h3>
+        <div class="row">
+           <div class="col-1"><div class=" test1 "></div></div>
+            <div class="col">Тест № {{ test.pk }}. Терапист {{ test.therapist }}</div>
+        </div>
+        {% if previous_test %}
+            <div class="row">
+                <div class="col-1"><div class="test2 "></div>
+                </div> <div class="col">Предыдущий тест {{ previous_test.pk }}. Терапист {{ previous_test.therapist }}</div>
+            </div>
+        {% endif %}
+        <hr>
+             <div class="row"> <div class="col"><a href="#">Продолжить тестирование.</a></div> </div>
+        <hr>
+    <div>
+        {% if previous_test %}
+            {% for r in Previous_result %}
+                <p>{{ r.skill_level.skill.code }} -
+                    <a class="pl-2" style="background-color:greenyellow"><b>{{ r.skill_level.level }}</b></a>
+                    {% for t in Result %}
+                        {% if t.skill_level.skill.code == r.skill_level.skill.code %}
+                            <a class="pl-2" style="background-color:#22b2a6"><b>{{ t.skill_level.level }}</b></a>
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            {% endfor %}
+            {% for r in diff %}
+                <p>{{ r.skill_level.skill.code }} -
+                    <a class="pl-2" style="background-color:#22b2a6"><b>{{ r.skill_level.level }}</b></a>
+                </p>
+            {% endfor %}
+    {% else %}
+        {% for t in Result %}
+                <p>{{ t.skill_level.skill.code }} -
+                <a class="pl-2" style="background-color:#22b2a6"><b>{{ t.skill_level.level }}</b></a>
+                </p>
+        {% endfor %}
+    {% endif %}
+    </div>
+
+    </div>
+{% endblock %}
+
+
+

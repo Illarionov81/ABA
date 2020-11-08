@@ -67,6 +67,7 @@ class TestResultModelAdmin(admin.ModelAdmin):
     list_display = ['test', 'skill_level', 'created_date']
     search_fields = ['test']
     list_filter = ['created_date',  'test']
+    ordering = ['test', 'skill_level']
 
 
 class TestModelAdmin(admin.ModelAdmin):
