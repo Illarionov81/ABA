@@ -101,11 +101,12 @@ class Category(models.Model):
 
 
 class Skill(models.Model):
-    code = models.CharField(max_length=5, verbose_name='Код навыка')
+    code = models.CharField(max_length=5,null=True, blank=True, verbose_name='Код навыка')
     name = models.CharField(max_length=255, verbose_name='Название навыка')
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='skills', verbose_name='Секция')
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True, blank=True, related_name='skills', verbose_name='Секция')
     description = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Описание навыка')
     max_level = models.PositiveSmallIntegerField(default=1, verbose_name="Количество уровней сложности")
+    add_skill = models.CharField(max_length=255, null=True, verbose_name='Дополнительный навык')
     is_deleted = models.BooleanField(default=False)
 
     objects = SoftDeleteManager()
@@ -122,24 +123,41 @@ class SkillLevel(models.Model):
     skill = models.ForeignKey('Skill', on_delete=models.CASCADE, related_name='levels', verbose_name='Навык')
     level = models.IntegerField(verbose_name='Уровень')
     criteria = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Критерии')
+    add_goal = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Дополнительная цель')
 
     def __str__(self):
-        return "{} - {} | {}".format(self.skill.code, self.level, self.skill.name)
+        if self.add_goal is None:
+            return "{} - {} | {}".format(self.skill.code, self.level, self.criteria)
+        else:
+            return "{} - {} | {} {}".format(self.skill.code, self.level, self.criteria, self.add_goal)
+
 
     class Meta:
         verbose_name = 'Уровень навыка'
         verbose_name_plural = 'Уровни навыков'
         ordering = ('skill', 'level')
 
+class ProgramSkill(models.Model):
+    level = models.ForeignKey('SkillLevel', related_name='to_skill', on_delete=models.CASCADE, null=True,
+                             verbose_name='Уровень навыка')
+    program = models.ForeignKey('Program', blank=True, related_name='to_programm', on_delete=models.CASCADE, verbose_name='Программа' )
+    add_creteria = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Дополнительные критерии')
+
+    def __str__(self):
+        return "%s. %s" % (self.program, self.level)
+
+    class Meta:
+        verbose_name = 'Программа ребенка'
+        verbose_name_plural = 'Программы ребенка'
 
 class Program(models.Model):
     child = models.ForeignKey('Child', on_delete=models.PROTECT, related_name='programs',
                               verbose_name='Ребенок')
-    author = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='programs',
+    author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='programs',
                                verbose_name='Автор')
-    start_date = models.DateField(verbose_name="Дата начала")
+    start_date = models.DateField( verbose_name="Дата начала")
     end_date = models.DateField(verbose_name="Дата окончания")
-    skills = models.ManyToManyField('SkillLevel', verbose_name='Навыки', related_name='in_programs', blank=True)
+    skills = models.ManyToManyField('SkillLevel', through='ProgramSkill' , verbose_name='Навыки', related_name='in_programs', blank=True)
     status = models.CharField(max_length=20, choices=PROGRAM_STATUS_CHOICES, default=PROGRAM_STATUS_OPEN,
                               verbose_name='Статус')
     name = models.CharField(max_length=100, null=True, blank=True, verbose_name="Название программы")

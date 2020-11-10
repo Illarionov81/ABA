@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from webapp.models import Skill, UserProfile, Program, Session, Child, Category, SessionSkill, Therapy, \
-    StudyMethod, HintType, HintTypeDelete, Test, SkillLevel
+    StudyMethod, HintType, HintTypeDelete, Test, SkillLevel, ProgramSkill
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -119,3 +119,4 @@ admin.site.register(Category, CategoryModelAdmin)
 # admin.site.register(TestResult, TestResultModelAdmin)
 admin.site.register(Test, TestModelAdmin)
 admin.site.register(SkillLevel)
+admin.site.register(ProgramSkill)
