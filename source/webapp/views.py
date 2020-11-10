@@ -72,3 +72,4 @@ class TestResultView(ListView):
     #     context['Result'] = result
     #     context['test'] = test
     #     return context
+#
