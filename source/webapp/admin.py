@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from webapp.models import Skill, UserProfile, Program, Session, Child, Category, SessionSkill, Therapy, \
-    StudyMethod, HintType, HintTypeDelete, TestResult, Test, SkillLevel
+    StudyMethod, HintType, HintTypeDelete, Test, SkillLevel
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -63,16 +63,17 @@ class UsersChildModelAdmin(admin.ModelAdmin):
     list_display = ['user', 'child']
 
 
-class TestResultModelAdmin(admin.ModelAdmin):
-    list_display = ['test', 'skill_level', 'created_date']
-    search_fields = ['test']
-    list_filter = ['created_date',  'test']
-    ordering = ['test', 'skill_level']
+# class TestResultModelAdmin(admin.ModelAdmin):
+#     list_display = ['test', 'skill_level', 'created_date']
+#     search_fields = ['test']
+#     list_filter = ['created_date',  'test']
+#     ordering = ['test', 'skill_level']
 
 
 class TestModelAdmin(admin.ModelAdmin):
     list_display = ['pk', 'previus_test', 'child', 'therapist', 'created_date']
     search_fields = ['child']
+    filter_horizontal = ('skill_level',)
     list_filter = ['created_date', 'child']
 
 
@@ -115,6 +116,6 @@ admin.site.register(Therapy, UsersChildModelAdmin)
 admin.site.register(Session, SessionModelAdmin)
 admin.site.register(Child, ChildrenModelAdmin)
 admin.site.register(Category, CategoryModelAdmin)
-admin.site.register(TestResult, TestResultModelAdmin)
+# admin.site.register(TestResult, TestResultModelAdmin)
 admin.site.register(Test, TestModelAdmin)
 admin.site.register(SkillLevel)

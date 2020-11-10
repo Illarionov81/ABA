@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView, ListView
-from webapp.models import Child, TestResult, Test, Skill
+from webapp.models import Child, Test, Skill
 
 
 class IndexView(ListView):
@@ -43,32 +43,32 @@ class ChildTestsView(ListView):
 
 class TestResultView(ListView):
     template_name = 'child/test_result.html'
-    model = TestResult
+    model = Test
     paginate_by = 5
     paginate_orphans = 0
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        test = Test.objects.get(pk=self.kwargs.get('pk'))
-        result = TestResult.objects.filter(test_id=test.pk).order_by('test')
-        if test.previus_test:
-            previous_test = Test.objects.get(pk=test.previus_test.pk)
-            previous_result = TestResult.objects.filter(test_id=previous_test.pk)
-            context['Previous_result'] = previous_result
-            context['previous_test'] = previous_test
-            previous_test_result = []
-            diff = []
-            for i in previous_result:
-                previous_test_result.append(i.skill_level.skill.code)
-            print(previous_test_result)
-            for i in result:
-                if i.skill_level.skill.code in previous_test_result:
-                    pass
-                else:
-                    diff.append(i)
-            context['diff'] = diff
-        child = test.child
-        context['child'] = child
-        context['Result'] = result
-        context['test'] = test
-        return context
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     test = Test.objects.get(pk=self.kwargs.get('pk'))
+    #     result = TestResult.objects.filter(test_id=test.pk).order_by('test')
+    #     if test.previus_test:
+    #         previous_test = Test.objects.get(pk=test.previus_test.pk)
+    #         previous_result = TestResult.objects.filter(test_id=previous_test.pk)
+    #         context['Previous_result'] = previous_result
+    #         context['previous_test'] = previous_test
+    #         previous_test_result = []
+    #         diff = []
+    #         for i in previous_result:
+    #             previous_test_result.append(i.skill_level.skill.code)
+    #         print(previous_test_result)
+    #         for i in result:
+    #             if i.skill_level.skill.code in previous_test_result:
+    #                 pass
+    #             else:
+    #                 diff.append(i)
+    #         context['diff'] = diff
+    #     child = test.child
+    #     context['child'] = child
+    #     context['Result'] = result
+    #     context['test'] = test
+    #     return context

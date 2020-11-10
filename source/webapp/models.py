@@ -248,22 +248,24 @@ class Test(models.Model):
     previus_test = models.OneToOneField('Test', on_delete=models.PROTECT, null=True, blank=True,
                                         verbose_name='previus_test')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    skill_level = models.ManyToManyField('webapp.SkillLevel', related_name='test', blank=True)
 
     class Meta:
         verbose_name = 'Тестирование'
         verbose_name_plural = 'Тестирование'
 
 
-class TestResult(models.Model):
-    test = models.ForeignKey('Test', on_delete=models.PROTECT, related_name='result',
-                             verbose_name='Тест')
-    skill_level = models.ForeignKey('SkillLevel', on_delete=models.PROTECT, related_name='test_skill_level',
-                                    verbose_name='Уровень навыка')
-    created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+# class TestResult(models.Model):
+#     test = models.ForeignKey('Test', on_delete=models.PROTECT, related_name='result',
+#                              verbose_name='Тест')
+#     skill_level = models.ForeignKey('SkillLevel', on_delete=models.PROTECT, related_name='test_skill_level',
+#                                     verbose_name='Уровень навыка')
+#     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+#
+#     class Meta:
+#         verbose_name = 'Результаты тестирования'
+#         verbose_name_plural = 'Результаты  тестирования'
 
-    class Meta:
-        verbose_name = 'Результаты тестирования'
-        verbose_name_plural = 'Результаты  тестирования'
 
 
 class StudyMethod(models.Model):
