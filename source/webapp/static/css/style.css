@@ -153,11 +153,11 @@ body {
 
 .my_row{
     margin: 5px;
+    display: table;
 }
 .my_col{
-    width: 45px;
-    display: inline;
-    margin: 2px;
-    padding: 3px;
+    display: table-cell;
+    width: 55px;
     font-weight: bold;
+    text-align: center;
 }
