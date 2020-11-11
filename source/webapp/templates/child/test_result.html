@@ -10,45 +10,61 @@
 
 {% block content %}
     <div class="box">
-        <h3>Результаты тестов: <a href="{% url 'webapp:child_view' test.child.pk %}">Ребенок - {{ test.child.first_name }}</a></h3>
+        <h3>Результаты тестов: <a href="{% url 'webapp:child_view' test.child.pk %}">Ребенок - {{ test.child.first_name }}. </a>
+            <a href="{% url 'webapp:child_tests' test.child.pk %}">Список тестов.</a>
+        </h3>
         <div class="row">
-           <div class="col-1"><div class=" test1 "></div></div>
+           <div class="col-1"><div class=" test2 "></div></div>
             <div class="col">Выбранный тест №{{ test.pk }}. Терапист - {{ test.therapist }}. | Дата начала: {{ test.created_date | date:"Y-m-d H:m:s" }}</div>
         </div>
-        {% if previous_test %}
+        {% if test.previus_test %}
             <div class="row">
-                <div class="col-1"><div class="test2 "></div>
-                </div> <div class="col">Предыдущий тест №{{ previous_test.pk }}. Терапист - {{ previous_test.therapist }}. | Дата начала: {{ previous_test.created_date | date:"Y-m-d H:m:s" }}</div>
+                <div class="col-1"><div class="test1 "></div>
+                </div> <div class="col">Предыдущие тесты.</div>
             </div>
         {% endif %}
         <hr>
              <div class="row"> <div class="col"><a href="#">Продолжить тестирование.</a></div> </div>
         <hr>
-        <div>
-            {% if previous_test %}
-                {% for r in Previous_result %}
-                    <p>{{ r.skill_level.skill.code }} -
-                        <a class="p-1" style="background-color:greenyellow"><b>{{ r.skill_level.level }}</b></a>
-                        {% for t in Result %}
-                            {% if t.skill_level.skill.code == r.skill_level.skill.code %}
-                                <a class="p-1" style="background-color:#22b2a6"><b>{{ t.skill_level.level }}</b></a>
-                            {% endif %}
-                        {% endfor %}
-                    </p>
-                {% endfor %}
-                {% for r in diff %}
-                    <p>{{ r.skill_level.skill.code }} -
-                        <a class="p-1" style="background-color:#22b2a6"><b>{{ r.skill_level.level }}</b></a>
-                    </p>
-                {% endfor %}
-            {% else %}
-                {% for t in Result %}
-                        <p>{{ t.skill_level.skill.code }} -
-                        <a class="p-1" style="background-color:#22b2a6"><b>{{ t.skill_level.level }}</b></a>
-                        </p>
-                {% endfor %}
-            {% endif %}
+        <div class="row">
+            <div class="col">
+                <form action="{% url 'webapp:test_result' test.pk %}" method="get">
+                    {% for s in ABC %}
+                        <input type="submit" name="ABC" value="{{ s }}"
+                               id="{{ s }}" style="float: left; padding: 3px; margin: 3px; width: 35px">
+                    {% endfor %}
+                </form>
+            </div>
         </div>
+            <hr>
+        <div>
+        {% if test.previus_test %}
+            {% for k, v in tests.items %}
+                <div class="my_row">
+                    <div class="my_col">{{ k }} - </div>
+                    <div class="my_col test1">{% for i in v %} {{ i }} {% endfor %}</div>
+                    {% for key, value in this_test.items %}
+                        {% if key == k %}
+                        <div class="my_col test2">{% for i in value %} {{ i }} {% endfor %}</div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            {% for k, v in diff.items %}
+                <div class="my_row">
+                   <div class="my_col">{{ k }} - </div>
+                    <div class="my_col test2">{% for i in v %} {{ i }} {% endfor %}</div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if not test.previus_test %}
+            {% for k, v in this_test.items %}
+                <div class="my_row">
+                    <div class="my_col">{{ k }} - </div>
+                    <div class="my_col test2">{% for i in v %} {{ i }} {% endfor %}</div>
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
 {% endblock %}
 

@@ -285,7 +285,6 @@ class Test(models.Model):
 #         verbose_name_plural = 'Результаты  тестирования'
 
 
-
 class StudyMethod(models.Model):
     study_method = models.CharField(max_length=255, null=True, blank=True, verbose_name='Метод обучения')
 

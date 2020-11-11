@@ -150,3 +150,14 @@ body {
     background-color: greenyellow;
     display: inline-block;
 }
+
+.my_row{
+    margin: 5px;
+}
+.my_col{
+    width: 45px;
+    display: inline;
+    margin: 2px;
+    padding: 3px;
+    font-weight: bold;
+}
