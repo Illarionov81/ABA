@@ -2,6 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView, ListView
 from webapp.models import Child, Test, Skill
+from webapp.context_for_test import ContextForTest
 
 
 class IndexView(ListView):
@@ -47,29 +48,19 @@ class TestResultView(ListView):
     paginate_by = 5
     paginate_orphans = 0
 
-    # def get_context_data(self, *, object_list=None, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     test = Test.objects.get(pk=self.kwargs.get('pk'))
-    #     result = TestResult.objects.filter(test_id=test.pk).order_by('test')
-    #     if test.previus_test:
-    #         previous_test = Test.objects.get(pk=test.previus_test.pk)
-    #         previous_result = TestResult.objects.filter(test_id=previous_test.pk)
-    #         context['Previous_result'] = previous_result
-    #         context['previous_test'] = previous_test
-    #         previous_test_result = []
-    #         diff = []
-    #         for i in previous_result:
-    #             previous_test_result.append(i.skill_level.skill.code)
-    #         print(previous_test_result)
-    #         for i in result:
-    #             if i.skill_level.skill.code in previous_test_result:
-    #                 pass
-    #             else:
-    #                 diff.append(i)
-    #         context['diff'] = diff
-    #     child = test.child
-    #     context['child'] = child
-    #     context['Result'] = result
-    #     context['test'] = test
-    #     return context
-#
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        test = get_object_or_404(Test, pk=self.kwargs.get('pk'))
+        context['test'] = test
+        context['ABC'] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                          'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+        test_pk = test.pk
+        category_cod = self.request.GET.get('ABC')
+        c = ContextForTest()
+        data = c.all_test(test_pk, category_cod=category_cod)
+        tests, this_test, diff = data
+        context['tests'] = tests
+        context['this_test'] = this_test
+        context['diff'] = diff
+        return context
+
