@@ -106,10 +106,9 @@ class Skill(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True, blank=True, related_name='skills', verbose_name='Секция')
     description = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Описание навыка')
     max_level = models.PositiveSmallIntegerField(default=1, verbose_name="Количество уровней сложности")
-    add_skill = models.CharField(max_length=255, null=True, verbose_name='Дополнительный навык')
-    is_deleted = models.BooleanField(default=False)
 
-    objects = SoftDeleteManager()
+
+
 
     def __str__(self):
         return "%s. %s" % (self.code, self.name)
@@ -123,13 +122,10 @@ class SkillLevel(models.Model):
     skill = models.ForeignKey('Skill', on_delete=models.CASCADE, related_name='levels', verbose_name='Навык')
     level = models.IntegerField(verbose_name='Уровень')
     criteria = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Критерии')
-    add_goal = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Дополнительная цель')
+
 
     def __str__(self):
-        if self.add_goal is None:
             return "{} - {} | {}".format(self.skill.code, self.level, self.criteria)
-        else:
-            return "{} - {} | {} {}".format(self.skill.code, self.level, self.criteria, self.add_goal)
 
 
     class Meta:
@@ -138,10 +134,11 @@ class SkillLevel(models.Model):
         ordering = ('skill', 'level')
 
 class ProgramSkill(models.Model):
-    level = models.ForeignKey('SkillLevel', related_name='to_skill', on_delete=models.CASCADE, null=True,
+    level = models.ForeignKey('SkillLevel', related_name='program_skill', on_delete=models.CASCADE, null=True,
                              verbose_name='Уровень навыка')
-    program = models.ForeignKey('Program', blank=True, related_name='to_programm', on_delete=models.CASCADE, verbose_name='Программа' )
+    program = models.ForeignKey('Program', blank=True, related_name='program_skill', on_delete=models.CASCADE, verbose_name='Программа' )
     add_creteria = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Дополнительные критерии')
+    add_goal = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Дополнительная цель')
 
     def __str__(self):
         return "%s. %s" % (self.program, self.level)

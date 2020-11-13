@@ -23,4 +23,10 @@
         <p>Контакты ребенка: {{ child.contacts }}</p>
         <p>Система коммуникации: {{ child.communication_system }}</p>
     </div>
+    <div>
+      {% for program in  programs %}
+        <a class="btn btn-primary" href="{% url 'webapp:program_detail' child.pk %}">Программа №: {{program.pk}}</a>
+    {% endfor %}
+
+    </div>
 {% endblock %}
