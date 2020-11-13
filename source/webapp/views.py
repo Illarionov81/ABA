@@ -58,9 +58,7 @@ class TestResultView(ListView):
         category_cod = self.request.GET.get('ABC')
         c = ContextForTest()
         data = c.all_test(test_pk, category_cod=category_cod)
-        tests, this_test, diff = data
-        context['tests'] = tests
-        context['this_test'] = this_test
-        context['diff'] = diff
+        all_filtered_skill_code = data
+        context['all_filtered_skill_code'] = all_filtered_skill_code
         return context
 

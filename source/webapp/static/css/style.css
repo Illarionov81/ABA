@@ -150,6 +150,19 @@ body {
     background-color: greenyellow;
     display: inline-block;
 }
+.test3 {
+    width: 105px;
+    border: solid black 1px;
+    background-color: #ffd22f;
+    display: inline-block;
+}
+.empty {
+    border: solid black 1px;
+    width: 75px;
+    height: 15px;
+    /*background-color: #ffd22f;*/
+    display: inline-block;
+}
 
 .my_row{
     margin: 5px;
@@ -157,7 +170,7 @@ body {
 }
 .my_col{
     display: table-cell;
-    width: 55px;
+    min-width: 55px;
     font-weight: bold;
     text-align: center;
 }
