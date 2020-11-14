@@ -37,20 +37,6 @@
             </div>
         </div>
             <hr>
-{#        <div>#}
-{#            {% for key, velue in all_filtered_skill_code.items %}#}
-{#                <div class="my_row">#}
-{#                    <div class="my_col">{{ key }} - </div>#}
-{#                    {% for i, k in count_level.items %}#}
-{#                        {% if i == key %}#}
-{#                            {% for i in k %}#}
-{#                                <div class="my_col test1">{{ i }}</div>#}
-{#                            {% endfor %}#}
-{#                        {% endif %}#}
-{#                    {% endfor %}#}
-{#                </div>#}
-{#            {% endfor %}#}
-{#        </div>#}
         <div>
             {% for key, velue in all_filtered_skill_code.items %}
                 <div class="my_row">
@@ -63,22 +49,21 @@
                         {% endif %}
                         {% if i == 'last' %}
                             {% if k  %}
-                             <div class="my_col test2">{{ k }}</div>
+                                {% for j in k %}
+                                    {% if j > 0 %}
+                                <div class="my_col test2">{{ j }}</div>
+                                    {% endif %}
+                                {% endfor %}
                             {% endif %}
                         {% endif %}
-{#                        {% if i == 'max' %}#}
-{#                             <div class="my_col test3">max level: {{ k }}</div>#}
-{#                        {% endif %}#}
                         {% if i == 'empty' %}
                             {% for r in k %}
-                            <div class="my_col empty"></div>
+                                <div class="my_col empty">{{ r }}</div>
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
                 </div>
             {% endfor %}
         </div>
+    </div>
 {% endblock %}
-
-
-

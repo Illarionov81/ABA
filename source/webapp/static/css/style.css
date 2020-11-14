@@ -140,14 +140,14 @@ body {
     width: 75px;
     height: 15px;
     border: solid black 1px;
-    background-color: #22b2a6;
+    background-color: #FF7373;
     display: inline-block;
 }
 .test2 {
     width: 75px;
     height: 15px;
     border: solid black 1px;
-    background-color: greenyellow;
+    background-color: #67E667;
     display: inline-block;
 }
 .test3 {
