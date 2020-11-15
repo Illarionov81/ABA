@@ -2,7 +2,7 @@ from webapp.models import Test, SkillLevel
 
 
 class ContextForTest:
-    def all_test(self, pk, category_cod):
+    def all_test(self, pk, category_cod, checkbox):
         skilllevel = SkillLevel.objects.filter(skill__category__code=category_cod)
         category_cod = category_cod
         test = Test.objects.get(pk=pk)
@@ -32,7 +32,6 @@ class ContextForTest:
                             for i, j in m.items():
                                 if i == 'previous':
                                     j.append(s_l.level)
-                            d = all_filtered_skill_code[key]['max'] - s_l.level
                             all_filtered_skill_code[key]['empty'] = range(s_l.level+1, all_filtered_skill_code[key]['max']+1)
                 last = all_filtered_skill_code[key]['previous'][-1:]
                 for i in last:
@@ -47,12 +46,14 @@ class ContextForTest:
                     else:
                         if all_filtered_skill_code[key]['max_prev_lev'] > 0:
                             all_filtered_skill_code[key]['last'] = range(all_filtered_skill_code[key]['max_prev_lev'] + 1, s.level + 1)
-                            d = all_filtered_skill_code[key]['max'] - s.level
                             all_filtered_skill_code[key]['empty'] = range(s.level+1, all_filtered_skill_code[key]['max']+1)
                         else:
                             all_filtered_skill_code[key]['last'] = range(1, s.level + 1)
-                            d = all_filtered_skill_code[key]['max'] - s.level
                             all_filtered_skill_code[key]['empty'] = range(s.level+1, all_filtered_skill_code[key]['max']+1)
+        if checkbox:
+            for i in all_filtered_skill_code:
+                if not all_filtered_skill_code[i]['previous'] and not all_filtered_skill_code[i]['last']:
+                    all_filtered_skill_code[i] = 'none'
 
         print(all_filtered_skill_code)
         return all_filtered_skill_code
