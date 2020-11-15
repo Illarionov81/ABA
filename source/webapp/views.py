@@ -62,8 +62,10 @@ class TestResultView(ListView):
                           'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
         test_pk = test.pk
         category_cod = self.request.GET.get('ABC')
+        checkbox = self.request.GET.get('checkbox')
+        print(checkbox)
         c = ContextForTest()
-        data = c.all_test(test_pk, category_cod=category_cod)
+        data = c.all_test(test_pk, category_cod=category_cod, checkbox=checkbox)
         all_filtered_skill_code = data
         context['all_filtered_skill_code'] = all_filtered_skill_code
         return context

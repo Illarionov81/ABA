@@ -17,18 +17,24 @@
            <div class="col-1"><div class=" test2 "></div></div>
             <div class="col">Выбранный тест №{{ test.pk }}. Терапист - {{ test.therapist }}. | Дата начала: {{ test.created_date | date:"Y-m-d H:m:s" }}</div>
         </div>
-        {% if test.previus_test %}
-            <div class="row">
-                <div class="col-1"><div class="test1 "></div>
-                </div> <div class="col">Предыдущие тесты.</div>
-            </div>
-        {% endif %}
+         <div class="row">
+            {% if test.previus_test %}
+                    <div class=" col-1"><div class="test1"></div></div>
+                    <div class="col-3">Предыдущие тесты.</div>
+            {% endif %}
+         </div>
         <hr>
              <div class="row"> <div class="col"><a href="#">Продолжить тестирование.</a></div> </div>
         <hr>
+        <form action="{% url 'webapp:test_result' test.pk %}" method="get">
+        <div class="row">
+                 <div class="col" style="text-align: center">
+                    <label for="checkbox" style="text-decoration: underline">Выводить только отмеченные навыки -</label>
+                    <input  id="checkbox" type="checkbox" value="1" name="checkbox" >
+                </div>
+        </div>
         <div class="row">
             <div class="col">
-                <form action="{% url 'webapp:test_result' test.pk %}" method="get">
                     {% for s in ABC %}
                         <input type="submit" name="ABC" value="{{ s }}"
                                id="{{ s }}" style="float: left; padding: 3px; margin: 3px; width: 35px">
@@ -39,30 +45,32 @@
             <hr>
         <div>
             {% for key, velue in all_filtered_skill_code.items %}
-                <div class="my_row">
-                    <div class="my_col">{{ key }} - </div>
-                    {% for i, k in velue.items %}
-                        {% if i == 'previous' %}
-                            {% for j in k %}
-                                <div class="my_col test1">{{ j }}</div>
-                            {% endfor %}
-                        {% endif %}
-                        {% if i == 'last' %}
-                            {% if k  %}
+                {% if velue != 'none' %}
+                    <div class="my_row">
+                        <div class="my_col">{{ key }} - </div>
+                        {% for i, k in velue.items %}
+                            {% if i == 'previous' %}
                                 {% for j in k %}
-                                    {% if j > 0 %}
-                                <div class="my_col test2">{{ j }}</div>
-                                    {% endif %}
+                                    <div class="my_col test1">{{ j }}</div>
                                 {% endfor %}
                             {% endif %}
-                        {% endif %}
-                        {% if i == 'empty' %}
-                            {% for r in k %}
-                                <div class="my_col empty">{{ r }}</div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                            {% if i == 'last' %}
+                                {% if k  %}
+                                    {% for j in k %}
+                                        {% if j > 0 %}
+                                    <div class="my_col test2">{{ j }}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+                            {% if i == 'empty' %}
+                                {% for r in k %}
+                                    <div class="my_col empty">{{ r }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
     </div>
