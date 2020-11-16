@@ -50,6 +50,8 @@ class InlineUser(admin.StackedInline):
     model = UserProfile
     exclude = ('deleted_date', 'edited_date')
 
+class InlineProgram(admin.StackedInline):
+    model = ProgramSkill
 
 class InlineChild(admin.StackedInline):
     model = Therapy
@@ -78,10 +80,11 @@ class TestModelAdmin(admin.ModelAdmin):
 
 
 class ProgramModelAdmin(admin.ModelAdmin):
+    inlines = [InlineProgram]
     list_display = ['name']
     search_fields = ['name']
     list_filter = ['created_date', 'edited_date']
-    filter_horizontal = ('skills',)
+    # filter_horizontal = ('skills',)
     exclude = ('deleted_date',)
 
 
@@ -111,7 +114,7 @@ admin.site.register(SessionSkill)
 admin.site.register(StudyMethod)
 admin.site.register(HintType)
 admin.site.register(HintTypeDelete)
-admin.site.register(Program, ProgramModelAdmin)
+admin.site.register(Program,ProgramModelAdmin)
 admin.site.register(Therapy, UsersChildModelAdmin)
 admin.site.register(Session, SessionModelAdmin)
 admin.site.register(Child, ChildrenModelAdmin)
@@ -119,4 +122,4 @@ admin.site.register(Category, CategoryModelAdmin)
 # admin.site.register(TestResult, TestResultModelAdmin)
 admin.site.register(Test, TestModelAdmin)
 admin.site.register(SkillLevel)
-admin.site.register(ProgramSkill)
+# admin.site.register(ProgramSkill)
