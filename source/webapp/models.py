@@ -34,14 +34,6 @@ class SoftDeleteManager(models.Manager):
         return self.filter(is_deleted=True)
 
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='profile', verbose_name='Пользователь')
-    phone = models.CharField(max_length=50, null=False, blank=False, verbose_name='Телефон пользователя')
-
-
-    def __str__(self):
-        return "%s" % self.user.username
-
 
 class Child(models.Model):
     first_name = models.CharField(max_length=100, verbose_name='Имя ребенка')
@@ -133,12 +125,24 @@ class SkillLevel(models.Model):
         verbose_name_plural = 'Уровни навыков'
         ordering = ('skill', 'level')
 
+class ProrgamSkillGoal(models.Model):
+    skill = models.ForeignKey ('ProgramSkill', related_name='goal', on_delete=models.CASCADE,verbose_name='Уровень навыка')
+    goal = models.CharField(max_length=1000, null=True,verbose_name='Дополнительная цель')
+
+    def __str__(self):
+        return "{}".format(self.goal)
+
+
+    class Meta:
+        verbose_name = "Дополнительная цель"
+        verbose_name_plural = "Дополнительные цели"
+
+
 class ProgramSkill(models.Model):
     level = models.ForeignKey('SkillLevel', related_name='program_skill', on_delete=models.CASCADE, null=True,
                              verbose_name='Уровень навыка')
     program = models.ForeignKey('Program', blank=True, related_name='program_skill', on_delete=models.CASCADE, verbose_name='Программа' )
     add_creteria = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Дополнительные критерии')
-    add_goal = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Дополнительная цель')
 
     def __str__(self):
         return "%s. %s" % (self.program, self.level)
@@ -183,7 +187,7 @@ class Session(models.Model):
                               verbose_name='Ребёнок')
     program = models.ForeignKey('Program', related_name='sessions', null=True, blank=True, on_delete=models.PROTECT,
                                 verbose_name='Программа')
-    therapist = models.ForeignKey('UserProfile', on_delete=models.PROTECT, blank=True, related_name='sessions')
+    therapist = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT, blank=True, related_name='sessions')
     comment = models.TextField(max_length=1000, blank=True, null=True, verbose_name="Комментарий")
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     edited_date = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name="Дата редактирования")

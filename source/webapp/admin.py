@@ -1,7 +1,6 @@
 from django.contrib import admin
-from django.contrib.auth.models import User
-from webapp.models import Skill, UserProfile, Program, Session, Child, Category, SessionSkill, Therapy, \
-    StudyMethod, HintType, HintTypeDelete, Test, SkillLevel, ProgramSkill
+from webapp.models import Skill, Program, Session, Child, Category, SessionSkill, Therapy, \
+    StudyMethod, HintType, HintTypeDelete, Test, SkillLevel, ProgramSkill, ProrgamSkillGoal
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -46,19 +45,20 @@ class ChildrenModelAdmin(admin.ModelAdmin):
     exclude = ('deleted_date',)
 
 
-class InlineUser(admin.StackedInline):
-    model = UserProfile
-    exclude = ('deleted_date', 'edited_date')
+class InlineChild(admin.StackedInline):
+    model = Therapy
+
+class InlineGoals(admin.StackedInline):
+    model = ProrgamSkillGoal
+
+class InlineSessionSkill(admin.StackedInline):
+    model = SessionSkill
 
 class InlineProgram(admin.StackedInline):
     model = ProgramSkill
 
-class InlineChild(admin.StackedInline):
-    model = Therapy
-
-
-class InlineSessionSkill(admin.StackedInline):
-    model = SessionSkill
+class ProgramGoal (admin.ModelAdmin):
+    inlines = [InlineGoals]
 
 
 class UsersChildModelAdmin(admin.ModelAdmin):
@@ -84,13 +84,12 @@ class ProgramModelAdmin(admin.ModelAdmin):
     list_display = ['name']
     search_fields = ['name']
     list_filter = ['created_date', 'edited_date']
-    # filter_horizontal = ('skills',)
+    filter_horizontal = ('skills',)
     exclude = ('deleted_date',)
 
 
 class UserInfoAdmin(UserAdmin):
-    inlines = [InlineUser]
-    search_fields = ['username']
+   search_fields = ['username']
 
 
 class SessionModelAdmin(admin.ModelAdmin):
@@ -122,4 +121,5 @@ admin.site.register(Category, CategoryModelAdmin)
 # admin.site.register(TestResult, TestResultModelAdmin)
 admin.site.register(Test, TestModelAdmin)
 admin.site.register(SkillLevel)
-# admin.site.register(ProgramSkill)
+admin.site.register(ProgramSkill,ProgramGoal)
+admin.site.register(ProrgamSkillGoal)
