@@ -181,7 +181,6 @@ class Program(models.Model):
     def __str__(self):
         return "%s %s" % (self.child, self.created_date)
 
-
     class Meta:
         verbose_name = 'Программа'
         verbose_name_plural = 'Программы'
