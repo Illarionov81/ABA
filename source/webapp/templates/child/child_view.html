@@ -1,16 +1,12 @@
 {% extends 'base.html' %}
-
-
 {% block title %}Личные данные ребенка{% endblock %}
-
 {% block menu %}
     <li><a class="btn btn-primary" href="{% url 'webapp:child_tests' child.pk %}">Оценка навыков</a></li>
 {% endblock %}
-
 {% block content %}
-     <h1>Личные  данные ребенка</h1>
+    <h1>Личные  данные ребенка</h1>
     <div class="box">
-       <p>Имя: {{ child.first_name }}</p>
+        <p>Имя: {{ child.first_name }}</p>
         <p>Фамилия: {{ child.last_name }}</p>
         <p>Отчество: {{ child.third_name }}</p>
         <p>Дата рождения: {{ child.birthday }}</p>
@@ -24,9 +20,8 @@
         <p>Система коммуникации: {{ child.communication_system }}</p>
     </div>
     <div>
-      {% for program in  programs %}
-        <a class="btn btn-primary" href="{% url 'webapp:program_detail' child.pk %}">Программа №: {{program.pk}}</a>
-    {% endfor %}
-
+        {% for program in  programs %}
+            <a class="btn btn-primary" href="{% url 'webapp:program_detail' program.pk %}">Программа №: {{program.pk}}</a>
+        {% endfor %}
     </div>
 {% endblock %}
