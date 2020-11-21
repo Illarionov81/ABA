@@ -148,7 +148,6 @@ class ProgramSkill(models.Model):
     status = models.CharField(max_length=20, choices=SKILL_STATUS_CHOICES, default=SKILL_STATUS_OPEN,
                               verbose_name='Статус')
 
-
     def __str__(self):
         return "%s. %s" % (self.program, self.level)
 
