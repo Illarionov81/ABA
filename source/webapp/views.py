@@ -89,9 +89,6 @@ class ProgramDetailView(DetailView):
         context['skills'] = pr_skill
         return context
 
-#
-# class CreateProgram(CreateView):
-#     pass
 
 
 
