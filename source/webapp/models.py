@@ -106,6 +106,7 @@ class Skill(models.Model):
         return "%s. %s" % (self.code, self.name)
 
     class Meta:
+        ordering = ('id',)
         verbose_name = 'Навык'
         verbose_name_plural = 'Навыки'
 
@@ -114,6 +115,7 @@ class SkillLevel(models.Model):
     skill = models.ForeignKey('Skill', on_delete=models.CASCADE, related_name='levels', verbose_name='Навык')
     level = models.IntegerField(verbose_name='Уровень')
     criteria = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Критерии')
+
 
 
     def __str__(self):
@@ -143,6 +145,9 @@ class ProgramSkill(models.Model):
                              verbose_name='Уровень навыка')
     program = models.ForeignKey('Program', blank=True, related_name='program_skill', on_delete=models.CASCADE, verbose_name='Программа' )
     add_creteria = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Дополнительные критерии')
+    status = models.CharField(max_length=20, choices=SKILL_STATUS_CHOICES, default=SKILL_STATUS_OPEN,
+                              verbose_name='Статус')
+
 
     def __str__(self):
         return "%s. %s" % (self.program, self.level)
@@ -176,6 +181,7 @@ class Program(models.Model):
 
     def __str__(self):
         return "%s %s" % (self.child, self.created_date)
+
 
     class Meta:
         verbose_name = 'Программа'

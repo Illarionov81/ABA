@@ -1,7 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import DetailView, ListView
-from webapp.models import Child, Test, Skill, Program
+from django.views.generic import DetailView, ListView, CreateView
+from webapp.models import Child, Test, Skill, Program, SkillLevel, ProgramSkill, PROGRAM_STATUS_CLOSED, \
+    SKILL_STATUS_OPEN, PROGRAM_STATUS_OPEN, SKILL_STATUS_CLOSED
 from webapp.context_for_test import ContextForTest
 
 
@@ -63,7 +64,6 @@ class TestResultView(ListView):
         test_pk = test.pk
         category_cod = self.request.GET.get('ABC')
         checkbox = self.request.GET.get('checkbox')
-        print(checkbox)
         c = ContextForTest()
         data = c.all_test(test_pk, category_cod=category_cod, checkbox=checkbox)
         all_filtered_skill_code = data
@@ -75,11 +75,31 @@ class ProgramDetailView(DetailView):
     template_name = 'program/program_detail_view.html'
     model = Program
     context_object_name = 'programs'
-    ordering = ['-created_date ']
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #
-    #     skill = Skill.objects.filter(levels__in_programs=self.kwargs.get('pk'))
-    #     context['skill'] = skill
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
+        pr_skill = program.program_skill.all().order_by('-status', 'level')
+        skill_open = program.program_skill.all().filter(status=SKILL_STATUS_OPEN)
+        if not skill_open:
+            program.status = PROGRAM_STATUS_CLOSED
+        else:
+            program.status = PROGRAM_STATUS_OPEN
+        program.save()
+        context['skills'] = pr_skill
+        return context
+
+#
+# class CreateProgram(CreateView):
+#     pass
+
+
+
+
+
+
+
+
+
+
+
