@@ -22,9 +22,9 @@
             <tbody>
             {% for program_skills in skills.all %}
                 <tr class="table-primary">
-                <td> {{ program_skills.level.skill}}</td>
-                <td>{{ program_skills.level.level }}</td>
-                <td> <br>
+                <td class="text-left"> {{ program_skills.level.skill}}</td>
+                <td class="text-center">{{ program_skills.level.level }}</td>
+                <td class="text-left">
                     {% if not program_skills.add_creteria  %}
                         {{program_skills.level.criteria }}
                     {% else %}
@@ -34,7 +34,7 @@
                         <b> {{ goals.goal }} </b>
                     {% endfor %}
                 </td>
-                <td>{{ program_skills.get_status_display }}</td>
+                <td class="text-left">{{ program_skills.get_status_display }}</td>
             {% endfor %}
             </tr>
             </tbody>

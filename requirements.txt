@@ -3,3 +3,4 @@ Pillow==2.2.1
 psycopg2==2.8.6
 pytz==2020.1
 sqlparse==0.4.1
+django-widget-tweaks==1.4.8
