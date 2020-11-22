@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
+
+
 {% block title %}результаты теста{% endblock %}
+
 {% block menu %}
     <li><a class="btn btn-primary" href="#" role="button">Новый тест для : {{ test.child.first_name}}</a></li>
 {% endblock %}
+
+
 {% block content %}
     <div class="box">
         <h3>Результаты тестов: <a href="{% url 'webapp:child_view' test.child.pk %}">Ребенок - {{ test.child.first_name }}. </a>
@@ -24,7 +29,7 @@
         <form action="{% url 'webapp:test_result' test.pk %}" method="get">
             <div class="row">
                 <div class="col" style="text-align: center">
-                    <label for="checkbox" style="text-decoration: underline">Выводить только отмеченные навыки -</label>
+                    <label for="checkbox" style="text-decoration: underline; cursor: pointer">Выводить только отмеченные навыки -</label>
                     <input  id="checkbox" type="checkbox" value="1" name="checkbox" >
                 </div>
             </div>
