@@ -278,18 +278,6 @@ class Test(models.Model):
         verbose_name_plural = 'Тестирование'
 
 
-# class TestResult(models.Model):
-#     test = models.ForeignKey('Test', on_delete=models.PROTECT, related_name='result',
-#                              verbose_name='Тест')
-#     skill_level = models.ForeignKey('SkillLevel', on_delete=models.PROTECT, related_name='test_skill_level',
-#                                     verbose_name='Уровень навыка')
-#     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-#
-#     class Meta:
-#         verbose_name = 'Результаты тестирования'
-#         verbose_name_plural = 'Результаты  тестирования'
-
-
 class StudyMethod(models.Model):
     study_method = models.CharField(max_length=255, null=True, blank=True, verbose_name='Метод обучения')
 
