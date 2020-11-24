@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from webapp.views.child_test import TestResultView, TestsView
-from webapp.views.index import IndexView, ChildDetailView
+from webapp.views.child import IndexView, ChildDetailView
 from webapp.views.program import ProgramDetailView
 
 app_name = 'webapp'
