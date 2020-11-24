@@ -1,5 +1,8 @@
 from django.urls import path, include
-from webapp.views import ChildDetailView, ChildTestsView, IndexView, TestResultView, ProgramDetailView
+
+from webapp.views.child_test import TestResultView, TestsView
+from webapp.views.index import IndexView, ChildDetailView
+from webapp.views.program import ProgramDetailView
 
 app_name = 'webapp'
 
@@ -10,9 +13,8 @@ urlpatterns = [
     path('child/', include([
         path('<int:pk>/', include([
             path('', ChildDetailView.as_view(), name='child_view'),
-            path('tests/', ChildTestsView.as_view(), name='child_tests'),
+            path('tests/', TestsView.as_view(), name='child_tests'),
             path('program/', ProgramDetailView.as_view(), name='program_detail'),
         ])),
-
     ])),
 ]
