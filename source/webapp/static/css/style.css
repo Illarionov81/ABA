@@ -1,7 +1,11 @@
+
 body {
     font-family: Arial, sans-serif;
     font-size: 16px;
+    background-image: url("https://static3.depositphotos.com/1000183/109/v/600/depositphotos_1097363-stock-illustration-seamless-ornament-in-color-60.jpg") !important;
+    background-repeat: repeat;
     color: #444444;
+
 
     /* отступ, чтобы компенсировать высоту навбара */
     margin-top: 60px;
@@ -12,6 +16,8 @@ body {
     width: 100%;
     max-width: 900px;
 }
+
+
 .nav-link {
 	text-transform: uppercase;
 	font-weight: 600;
@@ -134,6 +140,7 @@ body {
     border-radius: 10px;
     margin: 10px;
     padding: 10px;
+    background-color: white;
 }
 
 .test1 {
@@ -173,4 +180,17 @@ body {
     min-width: 55px;
     font-weight: bold;
     text-align: center;
+}
+
+
+a:hover {color: #ffb3b3 !important;}
+
+.title {
+    font-size: 25px;
+    font-weight: bold;
+    color: #5e5e5e !important;
+}
+
+.bg_self{
+    background-color: white;
 }

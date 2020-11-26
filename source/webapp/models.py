@@ -72,7 +72,7 @@ class Therapy(models.Model):
                               verbose_name='Ребенок', )
 
     def __str__(self):
-        return self.user.user.username
+        return self.user.username
 
     class Meta:
         verbose_name = 'Дети пользователя'
