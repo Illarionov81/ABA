@@ -1,15 +1,43 @@
 {% extends 'base.html' %}
 {% block title %}Main page{% endblock %}
+
 {% block content %}
-    <div class = 'block1'>
-        {% if is_paginated %}
-            {% include 'partial/pagination.html' %}
-        {% endif %}
-        {% for child in child %}
-            <p></p>
-        {% endfor %}
-    </div>
-    {% if is_paginated %}
+ <div class = 'block1'>
+     {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
+
+
+  <div class="row">
+     {% for chld in child %}
+       <div class="col-4  mt-3 p-4 bg_self">
+        <div class="row ">
+            <div class="col-md-8 mt-2">
+                <p class = "title "><a href="{% url "webapp:child_view" chld.pk %}" style="color: #454545">{{ chld.first_name }} {{ chld.last_name }}</a></p>
+            <pr>Тераписты: {% for terapy in chld.therapy.all %} {{terapy.first_name}} {{terapy.last_name}}  {% if not forloop.last %}, {%  endif %} {% endfor %}
+
+            </pr>
+
+                     </div>
+
+            <div class="col-md-4">
+    {% if request.user.is_authenticated %}
+    <a class="btn btn-outline-success" href="#"> <i class="fa fa-fw fa-edit"></i></a>
+    {% endif %}
+    {% if request.user.is_authenticated %}
+    <a class="btn btn-outline-danger" href="#"> <i class="fa fa-fw fa-trash"></i></a>
+    {% endif %}
+
+
+        </div>
+        </div>
+        </div>
+
+    {% endfor %}
+     </div>
+
+
+     {% if is_paginated %}
         {% include 'partial/pagination.html' %}
     {% endif %}
 {% endblock %}

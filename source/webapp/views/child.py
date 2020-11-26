@@ -10,15 +10,12 @@ class IndexView(ListView):
     paginate_orphans = 0
     model = Child
 
-    #    def get_queryset(self):
-    #    data = super().get_queryset()
-    #    if not self.request.GET.get('is_admin', None):
-    #    data = data.filter(status='moderated')
-    #    return data
+    def get_queryset(self):
+        data = super().get_queryset()
+        if not self.request.GET.get('is_admin', None):
+            return data
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+
 
 
 class ChildDetailView(DetailView):
