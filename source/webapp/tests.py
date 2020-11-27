@@ -13,3 +13,6 @@ class LookTestResultTest(TestCase):
         all_sorted_skill = c.get_sorted_skill_level(category_cod=category_cod)
         for skill_level in all_sorted_skill:
             self.assertEqual(skill_level.skill.code, category_cod)
+
+    def test_how_mutch_skills(self):
+        c = ContextForTest()
