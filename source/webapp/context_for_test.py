@@ -6,7 +6,7 @@ class ContextForTest:
         test = Test.objects.get(pk=pk)
         child_pk = test.child_id
         this_test_skill_level = test.skill_level.filter(skill__category__code=category_cod)
-        all_sorted_skill_level = self.get_skill_level(category_cod)
+        all_sorted_skill_level = self.get_sorted_skill_level(category_cod)
         numbers_of_levels = self.how_mutch_skills(all_sorted_skill_level)
         all_filtered_skill_code = self.get_all_filtered_skill_code(all_sorted_skill_level, numbers_of_levels)
         self.make_old_test_data(test, all_filtered_skill_code, child_pk, category_cod)
@@ -16,15 +16,15 @@ class ContextForTest:
         print(all_filtered_skill_code)
         return all_filtered_skill_code
 
-    def how_mutch_skills(self, skill_level):
-        numbers_of_levels = []
-        for skl in skill_level:
-            numbers_of_levels.append(skl.skill.code)
-        return numbers_of_levels
-
-    def get_skill_level(self, category_cod):
+    def get_sorted_skill_level(self, category_cod):
         all_sorted_skill_level = SkillLevel.objects.filter(skill__category__code=category_cod)
         return all_sorted_skill_level
+
+    def how_mutch_skills(self, all_sorted_skill_level):
+        numbers_of_levels = []
+        for skl in all_sorted_skill_level:
+            numbers_of_levels.append(skl.skill.code)
+        return numbers_of_levels
 
     def get_all_filtered_skill_code(self, skilllevel, numbers_of_levels):
         all_filtered_skill_code = {}
