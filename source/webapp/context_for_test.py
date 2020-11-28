@@ -12,9 +12,10 @@ class ContextForTest:
         self.make_this_test_data(all_filtered_skill_code, this_test_skill_level)
         if checkbox:
             self.check_empty(all_filtered_skill_code)
-        print(all_filtered_skill_code)
         return all_filtered_skill_code
 
+#  Функция get_sorted_skill_level возвращает отфильтрованный по коду категории кварисет skilllevel -
+#   все записи которые есть в базе.
     def get_sorted_skill_level(self, category_cod):
         all_sorted_skill_level = SkillLevel.objects.filter(skill__category__code=category_cod)
         return all_sorted_skill_level
@@ -28,6 +29,7 @@ class ContextForTest:
                     count += 1
             all_filtered_skill_code[s.skill.code] = {'previous': [], 'last': 0, 'max': count,
                                                      'empty': range(1, count+1), 'max_prev_lev': 0}
+        print(all_filtered_skill_code)
         return all_filtered_skill_code
 
     def get_empty_range(self, i, all_filtered_skill_code, key):
