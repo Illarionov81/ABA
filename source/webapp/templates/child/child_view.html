@@ -1,3 +1,5 @@
+Child
+
 {% extends 'base.html' %}
 {% block title %}Личные данные ребенка{% endblock %}
 {% block menu %}
@@ -11,7 +13,7 @@
         <p>Отчество: {{ child.third_name }}</p>
         <p>Дата рождения: {{ child.birthday }}</p>
         <p>Возраст: {{ child.age}}</p>
-        <p>Фамилия: {{ child.address }}</p>
+        <p>Адрес: {{ child.address }}</p>
         <p>Характеристика на ребенка: {{ child.characteristic }}</p>
         <p>Предпочтения ребенка: {{ child.preferences }}</p>
         <p>Родитель: {{ child.first_parent }}</p>
@@ -23,5 +25,7 @@
         {% for program in  programs %}
             <a class="btn btn-primary" href="{% url 'webapp:program_detail' program.pk %}">Программа №: {{program.pk}}</a>
         {% endfor %}
+    <a class="btn btn-primary" href="{% url 'webapp:program_create' child.pk %}">Создать прогарамму.</a>
     </div>
+
 {% endblock %}

@@ -25,6 +25,13 @@ SKILL_STATUS_CHOICES = (
     (SKILL_STATUS_CLOSED, 'Закрыт')
 )
 
+GOAL_STATUS_OPEN = 'open'
+GOAL_STATUS_CLOSED = 'closed'
+GOAL_STATUS_CHOICES = (
+    (GOAL_STATUS_OPEN, 'Открыт'),
+    (GOAL_STATUS_CLOSED, 'Закрыт')
+)
+
 
 class SoftDeleteManager(models.Manager):
     def active(self):
@@ -72,7 +79,7 @@ class Therapy(models.Model):
                               verbose_name='Ребенок', )
 
     def __str__(self):
-        return self.user.user.username
+        return self.user.username
 
     class Meta:
         verbose_name = 'Дети пользователя'
@@ -130,6 +137,8 @@ class SkillLevel(models.Model):
 class ProrgamSkillGoal(models.Model):
     skill = models.ForeignKey ('ProgramSkill', related_name='goal', on_delete=models.CASCADE,verbose_name='Уровень навыка')
     goal = models.CharField(max_length=1000, null=True,verbose_name='Дополнительная цель')
+    status = models.CharField(max_length=20, choices=GOAL_STATUS_CHOICES, default=GOAL_STATUS_OPEN,
+                              verbose_name='Статус')
 
     def __str__(self):
         return "{}".format(self.goal)
@@ -276,18 +285,6 @@ class Test(models.Model):
     class Meta:
         verbose_name = 'Тестирование'
         verbose_name_plural = 'Тестирование'
-
-
-# class TestResult(models.Model):
-#     test = models.ForeignKey('Test', on_delete=models.PROTECT, related_name='result',
-#                              verbose_name='Тест')
-#     skill_level = models.ForeignKey('SkillLevel', on_delete=models.PROTECT, related_name='test_skill_level',
-#                                     verbose_name='Уровень навыка')
-#     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-#
-#     class Meta:
-#         verbose_name = 'Результаты тестирования'
-#         verbose_name_plural = 'Результаты  тестирования'
 
 
 class StudyMethod(models.Model):

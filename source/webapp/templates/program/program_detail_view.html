@@ -20,23 +20,41 @@
             </tr>
             </thead>
             <tbody>
-            {% for program_skills in skills.all %}
-                <tr class="table-primary">
-                <td class="text-left"> {{ program_skills.level.skill}}</td>
-                <td class="text-center">{{ program_skills.level.level }}</td>
-                <td class="text-left">
-                    {% if not program_skills.add_creteria  %}
-                        {{program_skills.level.criteria }}
-                    {% else %}
-                        {{ program_skills.add_creteria }}{% endif %}
-                    <br>
-                    {% for goals in program_skills.goal.all %}
-                        <b> {{ goals.goal }} </b>
-                    {% endfor %}
-                </td>
-                <td class="text-left">{{ program_skills.get_status_display }}</td>
+            {% for program_skills in skills.all%}
+                {% for goals in program_skills.goal.all %}
+                    <tr class="table-primary">
+                        <td class="text-left"> {{ program_skills.level.skill}}</td>
+                        <td class="text-center">{{ program_skills.level.level }}</td>
+                        <td class="text-left">
+                            {% if not program_skills.add_creteria  %}
+                                {{program_skills.level.criteria }}
+                            {% else %}
+                                {{ program_skills.add_creteria }}
+                            {% endif %}
+                            <br>
+                            Дополнительная цель: {{ goals.goal }}
+                        </td>
+                        <td class="text-left">
+                            {% if not goals.status %}
+                            {{ program_skills.get_status_display }}
+                            {% else %}
+                            {{ goals.get_status_display }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr class="table-primary">
+                    <td class="text-left"> {{ program_skills.level.skill}}</td>
+                    <td class="text-center">{{ program_skills.level.level }}</td>
+                    <td class="text-left">
+                        {% if not program_skills.add_creteria  %}
+                            {{program_skills.level.criteria }}
+                        {% else %}
+                            {{ program_skills.add_creteria }}{% endif %}
+                    </td>
+                    <td class="text-left">{{ program_skills.get_status_display }}</td>
+                {% endfor %}
             {% endfor %}
-            </tr>
             </tbody>
         </table>
     </div>
