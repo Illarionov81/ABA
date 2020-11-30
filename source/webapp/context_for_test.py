@@ -7,40 +7,29 @@ class ContextForTest:
         child_pk = test.child_id
         this_test_skill_level = test.skill_level.filter(skill__category__code=category_cod)
         all_sorted_skill_level = self.get_sorted_skill_level(category_cod)
-        numbers_of_levels = self.how_mutch_skills(all_sorted_skill_level)
-        all_filtered_skill_code = self.get_all_filtered_skill_code(all_sorted_skill_level, numbers_of_levels)
+        all_filtered_skill_code = self.get_all_filtered_skill_code(all_sorted_skill_level)
         self.make_old_test_data(test, all_filtered_skill_code, child_pk, category_cod)
         self.make_this_test_data(all_filtered_skill_code, this_test_skill_level)
         if checkbox:
             self.check_empty(all_filtered_skill_code)
-        print(all_filtered_skill_code)
         return all_filtered_skill_code
 
+#  Функция get_sorted_skill_level возвращает отфильтрованный по коду категории кварисет skilllevel -
+#   все записи которые есть в базе.
     def get_sorted_skill_level(self, category_cod):
         all_sorted_skill_level = SkillLevel.objects.filter(skill__category__code=category_cod)
         return all_sorted_skill_level
 
-    def how_mutch_skills(self, all_sorted_skill_level):
-        numbers_of_levels = []
-        for skl in all_sorted_skill_level:
-            numbers_of_levels.append(skl.skill.code)
-        return numbers_of_levels
-
-    def get_all_filtered_skill_code(self, skilllevel, numbers_of_levels):
+    def get_all_filtered_skill_code(self, all_sorted_skill_level):
         all_filtered_skill_code = {}
-        for s in skilllevel:
+        for s in all_sorted_skill_level:
             count = 0
-            for i in numbers_of_levels:
-                if i == s.skill.code:
+            for i in all_sorted_skill_level:
+                if i.skill.code == s.skill.code:
                     count += 1
             all_filtered_skill_code[s.skill.code] = {'previous': [], 'last': 0, 'max': count,
                                                      'empty': range(1, count+1), 'max_prev_lev': 0}
-        return all_filtered_skill_code
-
-    def check_empty(self, all_filtered_skill_code):
-        for i in all_filtered_skill_code:
-            if not all_filtered_skill_code[i]['previous'] and not all_filtered_skill_code[i]['last']:
-                all_filtered_skill_code[i] = 'none'
+        print(all_filtered_skill_code)
         return all_filtered_skill_code
 
     def get_empty_range(self, i, all_filtered_skill_code, key):
@@ -84,3 +73,8 @@ class ContextForTest:
                             self.get_empty_range(s, all_filtered_skill_code, key)
         return all_filtered_skill_code
 
+    def check_empty(self, all_filtered_skill_code):
+        for i in all_filtered_skill_code:
+            if not all_filtered_skill_code[i]['previous'] and not all_filtered_skill_code[i]['last']:
+                all_filtered_skill_code[i] = 'none'
+        return all_filtered_skill_code
