@@ -194,3 +194,11 @@ a:hover {color: #ffb3b3 !important;}
 .bg_self{
     background-color: white;
 }
+.test_btn {
+    border: 1px solid black;
+    width: 25px;
+    height: 27px;
+}
+.box-inline {
+    display: inline;
+}
