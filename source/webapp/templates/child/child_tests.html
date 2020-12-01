@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Оценка навыков{% endblock %}
 {% block menu %}
-    <li><a class="btn btn-primary" href="#" role="button">Провести тестирование {{ child_pk }}</a></li>
+    <li><a class="btn btn-primary" href="{% url 'webapp:child_create_test' child_pk %}" role="button">Новый тест</a></li>
 {% endblock %}
 {% block content %}
     <div class="box">
