@@ -43,7 +43,6 @@ class TestResultView(ListView):
         context['all_filtered_skill_code'] = all_filtered_skill_code
         return context
 
-
 class ChildMakeTestView(View):
     def get(self, request, *args, **kwargs):
         child = get_object_or_404(Child, pk=kwargs.get('pk'))
@@ -68,7 +67,7 @@ class ChildTestUpdateView(TemplateView):
         category_cod = self.request.GET.get('ABC')
         context['skills'] = Skill.objects.filter(category__code=category_cod)
         context['child_pk'] = test.child.pk
-        context['test'] = test
+        context['test_pk'] = test.pk
         context['ABC'] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
                           'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
         return context
