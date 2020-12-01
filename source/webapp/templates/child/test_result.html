@@ -4,7 +4,7 @@
 {% block title %}результаты теста{% endblock %}
 
 {% block menu %}
-    <li><a class="btn btn-primary" href="#" role="button">Новый тест для : {{ test.child.first_name}}</a></li>
+    <li><a class="btn btn-primary" href="{% url 'webapp:child_create_test' test.child.pk %}" role="button">Новый тест для : {{ test.child.first_name}}</a></li>
 {% endblock %}
 
 
