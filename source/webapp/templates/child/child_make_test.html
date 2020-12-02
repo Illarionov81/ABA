@@ -27,16 +27,22 @@
 
         {% for i in skills %}
             <div class="my_row">
-                <div class="my_col" id="codes">{{ i.code }}</div>
+            <div class="my_col" id="codes">{{ i.code }}</div>
                 {% for j in i.levels.all %}
-                    {#                    <div class="my_col test_btn">#}
-                    <a class="my_col test_btn" onclick="choice_level(event)" id="{{ j.pk }}"
+                    {% if j in test.skill_level.all %}
+                        <a class="my_col test_btn" style="background-color: lightgreen" onclick="choice_level(event)" id="{{ j.pk }}"
+                           href="{% url 'webapp:child_update_test' test.pk %}">{{ j.level }}</a>
+                    {% else %}
+                        <a class="my_col test_btn" onclick="choice_level(event)" id="{{ j.pk }}"
                        href="{% url 'webapp:child_update_test' test.pk %}">{{ j.level }}</a>
-                    {#                    </div>#}
+                    {% endif %}
                 {% endfor %}
+{#                {% for j in i.levels.all %}#}
+{#                    #}
+{#                {% endfor %}#}
             </div>
-            {#        </form>#}
         {% endfor %}
+
     </div>
 
     <script type="application/javascript" src="{% static "js/make_test.js" %}"></script>

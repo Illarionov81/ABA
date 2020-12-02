@@ -54,6 +54,7 @@ async function choice_level(event) {
 
 
     colorDict[colorCode] = choice
+    console.log(colorDict)
     Object.keys(colorDict).forEach(function (key) {
         if (key === colorCode && colorDict[key].style.backgroundColor === 'lightgreen') {
             colorDict[colorCode].style.backgroundColor = 'white'
