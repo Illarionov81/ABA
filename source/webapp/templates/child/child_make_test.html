@@ -9,30 +9,41 @@
 
 {% block content %}
     <div class="box">
-    <form action="{% url 'webapp:child_update_test' test_pk %}" method="get">
-        <div class="row">
-            <div class="col">
-                {% for s in ABC %}
-                    <input type="submit" name="ABC" value="{{ s }}"
-                           id="{{ s }}" style="float: left; padding: 3px; margin: 3px; width: 35px">
-                {% endfor %}
+        <h3 class="text-center">Тест №: {{ test.pk }}</h3>
+        <p>Предыдущий тест №:<a href="{% url 'webapp:test_result' test.previus_test.pk %}"> {{ test.previus_test.pk }}</a></p>
+        <p>Ребенок:<a href="{% url 'webapp:child_view' child_pk %}"> {{ test.child.first_name }}</a></p>
+        <p>Терапист:<a href="#"> {{ test.therapist }}</a></p>
+        <p>Дата начала: {{ test.created_date }}</p>
+        <form action="{% url 'webapp:child_update_test' test.pk %}" method="get">
+            <div class="row">
+                <div class="col">
+                    {% for s in ABC %}
+                        <input type="submit" name="ABC" value="{{ s }}"
+                               id="{{ s }}" style="float: left; padding: 3px; margin: 3px; width: 35px">
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
 
-    {% for i in skills %}
+        {% for i in skills %}
             <div class="my_row">
-                <div class="my_col" id="codes">{{ i.code }}</div>
+            <div class="my_col" id="codes">{{ i.code }}</div>
                 {% for j in i.levels.all %}
-{#                    <div class="my_col test_btn">#}
+                    {% if j in test.skill_level.all %}
+                        <a class="my_col test_btn" style="background-color: lightgreen" onclick="choice_level(event)" id="{{ j.pk }}"
+                           href="{% url 'webapp:child_update_test' test.pk %}">{{ j.level }}</a>
+                    {% else %}
                         <a class="my_col test_btn" onclick="choice_level(event)" id="{{ j.pk }}"
-                           href="{% url 'webapp:child_update_test' test_pk %}">{{ j.level }}</a>
-{#                    </div>#}
+                       href="{% url 'webapp:child_update_test' test.pk %}">{{ j.level }}</a>
+                    {% endif %}
                 {% endfor %}
+{#                {% for j in i.levels.all %}#}
+{#                    #}
+{#                {% endfor %}#}
             </div>
-{#        </form>#}
-    {% endfor %}
+        {% endfor %}
+
     </div>
 
- <script type="application/javascript" src="{% static "js/make_test.js" %}"></script>
+    <script type="application/javascript" src="{% static "js/make_test.js" %}"></script>
 {% endblock %}
