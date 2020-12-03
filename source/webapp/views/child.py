@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView, ListView
 from webapp.models import Child, Program
@@ -6,15 +7,19 @@ from webapp.models import Child, Program
 class IndexView(ListView):
     template_name = 'index.html'
     context_object_name = 'child'
-    paginate_by = 5
+    paginate_by = 30
     paginate_orphans = 0
     model = Child
 
-    def get_queryset(self):
-        data = super().get_queryset()
-        if not self.request.GET.get('is_admin', None):
-            return data
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        if self.request.user.is_authenticated:
+            context = super().get_context_data(**kwargs)
+            print(context)
+            user = self.request.user
+            child = Child.objects.filter(therapy=user)
+            context['child'] = child
+            return context
 
 
 
