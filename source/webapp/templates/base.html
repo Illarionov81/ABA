@@ -45,25 +45,38 @@
                 <a href="{% url 'accounts:logout' %}"> Logout</a>
                     </button>
                 {% else %}
-                <form class="form-inline my-2 my-lg-0">
-                    <button type="button" class="btn px-5" style="background-color: #00446f">
-                        <a href="#" data-toggle="modal" data-target="#login-modal" class="btn-txt">Login</a>
-                        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                            <div class="modal-dialog">
-                                <div class="loginmodal-container">
-                                    <p class="login-txt">Login </p>
-                                    <form>
-                                        <input type="text" required name="user" placeholder="Username">
-                                        <input type="password" required name="pass" placeholder="Password">
-                                        <input type="submit" name="Enter" class="btn login loginmodal-submit" value="Enter">
-                                    </form>
-                                    <div class="login-help">
-                                    </div>
-                                </div>
-                            </div>
+                <div class="text-center">
+	            <!-- Button HTML (to Trigger Modal) -->
+	            <a href="#myModal" class="btn btn-success trigger-btn" data-toggle="modal">Click to Open Login Modal</a>
+
+                </div>
+                  <!-- Modal HTML -->
+                <div id="myModal" class="modal fade">
+                    <div class="modal-dialog modal-login">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Авторизация</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                    </button>
+                    <div class="modal-body">
+                <form action="{% url 'accounts:login' %}?next={{ next_url }}" method="post">
+                    {% csrf_token %}
+                <div class="form-group">
+                <i class="fa fa-user"></i>
+                <input type="text" class="form-control" name="username" id="username" placeholder="Пользователь..." required="required">
+                </div>
+                <div class="form-group">
+                <i class="fa fa-lock"></i>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Пароль..." required="required">
+                </div>
+                <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">
+                </div>
                 </form>
+                </div>
+                </div>
+                </div>
+                </div>
                 {% endif %}
             </div>
         </div>
