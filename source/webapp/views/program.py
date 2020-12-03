@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import DetailView, CreateView
+from django.views.generic import DetailView, CreateView, UpdateView
 
 from webapp.forms import ProgramForm
 from webapp.models import Program, SKILL_STATUS_OPEN, PROGRAM_STATUS_CLOSED, PROGRAM_STATUS_OPEN, Child, ProgramSkill, \
@@ -47,6 +47,23 @@ class ProgramCreateView(CreateView):
         return reverse('webapp:program_detail', kwargs={'pk': program.pk})
 
 
+class ProgramUpdateView(UpdateView):
+    model = Program
+    template_name = 'program/program_update.html'
+    form_class = ProgramForm
+
+    def get_success_url(self):
+        child = get_object_or_404(Child, pk=self.kwargs.get('pk'))
+        program = get_object_or_404(Program, pk=child.programs.pk)
+        return reverse('webapp:program_detail', kwargs={'pk': program.pk})
+
+    def post(self, request, *args, **kwargs):
+        program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
+        form = self.form_class(request.POST, request.FILES, instance=program)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 

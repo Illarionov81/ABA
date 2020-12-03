@@ -27,37 +27,23 @@
 </head>
 
 <body>
-
 <div class="container">
-
     <h1>Вход</h1>
-
- <form action="{% url 'accounts:login' %}?next={{ next }}" method="post">
-
+<form action="{% url 'accounts:login' %}?next={{ next }}" method="post">
         {% csrf_token %}
-
         {% if has_error %}
-
             <p class="form-error">Неверное имя пользователя или пароль.</p>
-
         {% endif %}
-
         <div class="form-group">
-
             <label for="username" class="form-label">Имя пользователя:</label>
-
             <input type="text" name="username" id="username">
-
         </div>
 
         <div class="form-group">
-
             <label for="password" class="form-label">Пароль:</label>
             <br>
-            <input type="text" name="password" id="password">
-
+            <input type="password" name="password" id="password">
         </div>
-
         <button type="submit">Войти</button>
 
     </form>
