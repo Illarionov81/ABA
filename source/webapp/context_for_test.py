@@ -29,7 +29,6 @@ class ContextForTest:
                     count += 1
             all_filtered_skill_code[s.skill.code] = {'previous': [], 'last': 0, 'max': count,
                                                      'empty': range(1, count+1), 'max_prev_lev': 0}
-        print(all_filtered_skill_code)
         return all_filtered_skill_code
 
     def get_empty_range(self, i, all_filtered_skill_code, key):
