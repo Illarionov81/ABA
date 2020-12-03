@@ -3,7 +3,7 @@ import json
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.views.generic import ListView, TemplateView
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from webapp.context_for_test import ContextForTest
 from webapp.models import Test, Child, Skill, SkillLevel
 
@@ -44,7 +44,7 @@ class TestResultView(ListView):
         return context
 
 
-class ChildMakeTestView(View):
+class ChildMakeTestView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         child = get_object_or_404(Child, pk=kwargs.get('pk'))
         test = Test.objects.create(child=child, therapist=self.request.user)
@@ -56,7 +56,7 @@ class ChildMakeTestView(View):
         return redirect('webapp:child_update_test', pk=test.pk)
 
 
-class ChildTestUpdateView(TemplateView):
+class ChildTestUpdateView(LoginRequiredMixin, TemplateView):
     template_name = 'child/child_make_test.html'
     model = Test
     paginate_by = 5
