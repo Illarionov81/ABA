@@ -3,24 +3,25 @@
 
 {% block content %}
  <div class = 'block1'>
+
+   {% if request.user.is_authenticated %}
      {% if is_paginated %}
         {% include 'partial/pagination.html' %}
     {% endif %}
 
 
+
+
   <div class="row">
      {% for chld in child %}
-       <div class="col-4  mt-3 p-4 bg_self">
+      <div class="col-4  mt-3 p-4 bg_self box">
         <div class="row ">
             <div class="col-md-8 mt-2">
                 <p class = "title "><a href="{% url "webapp:child_view" chld.pk %}" style="color: #454545">{{ chld.first_name }} {{ chld.last_name }}</a></p>
-            <pr>Тераписты: {% for terapy in chld.therapy.all %} {{terapy.first_name}} {{terapy.last_name}}  {% if not forloop.last %}, {%  endif %} {% endfor %}
+                <pr>Тераписты: {% for terapy in chld.therapy.all %} {{terapy.first_name}} {{terapy.last_name}}  {% if not forloop.last %}, {%  endif %} {% endfor %} </pr>
+                 </div>
 
-            </pr>
-
-                     </div>
-
-            <div class="col-md-4">
+            <div class="col-md-2">
     {% if request.user.is_authenticated %}
     <a class="btn btn-outline-success" href="#"> <i class="fa fa-fw fa-edit"></i></a>
     {% endif %}
@@ -35,10 +36,15 @@
 
     {% endfor %}
      </div>
-
-
-     {% if is_paginated %}
+         {% if is_paginated %}
         {% include 'partial/pagination.html' %}
     {% endif %}
+   {% else %}
+    <div class="box">
+    <h3>Пожалуйста авторезируйтесь</h3> <button class="btn btn-text p-1 px-3 btn-primary"type="button">
+        <a href="{% url 'accounts:login' %}"> <p style= 'color: #fff'>Авторизация</p></a>
+    </button>
+    </div>
+   {% endif %}
 {% endblock %}
 
