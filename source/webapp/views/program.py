@@ -1,7 +1,10 @@
 from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView
+from django.urls import reverse
+from django.views.generic import DetailView, CreateView, UpdateView
 
-from webapp.models import Program, SKILL_STATUS_OPEN, PROGRAM_STATUS_CLOSED, PROGRAM_STATUS_OPEN
+from webapp.forms import ProgramForm
+from webapp.models import Program, SKILL_STATUS_OPEN, PROGRAM_STATUS_CLOSED, PROGRAM_STATUS_OPEN, Child, ProgramSkill, \
+    GOAL_STATUS_OPEN, ProrgamSkillGoal
 
 
 class ProgramDetailView(DetailView):
@@ -12,12 +15,55 @@ class ProgramDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
+        goals = get_object_or_404(ProrgamSkillGoal, pk=self.kwargs.get('pk'))
         pr_skill = program.program_skill.all().order_by('-status', 'level')
         skill_open = program.program_skill.all().filter(status=SKILL_STATUS_OPEN)
-        if not skill_open:
+        goal_open = goals.skill.goal.all().filter(status=GOAL_STATUS_OPEN)
+        if not skill_open and not goal_open:
             program.status = PROGRAM_STATUS_CLOSED
         else:
             program.status = PROGRAM_STATUS_OPEN
         program.save()
         context['skills'] = pr_skill
         return context
+
+
+class ProgramCreateView(CreateView):
+    model = Program
+    template_name = 'program/program_create.html'
+    form_class = ProgramForm
+
+    def form_valid(self, form):
+        child = get_object_or_404(Child, pk=self.kwargs.get('pk'))
+        program = form.save(commit=False)
+        program.child = child
+        form.instance.author = self.request.user
+        program.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        child = get_object_or_404(Child, pk=self.kwargs.get('pk'))
+        program = get_object_or_404(Program, pk=child.programs.last().pk)
+        return reverse('webapp:program_detail', kwargs={'pk': program.pk})
+
+
+class ProgramUpdateView(UpdateView):
+    model = Program
+    template_name = 'program/program_update.html'
+    form_class = ProgramForm
+
+    def get_success_url(self):
+        child = get_object_or_404(Child, pk=self.kwargs.get('pk'))
+        program = get_object_or_404(Program, pk=child.programs.pk)
+        return reverse('webapp:program_detail', kwargs={'pk': program.pk})
+
+    def post(self, request, *args, **kwargs):
+        program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
+        form = self.form_class(request.POST, request.FILES, instance=program)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+
+
