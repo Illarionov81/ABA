@@ -1,10 +1,26 @@
 {% extends 'base.html' %}
-
-{% block title %}Create{% endblock %}
-
-{% block content %}
-    <h1>Create Program</h1>
-
-    {% url "webapp:program_update"  pk=program.pk as action_url %}
-    {% include 'partial/form.html' with action_url=action_url form_method='post' button_text='Update' %}
+{% block title %}Оценка навыков{% endblock %}
+{% block menu %}
+    {% if user.is_authenticated %}
+        <li><a class="btn btn-primary" href="{% url 'webapp:child_create_test' child_pk %}" role="button">Новый тест</a></li>
+    {% endif %}
 {% endblock %}
+{% block content %}
+    <div class="box">
+        <h3>Список тестов:</h3>
+        {% for test in Test %}
+            <div class="box">
+                <div>
+                    <p><b><a href="{% url 'webapp:test_result' test.pk  %}">Test № {{ test.pk }}</a></b></p>
+                    <p>Ребенок: <a href="{% url 'webapp:child_view' test.child.pk %}">{{ test.child }}</a> | Терапист: {{ test.therapist}}</p>
+                    <p> Дата проведения {{ test.created_date | date:"Y-m-d H:m:s" }}
+                    {% if user.is_authenticated %}
+                        <p class="update-btn"><a href="{% url 'webapp:child_update_test' test.pk  %}">Update</a></p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
