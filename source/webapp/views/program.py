@@ -15,10 +15,13 @@ class ProgramDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
-        goals = get_object_or_404(ProrgamSkillGoal, pk=self.kwargs.get('pk'))
-        pr_skill = program.program_skill.all().order_by('-status', 'level')
+        goals = ProrgamSkillGoal.objects.filter(skill__program=program)
         skill_open = program.program_skill.all().filter(status=SKILL_STATUS_OPEN)
-        goal_open = goals.skill.goal.all().filter(status=GOAL_STATUS_OPEN)
+        print(goals)
+        goal_open = goals.filter(status=GOAL_STATUS_OPEN)
+        pr_skill = program.program_skill.all().order_by('-status', 'level')
+        print(goal_open)
+        print(skill_open)
         if not skill_open and not goal_open:
             program.status = PROGRAM_STATUS_CLOSED
         else:
@@ -45,25 +48,4 @@ class ProgramCreateView(CreateView):
         child = get_object_or_404(Child, pk=self.kwargs.get('pk'))
         program = get_object_or_404(Program, pk=child.programs.last().pk)
         return reverse('webapp:program_detail', kwargs={'pk': program.pk})
-
-
-class ProgramUpdateView(UpdateView):
-    model = Program
-    template_name = 'program/program_update.html'
-    form_class = ProgramForm
-
-    def get_success_url(self):
-        child = get_object_or_404(Child, pk=self.kwargs.get('pk'))
-        program = get_object_or_404(Program, pk=child.programs.pk)
-        return reverse('webapp:program_detail', kwargs={'pk': program.pk})
-
-    def post(self, request, *args, **kwargs):
-        program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
-        form = self.form_class(request.POST, request.FILES, instance=program)
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-
 

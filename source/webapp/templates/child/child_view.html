@@ -23,7 +23,9 @@
         {% for program in  programs %}
             <a class="btn btn-primary" href="{% url 'webapp:program_detail' program.pk %}">Программа №: {{program.pk}}</a>
         {% endfor %}
+    {% if user.is_authenticated %}
     <a class="btn btn-primary" href="{% url 'webapp:program_create' child.pk %}">Создать прогарамму.</a>
+    {% endif %}
     </div>
 
 {% endblock %}
