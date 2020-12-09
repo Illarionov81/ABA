@@ -28,7 +28,7 @@
             {% endif %}
          </div>
         <hr>
-             <div class="row"> <div class="col"><a href="#">Продолжить тестирование.</a></div> </div>
+             <div class="row"> <div class="col"><a href="{% url 'webapp:child_update_test' test.pk %}">Продолжить тестирование.</a></div> </div>
         <hr>
         <form action="{% url 'webapp:test_result' test.pk %}" method="get">
             <div class="row">
