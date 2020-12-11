@@ -1,26 +1,57 @@
 {% extends 'base.html' %}
-{% block title %}Оценка навыков{% endblock %}
+{% load staticfiles %}
+
+{% block title %}Add skill{% endblock %}
+
 {% block menu %}
-    {% if user.is_authenticated %}
-        <li><a class="btn btn-primary" href="{% url 'webapp:child_create_test' child_pk %}" role="button">Новый тест</a></li>
-    {% endif %}
+    <a class="nav-link" href="{% url 'webapp:program_detail' program.pk %}">Детальный просмотр</a>
 {% endblock %}
+
 {% block content %}
     <div class="box">
-        <h3>Список тестов:</h3>
-        {% for test in Test %}
-            <div class="box">
-                <div>
-                    <p><b><a href="{% url 'webapp:test_result' test.pk  %}">Test № {{ test.pk }}</a></b></p>
-                    <p>Ребенок: <a href="{% url 'webapp:child_view' test.child.pk %}">{{ test.child }}</a> | Терапист: {{ test.therapist}}</p>
-                    <p> Дата проведения {{ test.created_date | date:"Y-m-d H:m:s" }}
-                    {% if user.is_authenticated %}
-                        <p class="update-btn"><a href="{% url 'webapp:child_update_test' test.pk  %}">Update</a></p>
-                    {% endif %}
+    {% if not error %}
+        <h3 class="text-center">Добавление навыка в программу ребенка: {{ test.child.first_name }}</h3>
+{#        <p>Предыдущий тест №:<a href="{% url 'webapp:test_result' test.pk %}"> {{ test.pk }}</a></p>#}
+        <p>Ребенок:<a href="{% url 'webapp:child_view' child_pk %}"> {{ test.child.first_name }}</a></p>
+        <p>Терапист:<a href="#"> {{ test.therapist }}</a></p>
+        <p>Дата начала: {{ test.created_date }}</p>
+        <form action="{% url 'webapp:update_program' program.pk%}" method="get">
+            <div class="row">
+                <div class="col">
+                    {% for s in ABC %}
+                        <input type="submit" name="ABC" value="{{ s }}"
+                               id="{{ s }}" style="float: left; padding: 3px; margin: 3px; width: 35px">
+                    {% endfor %}
                 </div>
             </div>
+        </form>
+
+        {% for i in skills %}
+            <div class="my_row">
+            <div class="my_col" id="codes">{{ i.code }}</div>
+                {% for j in i.levels.all %}
+                    {% if j in test.skill_level.all %}
+
+                        <a class="my_col test_btn " style="background-color: lightgreen"
+                           onclick="pr_skill(event)" id="{{ j.pk }}"
+                           href="{% url 'webapp:update_program' program.pk %}">{{ j.level }}</a>
+         {% else %}
+                        <a class="my_col test_btn" onclick="pr_skill(event)" id="{{ j.pk }}"
+                       href="{% url 'webapp:update_program' program.pk %}">{{ j.level }}</a>
+
+
+                    {% endif %}
+                {% endfor %}
+                {% for j in i.levels.all %}
+
+            {% endfor %}
+            </div>
         {% endfor %}
+        {% else %}
+        <h1>{{ error }}</h1>
+{% endif %}
+
+
     </div>
+    <script type="application/javascript" src="{% static "js/program_add_skill.js" %}"></script>
 {% endblock %}
-
-

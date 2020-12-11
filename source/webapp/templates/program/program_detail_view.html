@@ -10,6 +10,7 @@
         <p>Статус программы: {{ programs.get_status_display }}</p>
         <p>Название программы: {{ programs.name }}</p>
         <p>Описание: {{ programs.description }}</p>
+         <a class="btn btn-primary" href="{% url 'webapp:update_program' programs.pk %}">Добавить навык</a>
         <table class="table table-bordered">
             <thead class="thead-dark">
             <tr>
