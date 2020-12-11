@@ -19,7 +19,9 @@
         </h3>
         <div class="row">
             <div class="col-1"><div class=" test2 "></div></div>
-            <div class="col">Выбранный тест №{{ test.pk }}. Терапист - {{ test.therapist }}. | Дата начала: {{ test.created_date | date:"Y-m-d H:m:s" }}</div>
+            <div class="col">Выбранный тест №{{ test.pk }}. Терапист - {{ test.therapist }}.
+                | Дата начала: {{ test.created_date | date:"d.m.Y" }}
+                | Дата обновления: {{ test.updated_at | date:"d.m.Y " }}</div>
         </div>
          <div class="row">
             {% if test.previus_test %}
