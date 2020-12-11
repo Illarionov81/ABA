@@ -11,9 +11,12 @@
         {% for test in Test %}
             <div class="box">
                 <div>
-                    <p><b><a href="{% url 'webapp:test_result' test.pk  %}">Test № {{ test.pk }}</a></b></p>
+                    <p><b><a href="{% url 'webapp:test_result' test.pk  %}">Test  {{ test.created_date | date:"d.m.Y" }}
+                        {% if test.updated_at.date > test.created_date.date %}
+                     (обнавлен: {{ test.updated_at | date:"d.m.Y"}})
+                        {% endif %}
+                    </a></b></p>
                     <p>Ребенок: <a href="{% url 'webapp:child_view' test.child.pk %}">{{ test.child }}</a> | Терапист: {{ test.therapist}}</p>
-                    <p> Дата проведения {{ test.created_date | date:"Y-m-d H:m:s" }}
                     {% if user.is_authenticated %}
                         <p class="update-btn"><a href="{% url 'webapp:child_update_test' test.pk  %}">Update</a></p>
                     {% endif %}
