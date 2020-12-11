@@ -17,7 +17,6 @@ class TestsView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         test = Test.objects.filter(child_id=self.kwargs.get('pk')).order_by('-id')
-
         context['Test'] = test
         context['child_pk'] = self.kwargs.get('pk')
         return context
