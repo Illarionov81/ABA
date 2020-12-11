@@ -271,6 +271,7 @@ class Test(models.Model):
     previus_test = models.OneToOneField('Test', on_delete=models.PROTECT, null=True, blank=True,
                                         verbose_name='previus_test')
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
     skill_level = models.ManyToManyField('webapp.SkillLevel', related_name='test', blank=True)
 
     class Meta:
