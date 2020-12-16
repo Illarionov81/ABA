@@ -21,6 +21,6 @@ class SigninTest(TestCase):
         user = authenticate(username='islam', password='islam')
         self.assertFalse(user is not None and user.is_authenticated)
 
-    def test_seccess_login(self):
+    def test_success_login(self):
         user = authenticate(username='test', password='islam')
         self.assertTrue(user is not None and user.is_authenticated)
