@@ -301,7 +301,9 @@ a:hover {
 .text-center {
     text-align: center;
 }
-.form-input {
+.session_list_text{
+    line-height: 50px;
+}.form-input {
     border-radius: 5px;
     border: solid 1px lightgray;
     background: gray;
