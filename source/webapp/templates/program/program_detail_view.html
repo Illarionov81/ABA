@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Детальный просмотр программы{% endblock %}
 {% block menu %}
+    <li><a class="btn btn-primary" href="{% url 'webapp:session_list' programs.pk %}">Сессии</a></li>
 {% endblock %}
 {% block content %}
     <h1>Детальный просмотр программы ребенка</h1>
