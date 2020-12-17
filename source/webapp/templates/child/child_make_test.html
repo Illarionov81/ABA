@@ -10,7 +10,12 @@
 {% block content %}
     <div class="box">
         <h3 class="text-center">Тест №: {{ test.pk }}</h3>
-        <p>Предыдущий тест №:<a href="{% url 'webapp:test_result' test.previus_test.pk %}"> {{ test.previus_test.pk }}</a></p>
+        {% if test.previus_test.pk %}
+            <p>Предыдущий тест №:<a href="{% url 'webapp:test_result' test.previus_test.pk %}"> {{ test.previus_test.pk }}</a></p>
+        {% else %}
+            <p>Предыдущий тест №: No test</p>
+        {% endif %}
+
         <p>Ребенок:<a href="{% url 'webapp:child_view' child_pk %}"> {{ test.child.first_name }}</a></p>
         <p>Терапист:<a href="#"> {{ test.therapist }}</a></p>
         <p>Дата начала: {{ test.created_date }}</p>
