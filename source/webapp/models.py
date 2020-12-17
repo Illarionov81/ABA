@@ -213,17 +213,12 @@ class Session(models.Model):
 
 class SessionSkill(models.Model):
     session = models.ForeignKey('Session', related_name='skills', on_delete=models.CASCADE, verbose_name='Сессия')
-    skill = models.ForeignKey('Skill', related_name='in_sessions', on_delete=models.CASCADE, verbose_name='Навык')
-    stimulus = models.TextField(max_length=200, null=True, blank=True, verbose_name='Стимул')
-    parent_skill = models.ForeignKey('SessionSkill', related_name='dependant_skills', on_delete=models.SET_NULL,
-                                     null=True, blank=True, verbose_name='Поднавык для')
-    status = models.CharField(max_length=20, choices=SKILL_STATUS_CHOICES, default=SKILL_STATUS_OPEN,
-                              verbose_name="Статус")
+    skill = models.ForeignKey('ProrgamSkillGoal', related_name='session_skills', on_delete=models.CASCADE, verbose_name='Навык')
     done_self = models.PositiveSmallIntegerField(default=0, verbose_name="Самостоятельные реакции")
     done_with_hint = models.PositiveSmallIntegerField(default=0, verbose_name="Реакции с подсказкой")
 
     def __str__(self):
-        return "{} ({})".format(self.skill, self.stimulus)
+        return "{} ({})".format(self.session, self.skill)
 
     @property
     def total(self):
@@ -238,7 +233,6 @@ class SessionSkill(models.Model):
     class Meta:
         verbose_name = 'Навыки для отработки'
         verbose_name_plural = 'Навыки для отработки'
-        unique_together = ('skill', 'stimulus')
 
 
 class SessionSkillExtras(models.Model):

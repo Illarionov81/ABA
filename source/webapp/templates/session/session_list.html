@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Сессии{% endblock %}
+{% block menu %}
+{#        <li><a class="btn btn-primary" href="{% url 'webapp:session_create' program.pk %}" role="button">Подготовить сессию сессию</a></li>#}
+{% endblock %}
+{% block content %}
+    <div class="box">
+        {% for i in sessions %}
+            <li class="session_list_text"><a href="#">Сессия №: {{ i.pk }}</a></li>
+        {% endfor %}
+    </div>
+{% endblock %}

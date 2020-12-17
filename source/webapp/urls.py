@@ -3,6 +3,7 @@ from django.urls import path, include
 from webapp.views.child_test import TestResultView, TestsView, ChildTestUpdateView, ChildMakeTestView
 from webapp.views.child import IndexView, ChildDetailView
 from webapp.views.program import ProgramDetailView, ProgramCreateView,UpdateProgram
+from webapp.views.session import SessionListView
 
 app_name = 'webapp'
 
@@ -13,6 +14,7 @@ urlpatterns = [
     path('program/<int:pk>/', ProgramDetailView.as_view(), name='program_detail'),
     path('program/<int:pk>/update/', UpdateProgram.as_view(), name='update_program'),
     path('update_test/<int:pk>/', ChildTestUpdateView.as_view(), name='child_update_test'),
+    path('session/<int:pk>/', SessionListView.as_view(), name='session_list'),
     path('child/', include([
         path('<int:pk>/', include([
             path('', ChildDetailView.as_view(), name='child_view'),
