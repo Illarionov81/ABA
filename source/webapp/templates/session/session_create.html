@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Create session{% endblock %}
+{% block menu %}
+    <li><a class="btn btn-primary" href="#" role="button">Начать сессию</a></li>
+{% endblock %}
+{% block content %}
+    <div class="box">
+        {% for i in programs.program_skill.all %}
+            {% if i.status == 'open' %}
+                <p>{{ i.level }} <a href="#">Add</a> <a href="#">Remove</a></p>
+            {% endif %}
+        {% endfor %}
+    </div>
+{#    <script type="application/javascript" src="{% static "js/session_add_skill.js" %}"></script>#}
+{% endblock %}
