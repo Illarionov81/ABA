@@ -41,38 +41,63 @@ async function makeRequest(url, method = 'GET', data = undefined) {
     }
 }
 
-let colorDict = {}
+function add_new_input_goal(){
+    const modal_body = document.getElementById("add_new_goal");
+    const input = document.createElement("input")
+    input.innerHTML = '<input name ="add_goal" placeholder="Добавить цель">'
+    console.log(input);
+    modal_body.appendChild(input)
+}
 
-async function pr_skill(event) {
-    event.preventDefault();
-    let skill_lvl = event.target;
-    let id = skill_lvl.id;
-    let url = skill_lvl.href;
-    console.log(skill_lvl)
+async function open_modal(event){
+    event.preventDefault()
+    $("#exampleModal").modal("show")
+
+    let id = event.target.getAttribute("data-id")
+    let url = event.target.getAttribute("href");
     console.log(id)
     console.log(url)
-    // let code = document.getElementById('codes')
-    // let row = skill_lvl.parentElement  //ряд
-    // let colorCode = row.childNodes[1].textContent  //ключ(код)
-    //
+    const button = document.getElementById('save')
+    const add_new_goal = document.getElementById('add_new_goal')
+    add_new_goal.onclick = (e) => {
+        e.preventDefault()
+        const input = document.createElement("input")
+        input.setAttribute("name", "add_goal")
+        input.setAttribute("placeholder", "Добавить цель")
+        add_new_goal.after(input)
+    }
+    button.onclick =  async (e) => {
+        e.preventDefault()
+        let modal_body = document.getElementById("modal_body")
+        // let ggg = [...(modal_body.getElementsByClassName("add_goal"))]
+        // console.log(ggg);
+        event.target.style.backgroundColor = 'red'
+        let add_creteria = document.getElementById("add_creteria")
+        let add_creteria_value = add_creteria.value
+        let add_goal = [...(modal_body.getElementsByTagName("input"))]
+        let goals = []
+        add_goal.forEach( (el) => {
+            if (el.value !== add_creteria_value){
+                goals.push(el.value)
+            }
+        })
+        // console.log(goals);
+        try {
+            await makeRequest(url, 'POST', {'id': id, 'add_creteria': add_creteria_value, 'goals': goals});
 
-    // colorDict[colorCode] = choice
-    // console.log(colorDict)
-    // Object.keys(colorDict).forEach(function (key) {
-    //     if (key === colorCode && colorDict[key].style.backgroundColor === 'lightgreen') {
-    //         colorDict[colorCode].style.backgroundColor = 'white'
-    //     }
-    //     else if(key === colorCode && colorDict[key].style.backgroundColor !== 'lightgreen'){
-    //         for (let i = 0; i < row.childElementCount - 1; i++) {
-    //             row.querySelectorAll('a')[i].style.backgroundColor = 'white'
-    //         }
-    //         colorDict[colorCode].style.backgroundColor = 'lightgreen'
-    //     }
-    // });
-
-    try {
-        let response = await makeRequest(url, 'POST', {'id': id});
-    } catch (error) {
-        console.log(error);
+            document.getElementById("add_creteria").value = ""
+            const main_goal = document.getElementById("add_goal")
+            main_goal.value = ""
+            add_goal.forEach((el)=>{
+                if (el !== main_goal && el !== add_creteria){
+                    el.remove()
+                }
+            })
+            $("#exampleModal").modal("hide")
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 }
+
