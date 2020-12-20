@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 from main import settings
 from main.settings import AUTH_USER_MODEL
@@ -128,7 +129,7 @@ class SkillLevel(models.Model):
         ordering = ('skill', 'level')
 
 class ProrgamSkillGoal(models.Model):
-    skill = models.ForeignKey ('ProgramSkill', related_name='goal', on_delete=models.CASCADE,verbose_name='Уровень навыка')
+    skill = models.ForeignKey('ProgramSkill', related_name='goal', on_delete=models.CASCADE,verbose_name='Уровень навыка')
     goal = models.CharField(max_length=1000, null=True,verbose_name='Дополнительная цель')
 
     def __str__(self):
@@ -160,7 +161,7 @@ class Program(models.Model):
                               verbose_name='Ребенок')
     author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='programs',
                                verbose_name='Автор')
-    start_date = models.DateField( verbose_name="Дата начала")
+    start_date = models.DateField(verbose_name="Дата начала")
     end_date = models.DateField(verbose_name="Дата окончания")
     skills = models.ManyToManyField('SkillLevel', through='ProgramSkill' , verbose_name='Навыки', related_name='in_programs', blank=True)
     status = models.CharField(max_length=20, choices=PROGRAM_STATUS_CHOICES, default=PROGRAM_STATUS_OPEN,
@@ -178,12 +179,14 @@ class Program(models.Model):
     def is_open(self):
         return self.status == PROGRAM_STATUS_OPEN
 
+
     def __str__(self):
         return "%s %s" % (self.child, self.created_date)
 
     class Meta:
         verbose_name = 'Программа'
         verbose_name_plural = 'Программы'
+        ordering = ['-start_date']
 
 
 class Session(models.Model):

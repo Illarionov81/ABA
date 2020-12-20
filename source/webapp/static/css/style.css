@@ -219,3 +219,24 @@ a:hover {
 .text-center {
     text-align: center;
 }
+.form-input {
+    border-radius: 5px;
+    border: solid 1px lightgray;
+    background: gray;
+    color: white;
+    padding: 3px 5px;
+}
+
+.form-error {
+    border: solid 1px red;
+    background: darkred;
+}
+
+.form-error:focus {
+    box-shadow: 0 0 5px rgb(255, 0, 0);
+}
+
+.red {
+    color: red;
+    font-weight: bold;
+}

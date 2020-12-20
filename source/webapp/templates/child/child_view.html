@@ -22,7 +22,7 @@
     <div>
         {% for program in  programs %}
 
-            <a class="btn btn-primary m-2" href="{% url 'webapp:program_detail' program.pk %}">Программа №: {{program.pk}}</a>
+            <a class="btn btn-primary m-2" href="{% url 'webapp:program_detail' program.pk %}">{{program.start_date|date:"d.m.Y" }}</a>
 
         {% endfor %}
     {% if user.is_authenticated %}

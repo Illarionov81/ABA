@@ -5,12 +5,15 @@
 {% block content %}
     <h1>Детальный просмотр программы ребенка</h1>
     <div class="box">
+
         <p>Ребенок: {{ programs.child }}</p>
         <p>Автор: {{ programs.author }}</p>
         <p>Статус программы: {{ programs.get_status_display }}</p>
         <p>Название программы: {{ programs.name }}</p>
         <p>Описание: {{ programs.description }}</p>
-         <a class="btn btn-primary" href="{% url 'webapp:update_program' programs.pk %}">Добавить навык</a>
+
+
+
         <table class="table table-bordered">
             <thead class="thead-dark">
             <tr>
@@ -21,24 +24,46 @@
             </tr>
             </thead>
             <tbody>
-            {% for program_skills in skills.all %}
-                <tr class="table-primary">
-                <td class="text-left"> {{ program_skills.level.skill}}</td>
-                <td class="text-center">{{ program_skills.level.level }}</td>
-                <td class="text-left">
-                    {% if not program_skills.add_creteria  %}
-                        {{program_skills.level.criteria }}
-                    {% else %}
-                        {{ program_skills.add_creteria }}{% endif %}
-                    <br>
-                    {% for goals in program_skills.goal.all %}
-                        <b> {{ goals.goal }} </b>
-                    {% endfor %}
-                </td>
-                <td class="text-left">{{ program_skills.get_status_display }}</td>
+            {% for program_skills in skills.all%}
+                {% for goals in program_skills.goal.all %}
+                    <tr class="table-primary">
+                        <td class="text-left"> {{ program_skills.level.skill}}</td>
+                        <td class="text-center">{{ program_skills.level.level }}</td>
+                        <td class="text-left">
+                            {% if not program_skills.add_creteria  %}
+                                {{program_skills.level.criteria }}
+                            {% else %}
+                                {{ program_skills.add_creteria }}
+                            {% endif %}
+                            <br>
+{#                        {% if goals.goal %}#}
+                            Дополнительная цель: {{ goals.goal }}
+{#                        {% endif %}#}
+                        </td>
+                        <td class="text-left">
+                            {% if not goals.status %}
+                            {{ program_skills.get_status_display }}
+                            {% else %}
+                            {{ goals.get_status_display }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr class="table-primary">
+                    <td class="text-left"> {{ program_skills.level.skill}}</td>
+                    <td class="text-center">{{ program_skills.level.level }}</td>
+                    <td class="text-left">
+                        {% if not program_skills.add_creteria  %}
+                            {{program_skills.level.criteria }}
+                        {% else %}
+                            {{ program_skills.add_creteria }}{% endif %}
+                    </td>
+                    <td class="text-left">{{ program_skills.get_status_display }}</td>
+                {% endfor %}
             {% endfor %}
-            </tr>
             </tbody>
         </table>
     </div>
+        <a class="btn btn-primary" href="{% url 'webapp:update_program' programs.pk %}">Добавить навык</a>
+
 {% endblock %}
