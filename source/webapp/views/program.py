@@ -20,11 +20,8 @@ class ProgramDetailView(DetailView):
         program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
         goals = ProrgamSkillGoal.objects.filter(skill__program=program)
         skill_open = program.program_skill.all().filter(status=SKILL_STATUS_OPEN)
-        print(goals)
         goal_open = goals.filter(status=GOAL_STATUS_OPEN)
         pr_skill = program.program_skill.all().order_by('-status', 'level')
-        print(goal_open)
-        print(skill_open)
         if not skill_open and not goal_open:
             program.status = PROGRAM_STATUS_CLOSED
         else:
@@ -48,10 +45,13 @@ class ProgramCreateView(CreateView):
         program.save()
         return super().form_valid(form)
 
+
     def get_success_url(self):
         child = get_object_or_404(Child, pk=self.kwargs.get('pk'))
         program = get_object_or_404(Program, pk=child.programs.last().pk)
         return reverse('webapp:update_program', kwargs={'pk': program.pk})
+
+
 
 
 class UpdateProgram(TemplateView):
@@ -80,18 +80,19 @@ class UpdateProgram(TemplateView):
         program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
         data = json.loads(request.body)
         skill_lvl = SkillLevel.objects.get(pk=data['id'])
-        program.skills.add(skill_lvl)
+        prorgam_skill = ProgramSkill()
+        if data['add_creteria']:
+            prorgam_skill.add_creteria = data['add_creteria']
+        prorgam_skill.level = skill_lvl
+        prorgam_skill.program = program
+        prorgam_skill.save()
+        goals = data['goals']
+        if goals:
+            for g in goals:
+                goal = ProrgamSkillGoal()
+                goal.skill = prorgam_skill
+                goal.goal = g
+                goal.save()
+
         return redirect('webapp:update_program', pk=program.pk)
-        # code = skill_lvl.skill.code
-
-
-        # for i in program.program_skill.all():
-        #     if skill_lvl == i:
-        #         program.program_skill.remove(i)
-        #         program.save()
-        #         return redirect('webapp:update_program', pk=program.pk)
-        #     if code == i.skill.code:
-        #         program.program_skill.remove(i)
-        # program.program_skill.add(skill_lvl)
-        # program.save()
 
