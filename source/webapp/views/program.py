@@ -48,7 +48,7 @@ class ProgramCreateView(CreateView):
 
     def get_success_url(self):
         child = get_object_or_404(Child, pk=self.kwargs.get('pk'))
-        program = get_object_or_404(Program, pk=child.programs.last().pk)
+        program = get_object_or_404(Program, pk=self.object.pk)
         return reverse('webapp:update_program', kwargs={'pk': program.pk})
 
 

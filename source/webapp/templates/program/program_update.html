@@ -1,81 +1,10 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
 
-{% block title %}Add skill{% endblock %}
-
-{% block menu %}
-    <a class="nav-link" href="{% url 'webapp:program_detail' program.pk %}">Детальный просмотр</a>
-{% endblock %}
+{% block title %}Create{% endblock %}
 
 {% block content %}
-    <div class="box">
-        {% if not error %}
-            <h3 class="text-center">Добавление навыка в программу ребенка: {{ test.child.first_name }}</h3>
-            <p>Ребенок:<a href="{% url 'webapp:child_view' child_pk %}"> {{ test.child.first_name }}</a></p>
-            <p>Терапист:<a href="#"> {{ test.therapist }}</a></p>
-            <p>Дата начала: {{ test.created_date }}</p>
-            <p>Программа: {{ program.pk }}</p>
-            <form action="{% url 'webapp:update_program' program.pk%}" method="get">
-                <div class="row">
-                    <div class="col">
-                        {% for s in ABC %}
-                            <input type="submit" name="ABC" value="{{ s }}"
-                                   id="{{ s }}" style="float: left; padding: 3px; margin: 3px; width: 35px">
-                        {% endfor %}
-                    </div>
-                </div>
-            </form>
+    <h1>Create Program</h1>
 
-            {% for i in skills %}
-                <div class="my_row">
-                    <div class="my_col" id="codes">{{ i.code }}</div>
-                    {% for j in i.levels.all %}
-                        {% if j in test.skill_level.all %}
-
-                            <a class="my_col test_btn "  style="background-color: lightgreen"
-                               onclick="pr_skill(event)" id="{{ j.pk }}"
-                               href="{% url 'webapp:update_program' program.pk %}">{{ j.level }}</a>
-
-                        {% elif j in program.skills.all %}
-                            <a class="my_col test_btn "  style="background-color: red"
-                               onclick="pr_skill(event)" id="{{ j.pk }}"
-                               href="{% url 'webapp:update_program' program.pk %}">{{ j.level }}</a>
-                        {% else %}
-                            <a class="my_col test_btn"  onclick="open_modal(event)" id="{{ j.level }}" data-id="{{ j.pk }}"
-                               href="{% url 'webapp:update_program' program.pk %}">{{ j.level }}</a>
-                        {% endif %}
-                    {% endfor %}
-                    {% for j in i.levels.all %}
-
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        {% else %}
-            <h1>{{ error }}</h1>
-        {% endif %}
-    </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="modal_body">
-                    <input id="add_creteria" type="text" placeholder="Добавить критерий">
-                    <br>
-                    <br>
-                    <input class="add_goal" id="add_goal" placeholder="Добавить цель">
-                    <button id="add_new_goal">+</button>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="save" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script type="application/javascript" src="{% static "js/program_add_skill.js" %}"></script>
+    {% url "webapp:program_update" pk=program.pk as action_url %}
+    {% include 'partial/form.html' with action_url=action_url form_method='post' button_text='Update ' %}
 {% endblock %}
