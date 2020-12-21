@@ -52,36 +52,27 @@ function add_new_input_goal(){
 async function open_modal(event){
     event.preventDefault()
     $("#exampleModal").modal("show")
-
     let id = event.target.getAttribute("data-id")
     let url = event.target.getAttribute("href");
-    console.log(id)
-    console.log(url)
     const button = document.getElementById('save')
     const add_new_goal = document.getElementById('add_new_goal')
     add_new_goal.onclick = (e) => {
         e.preventDefault()
         const input = document.createElement("input")
-        input.setAttribute("name", "add_goal")
+        input.setAttribute("class", "add_goal")
         input.setAttribute("placeholder", "Добавить цель")
         add_new_goal.after(input)
     }
     button.onclick =  async (e) => {
         e.preventDefault()
         let modal_body = document.getElementById("modal_body")
-        // let ggg = [...(modal_body.getElementsByClassName("add_goal"))]
-        // console.log(ggg);
         event.target.style.backgroundColor = 'red'
         let add_creteria = document.getElementById("add_creteria")
         let add_creteria_value = add_creteria.value
-        let add_goal = [...(modal_body.getElementsByTagName("input"))]
-        let goals = []
-        add_goal.forEach( (el) => {
-            if (el.value !== add_creteria_value){
-                goals.push(el.value)
-            }
+        let add_goal = [...(modal_body.getElementsByClassName("add_goal"))]
+        let goals = add_goal.map( (el) => {
+                return el.value
         })
-        // console.log(goals);
         try {
             await makeRequest(url, 'POST', {'id': id, 'add_creteria': add_creteria_value, 'goals': goals});
 
@@ -89,7 +80,7 @@ async function open_modal(event){
             const main_goal = document.getElementById("add_goal")
             main_goal.value = ""
             add_goal.forEach((el)=>{
-                if (el !== main_goal && el !== add_creteria){
+                if (el !== main_goal){
                     el.remove()
                 }
             })
