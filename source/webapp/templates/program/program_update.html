@@ -5,6 +5,6 @@
 {% block content %}
     <h1>Create Program</h1>
 
-    {% url "webapp:program_update"  pk=program.pk as action_url %}
-    {% include 'partial/form.html' with action_url=action_url form_method='post' button_text='Update' %}
+    {% url "webapp:program_update" pk=program.pk as action_url %}
+    {% include 'partial/form.html' with action_url=action_url form_method='post' button_text='Update ' %}
 {% endblock %}
