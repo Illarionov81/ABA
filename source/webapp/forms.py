@@ -7,7 +7,7 @@ from .models import PROGRAM_STATUS_CHOICES, Program
 
 default_status = PROGRAM_STATUS_CHOICES[0][0]
 
-BROWSER_DATETIME_FORMAT = '%d.%m.%Y '
+BROWSER_DATETIME_FORMAT = '%d-%m-%Y'
 
 
 class XDatepickerWidget(forms.TextInput):
