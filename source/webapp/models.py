@@ -165,13 +165,14 @@ class ProgramSkill(models.Model):
         verbose_name = 'Программа ребенка'
         verbose_name_plural = 'Программы ребенка'
 
+
 class Program(models.Model):
     child = models.ForeignKey('Child', on_delete=models.PROTECT, related_name='programs',
                               verbose_name='Ребенок')
     author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='programs',
                                verbose_name='Автор')
     start_date = models.DateField(verbose_name="Дата начала")
-    end_date = models.DateField(verbose_name="Дата окончания")
+    end_date = models.DateField(null=True, blank=True, verbose_name="Дата окончания")
     skills = models.ManyToManyField('SkillLevel', through='ProgramSkill' , verbose_name='Навыки', related_name='in_programs', blank=True)
     status = models.CharField(max_length=20, choices=PROGRAM_STATUS_CHOICES, default=PROGRAM_STATUS_OPEN,
                               verbose_name='Статус')

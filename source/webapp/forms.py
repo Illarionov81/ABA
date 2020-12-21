@@ -19,13 +19,13 @@ class ProgramForm(forms.ModelForm):
                                      input_formats=['%Y-%m-%d', BROWSER_DATETIME_FORMAT,
                                                     '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M',
                                                     '%Y-%m-%d %H:%M:%S'],
-                                     widget=XDatepickerWidget())
+                                     widget=XDatepickerWidget)
 
     end_date = forms.DateField(required=False,label='Дата Закрытия',
                                      input_formats=['%Y-%m-%d', BROWSER_DATETIME_FORMAT,
                                                     '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M',
                                                     '%Y-%m-%d %H:%M:%S'],
-                                     widget=XDatepickerWidget())
+                                     widget=XDatepickerWidget)
 
     class Meta:
         model = Program
