@@ -16,13 +16,18 @@
         <p>Предпочтения ребенка: {{ child.preferences }}</p>
         <p>Родитель: {{ child.first_parent }}</p>
         <p>Второй родитель: {{ child.second_parent }}</p>
+        {% if child.contacts == None %}
+        <p>Контакты ребенка: Нет контактов</p>
+            {% else %}
         <p>Контакты ребенка: {{ child.contacts }}</p>
+        {% endif %}
         <p>Система коммуникации: {{ child.communication_system }}</p>
     </div>
     <div>
+    <h2>Список программ ребенка</h2>
         {% for program in  programs %}
 
-            <a class="btn btn-primary m-2" href="{% url 'webapp:program_detail' program.pk %}">{{program.start_date|date:"d.m.Y" }}</a>
+            <a class="btn btn-primary m-2" href="{% url 'webapp:program_detail' program.pk %}">Дата начала:{{program.start_date|date:"d.m.Y" }}</a>
 
         {% endfor %}
     {% if user.is_authenticated %}
