@@ -240,3 +240,14 @@ a:hover {
     color: red;
     font-weight: bold;
 }
+.add_goal {
+    margin: 5px;
+    border-radius: 5px;
+    border: solid 1px darkgray;
+
+}
+
+.add_criteria {
+    border-radius: 5px;
+    border: solid 1px darkgray;
+}
