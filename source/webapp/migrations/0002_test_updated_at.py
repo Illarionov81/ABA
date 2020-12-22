@@ -10,9 +10,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='test',
-            name='updated_at',
-            field=models.DateTimeField(auto_now=True, verbose_name='Время изменения'),
-        ),
+        # migrations.AddField(
+        #     model_name='test',
+        #     name='updated_at',
+        #     field=models.DateTimeField(auto_now=True, verbose_name='Время изменения'),
+        # ),
     ]
