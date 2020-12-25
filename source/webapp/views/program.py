@@ -47,7 +47,6 @@ class ProgramCreateView(CreateView):
 
 
     def get_success_url(self):
-        child = get_object_or_404(Child, pk=self.kwargs.get('pk'))
         program = get_object_or_404(Program, pk=self.object.pk)
         return reverse('webapp:update_program', kwargs={'pk': program.pk})
 
@@ -93,6 +92,13 @@ class UpdateProgram(TemplateView):
                 goal.skill = prorgam_skill
                 goal.goal = g
                 goal.save()
+        else:
+            goal = ProrgamSkillGoal()
+            goal.save()
+
 
         return redirect('webapp:update_program', pk=program.pk)
 
+
+class ExportWord(View):
+    pass

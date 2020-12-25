@@ -10,11 +10,11 @@
 {% block content %}
     <div class="box">
         {% if not error %}
-            <h3 class="text-center">Добавление навыка в программу ребенка: {{ test.child.first_name }}</h3>
-            <p>Ребенок:<a href="{% url 'webapp:child_view' child_pk %}"> {{ test.child.first_name }}</a></p>
-            <p>Терапист:<a href="#"> {{ test.therapist }}</a></p>
-            <p>Дата начала: {{ test.created_date|date:'d-m-Y'}}</p>
-            <p>Программа: {{ program.pk }}</p>
+            <h3 class="text-center">Добавление навыка в программу ребенка: {{ program.child.first_name }}</h3>
+            <p>Ребенок:<a href="{% url 'webapp:child_view' child_pk %}"> {{ program.child.first_name }}</a></p>
+            <p>Терапист:<a href="#"> {{ program.therapist }}</a></p>
+            <p>Дата начала: {{ program.start_date|date:'d-m-Y'}}</p>
+            <a href="{%  url 'webapp:program_detail' program.pk%}">Программа: {{ program.name }}</a>
             <form action="{% url 'webapp:update_program' program.pk%}" method="get">
                 <div class="row">
                     <div class="col">

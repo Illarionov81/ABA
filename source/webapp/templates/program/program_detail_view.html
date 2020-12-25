@@ -6,8 +6,8 @@
 {% block content %}
     <h1>Детальный просмотр программы: {{ programs.child.first_name }} {{ programs.child.last_name }}</h1>
     <div class="box">
-        <p>Программа № {{ programs.pk }}</p>
-        <p>Дата создания: {{ programs.start_date|date:"d.m.Y" }}</p>
+        <p>Дата создания: {{ programs.created_date|date:"d.m.Y" }}</p>
+        <p>Дата начала: {{ programs.start_date|date:"d.m.Y" }}</p>
         <p>Ребенок: {{ programs.child }}</p>
         <p>Автор: {{ programs.author }}</p>
         <p>Статус программы: {{ programs.get_status_display }}</p>
