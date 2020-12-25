@@ -26,6 +26,13 @@ SKILL_STATUS_CHOICES = (
     (SKILL_STATUS_CLOSED, 'Закрыт')
 )
 
+GOAL_STATUS_OPEN = 'open'
+GOAL_STATUS_CLOSED = 'closed'
+GOAL_STATUS_CHOICES = (
+    (GOAL_STATUS_OPEN, 'Открыт'),
+    (GOAL_STATUS_CLOSED, 'Закрыт')
+)
+
 
 class SoftDeleteManager(models.Manager):
     def active(self):
@@ -130,7 +137,10 @@ class SkillLevel(models.Model):
 
 class ProrgamSkillGoal(models.Model):
     skill = models.ForeignKey('ProgramSkill', related_name='goal', on_delete=models.CASCADE,verbose_name='Уровень навыка')
-    goal = models.CharField(max_length=1000, null=True,verbose_name='Дополнительная цель')
+    goal = models.CharField(max_length=1000, null=True, default='', verbose_name='Дополнительная цель')
+    status = models.CharField(max_length=20, choices=GOAL_STATUS_CHOICES, default=GOAL_STATUS_OPEN,
+                              verbose_name='Статус')
+
 
     def __str__(self):
         return "{}".format(self.goal)

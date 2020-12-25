@@ -15,7 +15,7 @@ class XDatepickerWidget(forms.TextInput):
 
 
 class ProgramForm(forms.ModelForm):
-    start_date = forms.DateField(label='Дата Создания',
+    start_date = forms.DateField(label='Дата начало',
                                      input_formats=['%Y-%m-%d', BROWSER_DATETIME_FORMAT,
                                                     '%Y-%m-%dT%H:%M:%S', '%Y-%m-%d %H:%M',
                                                     '%Y-%m-%d %H:%M:%S'],
