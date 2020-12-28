@@ -1,8 +1,9 @@
 import json
-
+from docx import Document
+from docx.shared import Inches
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
-from django.views.generic import DetailView, CreateView, UpdateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import View, TemplateView
 
 from webapp.forms import ProgramForm
@@ -96,9 +97,22 @@ class UpdateProgram(TemplateView):
             goal = ProrgamSkillGoal()
             goal.save()
 
-
         return redirect('webapp:update_program', pk=program.pk)
+
+
+class ProgrmDelete(DeleteView):
+    template_name = 'program/delete_program.html'
+    model = Program
+
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('webapp:child_view', kwargs={'pk': self.object.child.pk})
 
 
 class ExportWord(View):
     pass
+
+
+

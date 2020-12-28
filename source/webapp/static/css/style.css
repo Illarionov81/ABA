@@ -250,6 +250,11 @@ a:hover {
 }
 
 .add_criteria {
+    border-radius: 10px;
+    border: solid 1px darkgray;
+}
+.pluss {
     border-radius: 5px;
     border: solid 1px darkgray;
+
 }
