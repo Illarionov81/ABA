@@ -104,9 +104,6 @@ class ProgrmDelete(DeleteView):
     template_name = 'program/delete_program.html'
     model = Program
 
-    def get(self, request, *args, **kwargs):
-        return self.delete(request, *args, **kwargs)
-
     def get_success_url(self):
         return reverse('webapp:child_view', kwargs={'pk': self.object.child.pk})
 
