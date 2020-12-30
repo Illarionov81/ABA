@@ -48,16 +48,20 @@ class ChildrenModelAdmin(admin.ModelAdmin):
 class InlineChild(admin.StackedInline):
     model = Therapy
 
+
 class InlineGoals(admin.StackedInline):
     model = ProrgamSkillGoal
+
 
 class InlineSessionSkill(admin.StackedInline):
     model = SessionSkill
 
+
 class InlineProgram(admin.StackedInline):
     model = ProgramSkill
 
-class ProgramGoal (admin.ModelAdmin):
+
+class ProgramGoal(admin.ModelAdmin):
     inlines = [InlineGoals]
 
 
@@ -89,7 +93,7 @@ class ProgramModelAdmin(admin.ModelAdmin):
 
 
 class UserInfoAdmin(UserAdmin):
-   search_fields = ['username']
+    search_fields = ['username']
 
 
 class SessionModelAdmin(admin.ModelAdmin):
@@ -113,7 +117,7 @@ admin.site.register(SessionSkill)
 admin.site.register(StudyMethod)
 admin.site.register(HintType)
 admin.site.register(HintTypeDelete)
-admin.site.register(Program,ProgramModelAdmin)
+admin.site.register(Program, ProgramModelAdmin)
 admin.site.register(Therapy, UsersChildModelAdmin)
 admin.site.register(Session, SessionModelAdmin)
 admin.site.register(Child, ChildrenModelAdmin)
@@ -121,5 +125,5 @@ admin.site.register(Category, CategoryModelAdmin)
 # admin.site.register(TestResult, TestResultModelAdmin)
 admin.site.register(Test, TestModelAdmin)
 admin.site.register(SkillLevel)
-admin.site.register(ProgramSkill,ProgramGoal)
+admin.site.register(ProgramSkill, ProgramGoal)
 admin.site.register(ProrgamSkillGoal)

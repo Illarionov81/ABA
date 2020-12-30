@@ -101,7 +101,7 @@ class Category(models.Model):
 
 
 class Skill(models.Model):
-    code = models.CharField(max_length=5,null=True, blank=True, verbose_name='Код навыка')
+    code = models.CharField(max_length=5, null=True, blank=True, verbose_name='Код навыка')
     name = models.CharField(max_length=255, verbose_name='Название навыка')
     category = models.ForeignKey(Category, on_delete=models.PROTECT, null=True, blank=True, related_name='skills', verbose_name='Секция')
     description = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Описание навыка')
@@ -124,16 +124,14 @@ class SkillLevel(models.Model):
     level = models.IntegerField(verbose_name='Уровень')
     criteria = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Критерии')
 
-
-
     def __str__(self):
-            return "{} - {} | {}".format(self.skill.code, self.level, self.criteria)
-
+        return "{} - {} | {}".format(self.skill.code, self.level, self.criteria)
 
     class Meta:
         verbose_name = 'Уровень навыка'
         verbose_name_plural = 'Уровни навыков'
         ordering = ('skill', 'level')
+
 
 class ProrgamSkillGoal(models.Model):
     skill = models.ForeignKey('ProgramSkill', related_name='goal', on_delete=models.CASCADE,verbose_name='Уровень навыка')
@@ -141,10 +139,8 @@ class ProrgamSkillGoal(models.Model):
     status = models.CharField(max_length=20, choices=GOAL_STATUS_CHOICES, default=GOAL_STATUS_OPEN,
                               verbose_name='Статус')
 
-
     def __str__(self):
         return "{}".format(self.goal)
-
 
     class Meta:
         verbose_name = "Дополнительная цель"
@@ -153,8 +149,9 @@ class ProrgamSkillGoal(models.Model):
 
 class ProgramSkill(models.Model):
     level = models.ForeignKey('SkillLevel', related_name='program_skill', on_delete=models.CASCADE, null=True,
-                             verbose_name='Уровень навыка')
-    program = models.ForeignKey('Program', blank=True, related_name='program_skill', on_delete=models.CASCADE, verbose_name='Программа' )
+                              verbose_name='Уровень навыка')
+    program = models.ForeignKey('Program', blank=True, related_name='program_skill', on_delete=models.CASCADE,
+                                verbose_name='Программа')
     add_creteria = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Дополнительные критерии')
     status = models.CharField(max_length=20, choices=SKILL_STATUS_CHOICES, default=SKILL_STATUS_OPEN,
                               verbose_name='Статус')
