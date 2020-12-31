@@ -5,49 +5,29 @@
     <li><a class="btn btn-primary" href="#" role="button">Просмотр сессии</a></li>
 {% endblock %}
 {% block content %}
+<div class="box">
+    <p class="text-center">Session {{ session.created_date | date:"d.m.Y "  }} | {{ child }}</p>
     <form action="{% url 'webapp:session_data_collection' program.pk %}" method="get">
-            <div class="row">
-                 <div class="col" style="text-align: center">
-                    <label for="checkbox" style="text-decoration: underline; cursor: pointer">Выводить только отмеченные навыки -</label>
-                    <input  id="checkbox" type="checkbox" value="1" name="checkbox" >
-                </div>
+        <div class="row">
+            <div class="col">
+                {% for s in ABC %}
+                    <input type="submit" name="ABC" value="{{ s }}"
+                           id="{{ s }}" style="float: left; padding: 3px; margin: 3px; width: 35px">
+                {% endfor %}
             </div>
-            <div class="row">
-                <div class="col">
-                    {% for s in ABC %}
-                        <input type="submit" name="ABC" value="{{ s }}"
-                               id="{{ s }}" style="float: left; padding: 3px; margin: 3px; width: 35px">
-                    {% endfor %}
-                </div>
-            </div>
-         </form>
-    <div class="box">
-{#    {% for i in skills %}#}
-{#        <div class="my_row">#}
-{#        <div class="my_col" id="codes">{{ i.code }}</div>#}
-{#            {% for j in i.levels.all %}#}
-{#                    <a class="my_col test_btn" style="background-color: lightgreen" onclick="choice_level(event)" id="{{ j.pk }}"#}
-{#                       href="#">{{ j.level }}</a>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#    {% endfor %}#}
-    <p>Session {{ session.pk }}</p>
-    {% for category in skills %}
-        {% for i in session.skills.all %}
-            {% if category.code == i.skill.skill.level.skill.code %}
+        </div>
+     </form>
+{#<a class="my_col test_btn" style="background-color: lightgreen" onclick="choice_level(event)" id="{{ j.pk }}"#}
+    {% for i in session.skills.all %}
+        {% if i.skill.skill.level.skill.category.code == category_code %}
             <div class="box">
                 <p>SessionSkill {{ i.pk }}</p>
-                <p>Доп цель - ProgramGoal: {{ i.skill.goal }}</p>
-                <p>Доп критерий - ProgramSkill: {{ i.skill.skill.add_creteria }}</p>
-                <p>Уровень - SkillLevel: {{ i.skill.skill.level.level }}</p>
-                <p>Навык - Skill: {{ i.skill.skill.level.skill }} </p>
+                <p>Навык: {{ i.skill.skill.level.skill.code }} | Уровень: {{ i.skill.skill.level.level }}</p>
+                <p>Доп критерий - ProgramSkill: {{ i.skill.skill.add_creteria }} pk - {{ i.skill.skill.pk }}</p>
+                <p>Доп цель - ProgramGoal: {{ i.skill.goal }} pk - {{ i.skill.pk }}</p>
             </div>
-            {% endif %}
-{#                <p>{{ i.skill.skill.level.skill }}| {{ i.skill.skill.level.criteria }}| {{ i.skill.goal }}#}
-{#                    <a href="#">Add</a> <a href="#">Remove</a>#}
-{#                </p>#}
-        {% endfor %}
+        {% endif %}
     {% endfor %}
-    </div>
+</div>
 {#    <script type="application/javascript" src="{% static "js/session_add_skill.js" %}"></script>#}
 {% endblock %}
