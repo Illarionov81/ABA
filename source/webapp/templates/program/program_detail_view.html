@@ -40,6 +40,7 @@
                             <br>
                         {% if goals.goal %}
                             Дополнительная цель: {{ goals.goal }}
+                            <a class="badge badge-dark" href="{% url 'webapp:delete_goal' goals.pk%}">Удалить</a>
                         {% endif %}
                         </td>
                         <td class="text-left">
@@ -61,6 +62,7 @@
                             {{ program_skills.add_creteria }}{% endif %}
                     </td>
                     <td class="text-left">{{ program_skills.get_status_display }}</td>
+                    </tr>
                 {% endfor %}
             {% endfor %}
             </tbody>

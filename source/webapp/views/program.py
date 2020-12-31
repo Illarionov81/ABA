@@ -108,6 +108,18 @@ class ProgrmDelete(DeleteView):
         return reverse('webapp:child_view', kwargs={'pk': self.object.child.pk})
 
 
+class DeleteGoalView(DeleteView):
+    template_name = 'program/delete_goal.html'
+    model = ProrgamSkillGoal
+
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('webapp:program_detail', kwargs={'pk': self.object.skill.program.pk})
+
+
+
 class ExportWord(View):
     pass
 
