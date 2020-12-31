@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete{% endblock %}
+
+{% block menu %}
+{#    <li><a href="{% url 'webapp:p' article.pk %}">Отмена</a></li>#}
+{% endblock %}
+
+{% block content %}
+    <h1>Вы уверены, что хотите удалить цель"{{ goal.goal}}"?</h1>
+{#    <p>By: {{ article.author }} | {{ article.created_at }}</p>#}
+    <form action="{% url "webapp:delete_goal" prorgamskillgoal.pk %}" method="post">
+        {% csrf_token %}
+        <p><input type="submit" value="Да"></p>
+        <p><a href="{% url 'webapp:program_detail' object.pk %}">Отмена</a></p>
+    </form>
+{% endblock %}
