@@ -6,7 +6,7 @@
 {% endblock %}
 {% block content %}
 <div class="box">
-    <p class="text-center">Session {{ session.created_date | date:"d.m.Y "  }} | {{ child }}</p>
+    <p class="text-center">Session {{ session.created_date | date:"d.m.Y "  }} | <a href="{% url 'webapp:child_view' child.pk %}">{{ child }}</a> </p>
     <form action="{% url 'webapp:session_data_collection' program.pk %}" method="get">
         <div class="row">
             <div class="col">
@@ -17,17 +17,37 @@
             </div>
         </div>
      </form>
-{#<a class="my_col test_btn" style="background-color: lightgreen" onclick="choice_level(event)" id="{{ j.pk }}"#}
+    <div class="my_row">
+        {% for skill in code %}
+            {% if skill.category.code == category_code %}
+                <div class="col_inline">
+                    <a class="my_col empty" href="#" onclick="ChoiceCategory(event)" id="{{ skill.code }}">{{ skill.code }}</a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
     {% for i in session.skills.all %}
         {% if i.skill.skill.level.skill.category.code == category_code %}
-            <div class="box">
-                <p>SessionSkill {{ i.pk }}</p>
-                <p>Навык: {{ i.skill.skill.level.skill.code }} | Уровень: {{ i.skill.skill.level.level }}</p>
-                <p>Доп критерий - ProgramSkill: {{ i.skill.skill.add_creteria }} pk - {{ i.skill.skill.pk }}</p>
-                <p>Доп цель - ProgramGoal: {{ i.skill.goal }} pk - {{ i.skill.pk }}</p>
-            </div>
+                <div class="box box_category" id="{{ i.skill.skill.level.skill.code }}">
+                    <p>{{ i.skill.skill.level.skill.code }}-{{ i.skill.skill.level.level }}</p>
+                    {% if i.skill.skill.add_creteria %}
+                        <p>Доп критерий - ProgramSkill: {{ i.skill.skill.add_creteria }} pk - {{ i.skill.skill.pk }}</p>
+                    {% else %}
+                        <p>Стандартный критерий</p>
+                    {% endif %}
+                    {% if i.skill.goal %}
+                        <p>Доп цель - ProgramGoal: {{ i.skill.goal }} pk - {{ i.skill.pk }}</p>
+                    {% else %}
+                        <span>Стандартная цель:</span>
+                        <p>{{ i.skill.skill.level.skill.description }}</p>
+                    {% endif %}
+                    <div class="text-center">
+                        <div class="session_btn">{{ i.done_with_hint }}</div>
+                        <div class="session_btn">{{ i.done_self }}</div>
+                    </div>
+                </div>
         {% endif %}
     {% endfor %}
 </div>
-{#    <script type="application/javascript" src="{% static "js/session_add_skill.js" %}"></script>#}
+    <script type="application/javascript" src="{% static "js/session_data_collection.js" %}"></script>
 {% endblock %}
