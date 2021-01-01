@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from webapp.views import SessionDataCollectionView
+from webapp.views import SessionDataCollectionView, DoneSelf, DoneWithHint
 from webapp.views.child_test import TestResultView, TestsView, ChildTestUpdateView, ChildMakeTestView
 from webapp.views.child import IndexView, ChildDetailView
 from webapp.views.program import ProgramDetailView, ProgramCreateView,UpdateProgram, ProgrmDelete, DeleteGoalView
@@ -11,6 +11,8 @@ app_name = 'webapp'
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
+    path('done_self/<int:pk>/', DoneSelf.as_view(), name='done_self'),
+    path('done_with_hint/<int:pk>/', DoneWithHint.as_view(), name='done_with_hint'),
     path('test_result/<int:pk>/', TestResultView.as_view(), name='test_result'),
     path('program/<int:pk>/', ProgramDetailView.as_view(), name='program_detail'),
     path('program/<int:pk>/delete/', ProgrmDelete.as_view(), name='program_delete'),

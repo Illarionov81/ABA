@@ -29,7 +29,7 @@ async function makeRequest(url, method='GET', data=undefined) {
     }
     let response = await fetch(url, opts);
     if (response.ok) {  // нормальный ответ
-        return response.json();
+        return response;
     }
     else {            // ошибка
         let error = new Error(response.statusText);
@@ -38,13 +38,16 @@ async function makeRequest(url, method='GET', data=undefined) {
     }
 }
 
-async function ChoiceCategory(event) {
+function ChoiceCategory(event) {
     event.preventDefault()
     let SkillBox = event.target;
     const AllSkillBox = document.getElementsByClassName('box_category');
-    console.log(SkillBox)
+    const AllButtonSkillBox = document.getElementsByClassName('empty');
+    for (let i=0; i<AllButtonSkillBox.length; i++){
+        AllButtonSkillBox[i].style.backgroundColor = ''
+    }
+    SkillBox.style.backgroundColor = 'greenyellow'
     const Code = SkillBox.id
-    console.log(Code)
     for (let i=0; i<AllSkillBox.length; i++){
         AllSkillBox[i].style.display = '';
         if (AllSkillBox[i].id !== Code){
@@ -52,3 +55,41 @@ async function ChoiceCategory(event) {
             }
         }
     }
+
+async function DoneSelf(event) {
+    event.preventDefault()
+    let ButtonDoneSelf = event.target;
+    let id = ButtonDoneSelf.id;
+    let url = ButtonDoneSelf.href;
+    console.log(ButtonDoneSelf);
+    console.log(id);
+    console.log(url);
+    try {
+        let response = await makeRequest(url, 'POST', {'id': id}).then((response) => response.json());
+        console.log(response)
+        console.log(response['count'])
+        ButtonDoneSelf.innerText = response['count']
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+async function Done_with_hint(event) {
+    event.preventDefault()
+    let ButtonDone_with_hint = event.target;
+    let id = ButtonDone_with_hint.id;
+    let url = ButtonDone_with_hint.href;
+    console.log(ButtonDone_with_hint);
+    console.log(id);
+    console.log(url);
+    try {
+        let response = await makeRequest(url, 'POST', {'id': id}).then((response) => response.json());
+        console.log(response)
+        console.log(response['count'])
+        ButtonDone_with_hint.innerText = response['count']
+    }
+    catch (error) {
+        console.log(error);
+    }
+}

@@ -28,24 +28,29 @@
     </div>
     {% for i in session.skills.all %}
         {% if i.skill.skill.level.skill.category.code == category_code %}
-                <div class="box box_category" id="{{ i.skill.skill.level.skill.code }}">
-                    <p>{{ i.skill.skill.level.skill.code }}-{{ i.skill.skill.level.level }}</p>
-                    {% if i.skill.skill.add_creteria %}
-                        <p>Доп критерий - ProgramSkill: {{ i.skill.skill.add_creteria }} pk - {{ i.skill.skill.pk }}</p>
-                    {% else %}
-                        <p>Стандартный критерий</p>
-                    {% endif %}
-                    {% if i.skill.goal %}
-                        <p>Доп цель - ProgramGoal: {{ i.skill.goal }} pk - {{ i.skill.pk }}</p>
-                    {% else %}
-                        <span>Стандартная цель:</span>
-                        <p>{{ i.skill.skill.level.skill.description }}</p>
-                    {% endif %}
-                    <div class="text-center">
-                        <div class="session_btn">{{ i.done_with_hint }}</div>
-                        <div class="session_btn">{{ i.done_self }}</div>
-                    </div>
+            <div class="box box_category" id="{{ i.skill.skill.level.skill.code }}">
+                <p>SessionSkill: {{ i.pk }}</p>
+                <p>{{ i.skill.skill.level.skill.code }}-{{ i.skill.skill.level.level }}</p>
+                {% if i.skill.skill.add_creteria %}
+                    <p>Доп критерий - ProgramSkill: {{ i.skill.skill.add_creteria }} pk - {{ i.skill.skill.pk }}</p>
+                {% else %}
+                    <p>Стандартный критерий</p>
+                {% endif %}
+                {% if i.skill.goal %}
+                    <p>Доп цель - ProgramGoal: {{ i.skill.goal }} pk - {{ i.skill.pk }}</p>
+                {% else %}
+                    <span>Стандартная цель:</span>
+                    <p>{{ i.skill.skill.level.skill.description }}</p>
+                {% endif %}
+                <div class="text-center">
+                    <a class="session_btn_2"  href="{% url 'webapp:done_with_hint' i.pk %}" onclick="Done_with_hint(event)" id="{{ i.pk }}">
+                        {{ i.done_with_hint }}
+                    </a>
+                    <a class="session_btn"  href="{% url 'webapp:done_self' i.pk %}" onclick="DoneSelf(event)" id="{{ i.pk }}">
+                        {{ i.done_self }}
+                    </a>
                 </div>
+            </div>
         {% endif %}
     {% endfor %}
 </div>

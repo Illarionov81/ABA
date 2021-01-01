@@ -1,10 +1,11 @@
 import json
 
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.views.generic import DetailView
 
-from webapp.models import Session, Child, Program, SkillLevel, SessionSkill, Skill, ProrgamSkillGoal, ProgramSkill
+from webapp.models import Session, Program, SkillLevel, SessionSkill, Skill, ProrgamSkillGoal, ProgramSkill
 
 
 class SessionDataCollectionView(DetailView):
@@ -30,7 +31,6 @@ class SessionDataCollectionView(DetailView):
         category_code = self.request.GET.get('ABC')
         session = Session.objects.filter(program=self.object).last()
         code = self.get_code(session)
-        print(code)
         skill = Skill.objects.filter(category__code=category_code).filter()
         context['code'] = code
         context['skill_code_query'] = skill.values_list('code', flat=True)
@@ -41,19 +41,20 @@ class SessionDataCollectionView(DetailView):
         context['session'] = session
         return context
 
-    def post(self, request, *args, **kwargs):
-        test = get_object_or_404(Test, pk=self.kwargs.get('pk'))
-        data = json.loads(request.body)
-        skill_lvl = SkillLevel.objects.get(pk=data['id'])
-        code = skill_lvl.skill.code
 
-        for i in test.skill_level.all():
-            if skill_lvl == i:
-                test.skill_level.remove(i)
-                test.save()
-                return redirect('webapp:child_update_test', pk=test.pk)
-            if code == i.skill.code:
-                test.skill_level.remove(i)
-        test.skill_level.add(skill_lvl)
-        test.save()
-        return redirect('webapp:child_update_test', pk=test.pk)
+class DoneSelf(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        session_skill = SessionSkill.objects.get(pk=data['id'])
+        session_skill.done_self += 1
+        session_skill.save()
+        return JsonResponse({'count': session_skill.done_self})
+
+
+class DoneWithHint(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        session_skill = SessionSkill.objects.get(pk=data['id'])
+        session_skill.done_with_hint += 1
+        session_skill.save()
+        return JsonResponse({'count': session_skill.done_with_hint})
