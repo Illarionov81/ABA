@@ -12,8 +12,9 @@ class SessionDataCollectionView(DetailView):
     template_name = 'session/session_data_collection.html'
     model = Program
 
-    def get_code(self, session):
+    def get_code_in_session(self, session):
         codes = []
+        ABC = Skill.objects.all()
         for session_skill in session.skills.all():
             goal = ProrgamSkillGoal.objects.filter(session_skills=session_skill)
             for g in goal:
@@ -24,20 +25,31 @@ class SessionDataCollectionView(DetailView):
                         skill = Skill.objects.get(levels=level)
                         if skill not in codes:
                             codes.append(skill)
-        return codes
+        litera = []
+        for l in ABC:
+            for i in range(len(codes)):
+                print(codes[i].code)
+                if codes[i].code == l.code:
+                    litera.append(codes[i])
+        print(litera)
+        return litera
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category_code = self.request.GET.get('ABC')
         session = Session.objects.filter(program=self.object).last()
-        code = self.get_code(session)
+        code = self.get_code_in_session(session)
         skill = Skill.objects.filter(category__code=category_code).filter()
+        ABC = []
+        for i in code:
+            if i.category.code not in ABC:
+                ABC.append(i.category.code)
+        ABC.sort()
         context['code'] = code
         context['skill_code_query'] = skill.values_list('code', flat=True)
         context['child'] = self.object.child
         context['category_code'] = category_code
-        context['ABC'] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-                          'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+        context['ABC'] = ABC
         context['session'] = session
         return context
 

@@ -44,10 +44,10 @@
                 {% endif %}
                 <div class="text-center">
                     <a class="session_btn_2"  href="{% url 'webapp:done_with_hint' i.pk %}" onclick="Done_with_hint(event)" id="{{ i.pk }}">
-                        {{ i.done_with_hint }}
+                      Hint  {{ i.done_with_hint }}
                     </a>
                     <a class="session_btn"  href="{% url 'webapp:done_self' i.pk %}" onclick="DoneSelf(event)" id="{{ i.pk }}">
-                        {{ i.done_self }}
+                       Self {{ i.done_self }}
                     </a>
                 </div>
             </div>
