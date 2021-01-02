@@ -107,9 +107,6 @@ class Skill(models.Model):
     description = models.TextField(max_length=1000, null=True, blank=True, verbose_name='Описание навыка')
     max_level = models.PositiveSmallIntegerField(default=1, verbose_name="Количество уровней сложности")
 
-
-
-
     def __str__(self):
         return "%s. %s" % (self.code, self.name)
 

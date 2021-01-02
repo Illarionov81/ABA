@@ -25,7 +25,6 @@ async function makeRequest(url, method='GET', data=undefined) {
     if (data) {
         opts.headers['Content-Type'] = 'application/json';
         opts.body = JSON.stringify(data);
-        console.log(opts.body);
     }
     let response = await fetch(url, opts);
     if (response.ok) {  // нормальный ответ
@@ -61,14 +60,10 @@ async function DoneSelf(event) {
     let ButtonDoneSelf = event.target;
     let id = ButtonDoneSelf.id;
     let url = ButtonDoneSelf.href;
-    console.log(ButtonDoneSelf);
-    console.log(id);
-    console.log(url);
     try {
         let response = await makeRequest(url, 'POST', {'id': id}).then((response) => response.json());
         console.log(response)
-        console.log(response['count'])
-        ButtonDoneSelf.innerText = response['count']
+        ButtonDoneSelf.innerText = 'Self ' + response['count']
     }
     catch (error) {
         console.log(error);
@@ -80,14 +75,10 @@ async function Done_with_hint(event) {
     let ButtonDone_with_hint = event.target;
     let id = ButtonDone_with_hint.id;
     let url = ButtonDone_with_hint.href;
-    console.log(ButtonDone_with_hint);
-    console.log(id);
-    console.log(url);
     try {
         let response = await makeRequest(url, 'POST', {'id': id}).then((response) => response.json());
         console.log(response)
-        console.log(response['count'])
-        ButtonDone_with_hint.innerText = response['count']
+        ButtonDone_with_hint.innerText = 'Hint ' + response['count']
     }
     catch (error) {
         console.log(error);
