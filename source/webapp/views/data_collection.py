@@ -41,6 +41,7 @@ class SessionDataCollectionView(DetailView):
         codes = []
         sorted_code = []
         final_code = []
+        later = []
         for session_skill in session.skills.all():
             goal = ProrgamSkillGoal.objects.filter(session_skills=session_skill)
             for g in goal:
@@ -52,28 +53,26 @@ class SessionDataCollectionView(DetailView):
                         if skill not in codes:
                             codes.append(skill)
         for i in codes:
+            if i.category.code not in later:
+                later.append(i.category.code)
             if i.category.code == category_code:
                 sorted_code.append(int(i.code[1:]))
         sorted_code.sort()
+        later.sort()
         for i in sorted_code:
             i = category_code + str(i)
             final_code.append(i)
-        return codes, final_code
+        return later, final_code
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category_code = self.request.GET.get('ABC')
         session = Session.objects.filter(program=self.object).last()
-        codes, final_code = self.get_code_in_session(session, category_code)
-        ABC = []
-        for i in codes:
-            if i.category.code not in ABC:
-                ABC.append(i.category.code)
-        ABC.sort()
+        later, final_code = self.get_code_in_session(session, category_code)
         context['code'] = final_code
         context['child'] = self.object.child
         context['category_code'] = category_code
-        context['ABC'] = ABC
+        context['ABC'] = later
         context['session'] = session
         return context
 
