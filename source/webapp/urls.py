@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from webapp.views import SessionDataCollectionView, DoneSelf, DoneWithHint
+from webapp.views import SessionDataCollectionView, DoneSelf, DoneWithHint, SessionAddGoalView
 from webapp.views.child_test import TestResultView, TestsView, ChildTestUpdateView, ChildMakeTestView
 from webapp.views.child import IndexView, ChildDetailView
 from webapp.views.program import ProgramDetailView, ProgramCreateView,UpdateProgram, ProgrmDelete, DeleteGoalView
@@ -19,6 +19,7 @@ urlpatterns = [
     path('delete/goal/<int:pk>/', DeleteGoalView.as_view(), name='delete_goal'),
     path('program/<int:pk>/update/', UpdateProgram.as_view(), name='update_program'),
     path('update_test/<int:pk>/', ChildTestUpdateView.as_view(), name='child_update_test'),
+    path('program/<int:pk>/add-goal/to-level/<int:level>/', SessionAddGoalView.as_view(), name='session_add_goal'),
     path('program/<int:pk>/data-collection/', SessionDataCollectionView.as_view(), name='session_data_collection'),
     path('session/<int:pk>/', SessionListView.as_view(), name='session_list'),
     path('session/<int:pk>/create', SessionCreateView.as_view(), name='session_create'),

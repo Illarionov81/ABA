@@ -1,11 +1,35 @@
 import json
 
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
-from django.views.generic import DetailView
+from django.views.generic import DetailView, CreateView
 
+from webapp.forms import SessionAddGoal
 from webapp.models import Session, Program, SkillLevel, SessionSkill, Skill, ProrgamSkillGoal, ProgramSkill
+
+
+class SessionAddGoalView(CreateView):
+    template_name = 'session/session_add_goal.html'
+    form_class = SessionAddGoal
+    model = ProrgamSkillGoal
+
+    def form_valid(self, form):
+        program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
+        level = get_object_or_404(SkillLevel, pk=self.kwargs.get('level'))
+        goal = form.save(commit=False)
+        session = Session.objects.filter(program=program).last()
+        program_skill = ProgramSkill()
+        program_skill.program = program
+        program_skill.level = level
+        session_skill = SessionSkill()
+        session_skill.session_id = session.pk
+        program_skill.save()
+        goal.skill = program_skill
+        goal.save()
+        session_skill.skill_id = goal.pk
+        session_skill.save()
+        return redirect('webapp:session_data_collection', pk=program.pk)
 
 
 class SessionDataCollectionView(DetailView):
@@ -14,6 +38,7 @@ class SessionDataCollectionView(DetailView):
 
     def get_code_in_session(self, session):
         codes = []
+        liters = []
         ABC = Skill.objects.all()
         for session_skill in session.skills.all():
             goal = ProrgamSkillGoal.objects.filter(session_skills=session_skill)
@@ -25,28 +50,23 @@ class SessionDataCollectionView(DetailView):
                         skill = Skill.objects.get(levels=level)
                         if skill not in codes:
                             codes.append(skill)
-        litera = []
         for l in ABC:
             for i in range(len(codes)):
-                print(codes[i].code)
                 if codes[i].code == l.code:
-                    litera.append(codes[i])
-        print(litera)
-        return litera
+                    liters.append(codes[i])
+        return liters
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category_code = self.request.GET.get('ABC')
         session = Session.objects.filter(program=self.object).last()
         code = self.get_code_in_session(session)
-        skill = Skill.objects.filter(category__code=category_code).filter()
         ABC = []
         for i in code:
             if i.category.code not in ABC:
                 ABC.append(i.category.code)
         ABC.sort()
         context['code'] = code
-        context['skill_code_query'] = skill.values_list('code', flat=True)
         context['child'] = self.object.child
         context['category_code'] = category_code
         context['ABC'] = ABC
