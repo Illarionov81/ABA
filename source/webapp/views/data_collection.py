@@ -1,8 +1,7 @@
 import json
 
-from django.http import JsonResponse, HttpResponse, request
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
 from django.views import View
 from django.views.generic import DetailView, CreateView
 
@@ -38,10 +37,10 @@ class SessionDataCollectionView(DetailView):
     template_name = 'session/session_data_collection.html'
     model = Program
 
-    def get_code_in_session(self, session):
+    def get_code_in_session(self, session, category_code):
         codes = []
-        liters = []
-        ABC = Skill.objects.all()
+        sorted_code = []
+        final_code = []
         for session_skill in session.skills.all():
             goal = ProrgamSkillGoal.objects.filter(session_skills=session_skill)
             for g in goal:
@@ -52,23 +51,26 @@ class SessionDataCollectionView(DetailView):
                         skill = Skill.objects.get(levels=level)
                         if skill not in codes:
                             codes.append(skill)
-        for l in ABC:
-            for i in range(len(codes)):
-                if codes[i].code == l.code:
-                    liters.append(codes[i])
-        return liters
+        for i in codes:
+            if i.category.code == category_code:
+                sorted_code.append(int(i.code[1:]))
+        sorted_code.sort()
+        for i in sorted_code:
+            i = category_code + str(i)
+            final_code.append(i)
+        return codes, final_code
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category_code = self.request.GET.get('ABC')
         session = Session.objects.filter(program=self.object).last()
-        code = self.get_code_in_session(session)
+        codes, final_code = self.get_code_in_session(session, category_code)
         ABC = []
-        for i in code:
+        for i in codes:
             if i.category.code not in ABC:
                 ABC.append(i.category.code)
         ABC.sort()
-        context['code'] = code
+        context['code'] = final_code
         context['child'] = self.object.child
         context['category_code'] = category_code
         context['ABC'] = ABC
