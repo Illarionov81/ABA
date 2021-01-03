@@ -60,10 +60,12 @@ async function DoneSelf(event) {
     let ButtonDoneSelf = event.target;
     let id = ButtonDoneSelf.id;
     let url = ButtonDoneSelf.href;
+    ButtonDoneSelf.href = '#'
     try {
         let response = await makeRequest(url, 'POST', {'id': id}).then((response) => response.json());
         console.log(response)
         ButtonDoneSelf.innerText = 'Self ' + response['count']
+        ButtonDoneSelf.href = url
     }
     catch (error) {
         console.log(error);
