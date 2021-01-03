@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import BaseValidator
 from django.utils.deconstruct import deconstructible
 
-from .models import PROGRAM_STATUS_CHOICES, Program
+from .models import PROGRAM_STATUS_CHOICES, Program, ProrgamSkillGoal
 
 default_status = PROGRAM_STATUS_CHOICES[0][0]
 
@@ -31,3 +31,8 @@ class ProgramForm(forms.ModelForm):
         model = Program
         fields = ['start_date', 'end_date', 'status', 'name', 'description', 'comment']
 
+
+class SessionAddGoal(forms.ModelForm):
+    class Meta:
+        model = ProrgamSkillGoal
+        fields = ['goal']
