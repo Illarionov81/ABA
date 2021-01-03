@@ -1,7 +1,8 @@
 import json
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, request
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.views import View
 from django.views.generic import DetailView, CreateView
 
@@ -29,7 +30,8 @@ class SessionAddGoalView(CreateView):
         goal.save()
         session_skill.skill_id = goal.pk
         session_skill.save()
-        return redirect('webapp:session_data_collection', pk=program.pk)
+        next_url = self.request.GET.get('next')
+        return redirect(next_url)
 
 
 class SessionDataCollectionView(DetailView):
