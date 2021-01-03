@@ -60,12 +60,12 @@ async function DoneSelf(event) {
     let ButtonDoneSelf = event.target;
     let id = ButtonDoneSelf.id;
     let url = ButtonDoneSelf.href;
-    ButtonDoneSelf.href = '#'
+    ButtonDoneSelf.href = '#';
     try {
         let response = await makeRequest(url, 'POST', {'id': id}).then((response) => response.json());
         console.log(response)
         ButtonDoneSelf.innerText = 'Self ' + response['count']
-        ButtonDoneSelf.href = url
+        ButtonDoneSelf.href = url;
     }
     catch (error) {
         console.log(error);
@@ -77,10 +77,12 @@ async function Done_with_hint(event) {
     let ButtonDone_with_hint = event.target;
     let id = ButtonDone_with_hint.id;
     let url = ButtonDone_with_hint.href;
+    ButtonDone_with_hint.href = '#';
     try {
         let response = await makeRequest(url, 'POST', {'id': id}).then((response) => response.json());
         console.log(response)
         ButtonDone_with_hint.innerText = 'Hint ' + response['count']
+        ButtonDone_with_hint.href = url;
     }
     catch (error) {
         console.log(error);
