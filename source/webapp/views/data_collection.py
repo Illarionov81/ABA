@@ -1,12 +1,22 @@
 import json
 
+from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
-from django.views.generic import DetailView, CreateView
+from django.views.generic import DetailView, CreateView, UpdateView
 
 from webapp.forms import SessionAddGoal
-from webapp.models import Session, Program, SkillLevel, SessionSkill, Skill, ProrgamSkillGoal, ProgramSkill
+from webapp.models import Session, Program, SkillLevel, SessionSkill, Skill, ProrgamSkillGoal, ProgramSkill, \
+    SESSION_STATUS_CLOSED
+
+
+class SessionCloseView(View):
+    def get(self, *args, **kwargs):
+        session = get_object_or_404(Session, pk=self.kwargs.get('pk'))
+        session.status = SESSION_STATUS_CLOSED
+        session.save()
+        return redirect('webapp:child_view', pk=session.program.child.pk)
 
 
 class SessionAddGoalView(CreateView):
