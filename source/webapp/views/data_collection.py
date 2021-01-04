@@ -19,15 +19,36 @@ class SessionCloseView(View):
         return redirect('webapp:child_view', pk=session.program.child.pk)
 
 
-class SessionAddGoalView(CreateView):
-    template_name = 'session/session_add_goal.html'
-    form_class = SessionAddGoal
-    model = ProrgamSkillGoal
+# class SessionAddGoalView(CreateView):
+#     template_name = 'session/session_add_goal.html'
+#     form_class = SessionAddGoal
+#     model = ProrgamSkillGoal
+#
+#     def form_valid(self, form):
+#         program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
+#         level = get_object_or_404(SkillLevel, pk=self.kwargs.get('level'))
+#         goal = form.save(commit=False)
+#         session = Session.objects.filter(program=program).last()
+#         program_skill = ProgramSkill()
+#         program_skill.program = program
+#         program_skill.level = level
+#         session_skill = SessionSkill()
+#         session_skill.session_id = session.pk
+#         program_skill.save()
+#         goal.skill = program_skill
+#         goal.save()
+#         session_skill.skill_id = goal.pk
+#         session_skill.save()
+#         next_url = self.request.GET.get('next')
+#         return redirect(next_url)
 
-    def form_valid(self, form):
+class SessionAddGoalView(View):
+    def post(self, *args, **kwargs):
+        print(self.kwargs.get('pk'))
         program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
         level = get_object_or_404(SkillLevel, pk=self.kwargs.get('level'))
-        goal = form.save(commit=False)
+        goal = ProrgamSkillGoal()
+        goal.goal = self.request.POST.get('goal')
         session = Session.objects.filter(program=program).last()
         program_skill = ProgramSkill()
         program_skill.program = program
