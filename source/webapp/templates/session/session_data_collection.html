@@ -5,54 +5,64 @@
     <li><a class="btn btn-primary" href="#" role="button">Просмотр сессии</a></li>
 {% endblock %}
 {% block content %}
-<div class="box">
-    <p class="text-center">Session {{ session.created_date | date:"d.m.Y "  }} | <a href="{% url 'webapp:child_view' child.pk %}">{{ child }}</a> </p>
-    <form action="{% url 'webapp:session_data_collection' program.pk %}" method="get">
-        <div class="row">
-            <div class="col">
-                {% for s in ABC %}
-                    <input type="submit" name="ABC" value="{{ s }}"
-                           id="{{ s }}" style="float: left; padding: 3px; margin: 3px; width: 35px">
-                {% endfor %}
-            </div>
+    {% if session.status == 'closed' %}
+        <div class="box">
+            <h1 class="text-center">Последняя сессия имеет статус - closed!<br><a href="#">Создайте новую сессию.</a></h1>
         </div>
-     </form>
-    <div class="my_row">
-        {% for skill in code %}
-            <div class="col_inline">
-                <a class="my_col empty" href="#" onclick="ChoiceCategory(event)" id="{{ skill }}">{{ skill }}</a>
-            </div>
-        {% endfor %}
-    </div>
-    {% for i in session.skills.all %}
-        {% if i.skill.skill.level.skill.category.code == category_code %}
-            <div class="box box_category" id="{{ i.skill.skill.level.skill.code }}">
-{#                <p>SessionSkill: {{ i.pk }}</p>#}
-                <a href="{% url 'webapp:session_add_goal' program.pk  i.skill.skill.level.pk %}?next={{ request.get_full_path }}" class="float-right">Добавить навык</a>
-                <b><p class="py-1 my-0">{{ i.skill.skill.level.skill.code }} - {{ i.skill.skill.level.level }}</p></b>
-                {% if i.skill.skill.add_creteria %}
-                    <p>Доп критерий: {{ i.skill.skill.add_creteria }} pk - {{ i.skill.skill.pk }}</p>
-                {% else %}
-{#                    <p>Стандартный критерий</p>#}
-                {% endif %}
-                {% if i.skill.goal %}
-                    <span>Доп цель:</span>
-                    <p> {{ i.skill.goal }} pk - {{ i.skill.pk }}</p>
-                {% else %}
-                    <span>Стандартная цель:</span>
-                    <p>{{ i.skill.skill.level.skill.description }}</p>
-                {% endif %}
-                <div class="text-center">
-                    <a class="session_btn_2"  href="{% url 'webapp:done_with_hint' i.pk %}" onclick="Done_with_hint(event)" id="{{ i.pk }}">
-                      Hint  {{ i.done_with_hint }}
-                    </a>
-                    <a class="session_btn"  href="{% url 'webapp:done_self' i.pk %}" onclick="DoneSelf(event)" id="{{ i.pk }}">
-                       Self {{ i.done_self }}
-                    </a>
+    {% else %}
+    <div class="box">
+        <p class="text-center">Session {{ session.created_date | date:"d.m.Y "  }} |
+            <a href="{% url 'webapp:child_view' child.pk %}">{{ child }}</a> | Статус: {{ session.status }}
+        </p>
+        <p class="float-right"><a href="{% url 'webapp:session_close' session.pk %}">Закрыть сессию: {{ session.pk }}</a></p>
+        <form action="{% url 'webapp:session_data_collection' program.pk %}" method="get">
+            <div class="row">
+                <div class="col">
+                    {% for s in ABC %}
+                        <input type="submit" name="ABC" value="{{ s }}"
+                               id="{{ s }}" style="float: left; padding: 3px; margin: 3px; width: 35px">
+                    {% endfor %}
                 </div>
             </div>
-        {% endif %}
-    {% endfor %}
-</div>
+         </form>
+        <div class="my_row">
+            {% for skill in code %}
+                <div class="col_inline">
+                    <a class="my_col empty" href="#" onclick="ChoiceCategory(event)" id="{{ skill }}">{{ skill }}</a>
+                </div>
+            {% endfor %}
+        </div>
+        {% for i in session.skills.all %}
+            {% if i.skill.skill.level.skill.category.code == category_code %}
+                <div class="box box_category" id="{{ i.skill.skill.level.skill.code }}">
+    {#                <p>SessionSkill: {{ i.pk }}</p>#}
+                    <a href="{% url 'webapp:session_add_goal' program.pk  i.skill.skill.level.pk %}?next={{ request.get_full_path }}" class="float-right">Добавить навык</a>
+                    <b><p class="py-1 my-0">{{ i.skill.skill.level.skill.code }} - {{ i.skill.skill.level.level }}</p></b>
+                    {% if i.skill.skill.add_creteria %}
+                        <p>Доп критерий: {{ i.skill.skill.add_creteria }} pk - {{ i.skill.skill.pk }}</p>
+                    {% else %}
+    {#                    <p>Стандартный критерий</p>#}
+                    {% endif %}
+                    {% if i.skill.goal %}
+                        <span>Доп цель:</span>
+                        <p> {{ i.skill.goal }} pk - {{ i.skill.pk }}</p>
+                    {% else %}
+                        <span>Стандартная цель:</span>
+                        <p>{{ i.skill.skill.level.skill.description }}</p>
+                    {% endif %}
+                    <div class="text-center">
+                        <a class="session_btn_2"  href="{% url 'webapp:done_with_hint' i.pk %}" onclick="Done_with_hint(event)" id="{{ i.pk }}">
+                          Hint  {{ i.done_with_hint }}
+                        </a>
+                        <a class="session_btn"  href="{% url 'webapp:done_self' i.pk %}" onclick="DoneSelf(event)" id="{{ i.pk }}">
+                           Self {{ i.done_self }}
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <script type="application/javascript" src="{% static "js/session_data_collection.js" %}"></script>
 {% endblock %}
