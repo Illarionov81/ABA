@@ -1,8 +1,9 @@
 from django.urls import path, include
 
-from webapp.views.child_test import TestResultView, TestsView, ChildTestUpdateView, ChildMakeTestView
 from webapp.views.child import IndexView, ChildDetailView
-from webapp.views.program import ProgramDetailView, ProgramCreateView,UpdateProgram, ProgrmDelete, DeleteGoalView
+from webapp.views.child_test import TestResultView, TestsView, ChildTestUpdateView, ChildMakeTestView
+from webapp.views.program import ProgramDetailView, ProgramCreateView, UpdateProgram, ProgrmDelete, DeleteGoalView, \
+    DeleteCreteriaView, DeleteAddCreteriaView
 from webapp.views.session import SessionListView, SessionCreateView, SessionSkillCreateView
 
 app_name = 'webapp'
@@ -14,6 +15,8 @@ urlpatterns = [
     path('program/<int:pk>/', ProgramDetailView.as_view(), name='program_detail'),
     path('program/<int:pk>/delete/', ProgrmDelete.as_view(), name='program_delete'),
     path('delete/goal/<int:pk>/', DeleteGoalView.as_view(), name='delete_goal'),
+    path('delete//<int:pk>/cretetia/', DeleteCreteriaView.as_view(), name='delete_creteria'),
+    path('delete//<int:pk>/add_cretetia/', DeleteAddCreteriaView.as_view(), name='delete_add_creteria'),
     path('program/<int:pk>/update/', UpdateProgram.as_view(), name='update_program'),
     path('update_test/<int:pk>/', ChildTestUpdateView.as_view(), name='child_update_test'),
     path('session/<int:pk>/', SessionListView.as_view(), name='session_list'),

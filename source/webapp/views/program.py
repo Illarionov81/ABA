@@ -1,14 +1,13 @@
 import json
-from docx import Document
-from docx.shared import Inches
+
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse
+from django.views.generic import DetailView, CreateView, DeleteView
 from django.views.generic.base import View, TemplateView
 
 from webapp.forms import ProgramForm
 from webapp.models import Program, SKILL_STATUS_OPEN, PROGRAM_STATUS_CLOSED, PROGRAM_STATUS_OPEN, Child, ProgramSkill, \
-    GOAL_STATUS_OPEN, ProrgamSkillGoal, Test, Skill, SkillLevel
+    GOAL_STATUS_OPEN, ProrgamSkillGoal, Skill, SkillLevel
 
 
 class ProgramDetailView(DetailView):
@@ -89,10 +88,11 @@ class UpdateProgram(TemplateView):
         goals = data['goals']
         if goals:
             for g in goals:
-                goal = ProrgamSkillGoal()
-                goal.skill = prorgam_skill
-                goal.goal = g
-                goal.save()
+                if g:
+                    goal = ProrgamSkillGoal()
+                    goal.skill = prorgam_skill
+                    goal.goal = g
+                    goal.save()
         else:
             goal = ProrgamSkillGoal()
             goal.save()
@@ -109,7 +109,7 @@ class ProgrmDelete(DeleteView):
 
 
 class DeleteGoalView(DeleteView):
-    template_name = 'program/delete_goal.html'
+    # template_name = 'program/delete_goal.html'
     model = ProrgamSkillGoal
 
     def get(self, request, *args, **kwargs):
@@ -118,6 +118,28 @@ class DeleteGoalView(DeleteView):
     def get_success_url(self):
         return reverse('webapp:program_detail', kwargs={'pk': self.object.skill.program.pk})
 
+
+class DeleteCreteriaView(DeleteView):
+    template_name = 'program/program_detail_view.html'
+    model = ProgramSkill
+
+    def get(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('webapp:program_detail', kwargs={'pk': self.object.program.pk})
+
+
+class DeleteAddCreteriaView(View):
+    def get(self, request, *args, **kwargs):
+        prskill = get_object_or_404(ProgramSkill, pk=self.kwargs.get('pk'))
+        prskill.add_creteria = None
+        self.prskill = prskill
+        prskill.save()
+        return self.get_success_url()
+
+    def get_success_url(self):
+        return redirect("webapp:program_detail", self.prskill.program.pk)
 
 
 class ExportWord(View):
