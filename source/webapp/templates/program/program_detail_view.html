@@ -32,15 +32,21 @@
                         <td class="text-left"> {{ program_skills.level.skill}}</td>
                         <td class="text-center">{{ program_skills.level.level }}</td>
                         <td class="text-left">
+
                             {% if not program_skills.add_creteria  %}
                                 {{program_skills.level.criteria }}
+                                <a class="btn-outline-dark" title="Удалить навык" href="{% url 'webapp:delete_creteria' program_skills.pk%}">
+                                    <i class="fa fa-fw fa-trash fa-lg"></i></a>
                             {% else %}
                                 {{ program_skills.add_creteria }}
+                                <a class="btn-outline-dark" title="Удалить доп критерий" href="{% url 'webapp:delete_add_creteria' program_skills.pk%}">
+                                    <i class="fa fa-fw fa-trash fa-lg"></i></a>
                             {% endif %}
                             <br>
                         {% if goals.goal %}
                             Дополнительная цель: {{ goals.goal }}
-                            <a class="badge badge-dark" href="{% url 'webapp:delete_goal' goals.pk%}">Удалить</a>
+                            <a class="btn-outline-dark" title="Удалить цель"  href="{% url 'webapp:delete_goal' goals.pk%}">
+                                <i class="fa fa-fw fa-trash fa-lg"></i></a>
                         {% endif %}
                         </td>
                         <td class="text-left">
@@ -58,8 +64,13 @@
                     <td class="text-left">
                         {% if not program_skills.add_creteria  %}
                             {{program_skills.level.criteria }}
+                             <a class="btn-outline-dark" title="Удалить навык" href="{% url 'webapp:delete_creteria' program_skills.pk%}">
+                                    <i class="fa fa-fw fa-trash fa-lg"></i></a>
                         {% else %}
-                            {{ program_skills.add_creteria }}{% endif %}
+                            {{ program_skills.add_creteria }}
+                            <a class="btn-outline-dark" title="Удалить цель"  href="{% url 'webapp:delete_goal' goals.pk%}">
+                                <i class="fa fa-fw fa-trash fa-lg"></i></a>
+                        {% endif %}
                     </td>
                     <td class="text-left">{{ program_skills.get_status_display }}</td>
                     </tr>
@@ -69,6 +80,6 @@
         </table>
     </div>
         <a class="btn btn-primary" href="{% url 'webapp:update_program' programs.pk %}">Добавить навык</a>
-        <a class="btn btn-primary" href="{% url 'webapp:program_delete' programs.pk %}">Удалить Программу</a>
+        <a class="btn btn-primary" href="{% url 'webapp:program_delete' programs.pk %}">Удалить программу</a>
 
 {% endblock %}
