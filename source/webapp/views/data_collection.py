@@ -4,9 +4,8 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
-from django.views.generic import DetailView, CreateView, UpdateView
+from django.views.generic import DetailView
 
-from webapp.forms import SessionAddGoal
 from webapp.models import Session, Program, SkillLevel, SessionSkill, Skill, ProrgamSkillGoal, ProgramSkill, \
     SESSION_STATUS_CLOSED
 
@@ -16,35 +15,12 @@ class SessionCloseView(View):
         session = get_object_or_404(Session, pk=self.kwargs.get('pk'))
         session.status = SESSION_STATUS_CLOSED
         session.save()
+        messages.add_message(self.request, messages.SUCCESS, 'Сессия успешно закрыта.')
         return redirect('webapp:child_view', pk=session.program.child.pk)
 
 
-# class SessionAddGoalView(CreateView):
-#     template_name = 'session/session_add_goal.html'
-#     form_class = SessionAddGoal
-#     model = ProrgamSkillGoal
-#
-#     def form_valid(self, form):
-#         program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
-#         level = get_object_or_404(SkillLevel, pk=self.kwargs.get('level'))
-#         goal = form.save(commit=False)
-#         session = Session.objects.filter(program=program).last()
-#         program_skill = ProgramSkill()
-#         program_skill.program = program
-#         program_skill.level = level
-#         session_skill = SessionSkill()
-#         session_skill.session_id = session.pk
-#         program_skill.save()
-#         goal.skill = program_skill
-#         goal.save()
-#         session_skill.skill_id = goal.pk
-#         session_skill.save()
-#         next_url = self.request.GET.get('next')
-#         return redirect(next_url)
-
 class SessionAddGoalView(View):
     def post(self, *args, **kwargs):
-        print(self.kwargs.get('pk'))
         program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
         level = get_object_or_404(SkillLevel, pk=self.kwargs.get('level'))
         goal = ProrgamSkillGoal()
@@ -61,6 +37,7 @@ class SessionAddGoalView(View):
         session_skill.skill_id = goal.pk
         session_skill.save()
         next_url = self.request.GET.get('next')
+        messages.add_message(self.request, messages.SUCCESS, 'Навык успешно добавлен.')
         return redirect(next_url)
 
 
