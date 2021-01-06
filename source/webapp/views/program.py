@@ -1,5 +1,6 @@
 import json
 
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import DetailView, CreateView, DeleteView
@@ -141,6 +142,62 @@ class DeleteAddCreteriaView(View):
     def get_success_url(self):
         return redirect("webapp:program_detail", self.prskill.program.pk)
 
+class RemoveProgramView(TemplateView):
+    model = Program
+
+    def get(self, request, *args, **kwargs):
+        skill_lvl = SkillLevel.objects.get(pk=self.kwargs.get('s_pk'))
+        p_pk = self.kwargs.get('p_pk')
+        program_skill = skill_lvl.program_skill.all().filter(program__pk=p_pk)[0]
+        goals = program_skill.goal.all()
+        g = []
+        for goal in goals:
+            g.append(goal.goal)
+        print(goals)
+        responseData = {
+            # 'criteria': skill_lvl.criteria,
+            'add_creteria': program_skill.add_creteria,
+            'goals': g or []
+        }
+        return HttpResponse(json.dumps(responseData), content_type="application/json")
+
+    def post(self, request, *args, **kwargs):
+
+        skill_lvl = SkillLevel.objects.get(pk=self.kwargs.get('s_pk'))
+        p_pk = self.kwargs.get('p_pk')
+        program_skill = skill_lvl.program_skill.all().filter(program__pk=p_pk)[0]
+        program_skill.goal.all().delete()
+
+
+        program = get_object_or_404(Program, pk=self.kwargs.get('p_pk'))
+        data = json.loads(request.body)
+        skill_lvl = SkillLevel.objects.get(pk=data['id'])
+
+        if data['add_creteria'] and not program_skill:
+            program_skill = ProgramSkill()
+            program_skill.add_creteria = data['add_creteria']
+            program_skill.level = skill_lvl
+            program_skill.program = program
+        elif not data['add_creteria'] and program_skill:
+            program_skill.add_creteria = None
+        else:
+            program_skill.add_creteria = data['add_creteria']
+
+        program_skill.save()
+
+        goals = data['goals']
+        if goals:
+            for g in goals:
+                if g:
+                    goal = ProrgamSkillGoal()
+                    goal.skill = program_skill
+                    goal.goal = g
+                    goal.save()
+        else:
+            goal = ProrgamSkillGoal()
+            goal.save()
+
+        return redirect('webapp:update_program', pk=program.pk)
 
 class ExportWord(View):
     pass
