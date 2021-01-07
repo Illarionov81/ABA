@@ -6,11 +6,20 @@
 {% endblock %}
 {% block content %}
     <div class="box">
-        {% for i in programs.program_skill.all %}
+        {% for i in goals %}
             {% if i.status == 'open' %}
-                <p>{{ i.level }} <a href="#">Add</a> <a href="#">Remove</a></p>
+                {% if i.goal %}
+                    <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп. цель: {{ i.goal }} <a onclick="addSkill(event)" id="{{ i.pk }}" href="{% url 'webapp:add_skill' sessions.pk %}">ADD</a>
+                        <a class="remove-button" onclick="deleteSkill (event)" id="{{ i.pk }}" href="{% url 'webapp:delete_skill' sessions.pk %}">REMOVE</a></p>
+                {% elif i.skill.add_creteria %}
+                    <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп. критерий: {{ i.skill.add_creteria }} <a onclick="addSkill(event)" id="{{ i.pk }}" href="{% url 'webapp:add_skill' sessions.pk %}">ADD</a>
+                        <a class="remove-button" onclick="deleteSkill (event)" id="{{ i.pk }}" href="{% url 'webapp:delete_skill' sessions.pk %}">REMOVE</a></p>
+                {% else %}
+                    <p>{{ i.skill.level }} <a onclick="addSkill(event)" id="{{ i.pk }}" href="{% url 'webapp:add_skill' sessions.pk %}">ADD</a>
+                        <a class="remove-button" onclick="deleteSkill (event)" id="{{ i.pk }}" href="{% url 'webapp:delete_skill' sessions.pk %}">REMOVE</a></p>
+                {% endif %}
             {% endif %}
         {% endfor %}
     </div>
-{#    <script type="application/javascript" src="{% static "js/session_add_skill.js" %}"></script>#}
+    <script type="application/javascript" src="{% static "js/session_add_skill.js" %}"></script>
 {% endblock %}
