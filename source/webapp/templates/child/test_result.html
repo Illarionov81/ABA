@@ -14,23 +14,24 @@
 
 {% block content %}
     <div class="box">
-        <h3>Результаты тестов: <a href="{% url 'webapp:child_view' test.child.pk %}">Ребенок - {{ test.child.first_name }}. </a>
-            <a href="{% url 'webapp:child_tests' test.child.pk %}" style="float: right; padding-right: 50px">Список тестов.</a>
+        <h3>Результаты тестов: <a href="{% url 'webapp:child_view' test.child.pk %}">Ребенок - {{ test.child.first_name }}.</a>
         </h3>
+        <h4>Терапист - {{ test.therapist }} | Дата начала: {{ test.created_date | date:"d.m.Y" }}
+                | Дата обновления: {{ test.updated_at | date:"d.m.Y " }}
+        </h4>
         <div class="row">
-            <div class="col-1"><div class=" test2 "></div></div>
-            <div class="col">Выбранный тест №{{ test.pk }}. Терапист - {{ test.therapist }}.
-                | Дата начала: {{ test.created_date | date:"d.m.Y" }}
-                | Дата обновления: {{ test.updated_at | date:"d.m.Y " }}</div>
+            <div class="col-sm-11"><div class=" test2 mx-1"></div>Выбранный тест №{{ test.pk }}.</div>
         </div>
          <div class="row">
             {% if test.previus_test %}
-                    <div class=" col-1"><div class="test1"></div></div>
-                    <div class="col-3">Предыдущие тесты.</div>
+                <div class="col-sm-11"><div class="test1 mx-1"></div>Предыдущие тесты.</div>
             {% endif %}
          </div>
         <hr>
-             <div class="row"> <div class="col"><a href="{% url 'webapp:child_update_test' test.pk %}">Продолжить тестирование.</a></div> </div>
+             <div class="row">
+                 <div class="col"><a href="{% url 'webapp:child_update_test' test.pk %}">Продолжить тестирование.</a></div>
+                 <a href="{% url 'webapp:child_tests' test.child.pk %}" style="float: right; padding-right: 50px">Список тестов.</a>
+             </div>
         <hr>
         <form action="{% url 'webapp:test_result' test.pk %}" method="get">
             <div class="row">
