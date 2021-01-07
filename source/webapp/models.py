@@ -137,7 +137,7 @@ class ProrgamSkillGoal(models.Model):
                               verbose_name='Статус')
 
     def __str__(self):
-        return "{}".format(self.goal)
+        return "{} {}".format(self.goal, self.skill)
 
     class Meta:
         verbose_name = "Дополнительная цель"

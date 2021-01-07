@@ -1,11 +1,9 @@
 import json
-
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.views.generic import ListView, TemplateView
-
-from webapp.models import Session, Child, Program, SkillLevel, SessionSkill
+from webapp.models import Session, Program, ProrgamSkillGoal, SessionSkill
 
 
 class SessionListView(ListView):
@@ -28,38 +26,48 @@ class SessionCreateView(View):
     def get(self, request, *args, **kwargs):
         program = get_object_or_404(Program, pk=kwargs.get('pk'))
         session = Session.objects.create(program=program, child=program.child, therapist=self.request.user)
-        print('123')
         return redirect('webapp:session_prepear', pk=session.pk)
 
 
 class SessionSkillCreateView(TemplateView):
     template_name = 'session/session_create.html'
     model = Session
-    paginate_by = 5
-    paginate_orphans = 0
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         session = get_object_or_404(Session, pk=self.kwargs.get('pk'))
+        goal = ProrgamSkillGoal.objects.filter(skill__program=session.program.pk)
+        context['goals'] = goal
         context['sessions'] = session
         context['programs'] = session.program
         return context
-#
-# class SessionAddSkill(View):
-#     def post(self, request, *args, **kwargs):
-#         session = get_object_or_404(Session, pk=kwargs.get('pk'))
-#         data = json.loads(request.body)
-#         skill_lvl = SkillLevel.objects.get(pk=data['id'])
-#         session_skill, created = SessionSkill.objects.get_or_create(session=session)
-#         session_skill.skill_level.add(skill_lvl)
-#         print(session_skill.skill_level)
-#         if created:
-#             session_skill.skill_level.add(skill_lvl)
-#             print(session_skill.skill_level.all())
-#             return HttpResponse(session_skill)
-#         return HttpResponse(session_skill)
-#
-#
+
+
+class SessionAddSkill(View):
+    def post(self, request, *args, **kwargs):
+        session = get_object_or_404(Session, pk=kwargs.get('pk'))
+        data = json.loads(request.body)
+        skill = ProrgamSkillGoal.objects.get(pk=data['id'])
+        sessionSkill, _ = SessionSkill.objects.get_or_create(session=session, skill=skill)
+        try:
+            sessionSkill.save()
+            return JsonResponse({'add': 'add'})
+        except:
+            return JsonResponse({'add': False})
+
+
+class SessionDeleteSkill(View):
+    def delete(self, request, *args, **kwargs):
+        session = get_object_or_404(Session, pk=kwargs.get('pk'))
+        data = json.loads(request.body)
+        skill = ProrgamSkillGoal.objects.get(pk=data['id'])
+        session_skill = get_object_or_404(SessionSkill, session=session, skill=skill)
+        try:
+            session_skill.delete()
+            return JsonResponse({'remove': 'remove'})
+        except:
+            return JsonResponse({'remove': False})
+
 # class SessionDeleteSkill(View):
 #     def delete(self, request, *args, **kwargs):
 #         session = get_object_or_404(Session, pk=kwargs.get('pk'))
