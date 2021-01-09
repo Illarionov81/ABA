@@ -61,52 +61,54 @@ async function update_program(event) {
     let url = event.target.getAttribute("href");
     const response = await makeRequest(url);
     let update_pr = await response.json();
-    let add_creteria = document.getElementById("add_creteria")
-    add_creteria.value = update_pr.add_creteria
-    // const input_criteria = document.createElement("input")
-    // input_criteria.setAttribute("id", "criteria")
-    // input_criteria.value = update_pr.criteria
-    // add_creteria.before(input_criteria)
-    const add_new_goal = document.getElementById('add_new_goal')
-    add_new_goal.onclick = (e) => {
-        e.preventDefault()
-        const input = document.createElement("input")
-        input.setAttribute("class", "add_goal")
-        input.setAttribute("placeholder", "Добавить цель")
-        add_new_goal.after(input)
-    }
-    for(let i=0; i<update_pr.goals.length; i++){
-        const input = document.createElement("input")
-        input.setAttribute("class", "add_goal")
-        input.setAttribute("placeholder", "Добавить цель")
-        input.value = update_pr.goals[i]
-        add_new_goal.after(input)
-    }
-    $("#exampleModal").modal("show")
-    const button = document.getElementById('save')
-
-    button.onclick =  async (e) => {
-        e.preventDefault()
-
-        event.target.style.backgroundColor = 'red'
+    if (update_pr.error){alert(update_pr.error)}else {
         let add_creteria = document.getElementById("add_creteria")
-        let add_creteria_value = add_creteria.value
-        // let criteria = input_criteria.value
-        let add_goal = [...(modal_body.getElementsByClassName("add_goal"))]
-        let goals = add_goal.map( (el) => {
-                return el.value
-        })
-        try {
-            await makeRequest(url, 'POST', {'id': id, 'add_creteria': add_creteria_value, 'goals': goals});
-
-
-            $("#exampleModal").modal("hide")
+        add_creteria.value = update_pr.add_creteria
+        // const input_criteria = document.createElement("input")
+        // input_criteria.setAttribute("id", "criteria")
+        // input_criteria.value = update_pr.criteria
+        // add_creteria.before(input_criteria)
+        const add_new_goal = document.getElementById('add_new_goal')
+        add_new_goal.onclick = (e) => {
+            e.preventDefault()
+            const input = document.createElement("input")
+            input.setAttribute("class", "add_goal")
+            input.setAttribute("placeholder", "Добавить цель")
+            add_new_goal.before(input)
         }
-        catch (error) {
-            console.log(error);
+        for (let i = 0; i < update_pr.goals.length; i++) {
+            const input = document.createElement("input")
+            input.setAttribute("class", "add_goal")
+            input.setAttribute("placeholder", "Добавить цель")
+            input.value = update_pr.goals[i]
+            add_new_goal.after(input)
+        }
+        $("#exampleModal").modal("show")
+        const button = document.getElementById('save')
+
+        button.onclick = async (e) => {
+            e.preventDefault()
+
+            event.target.style.backgroundColor = 'red'
+            let add_creteria = document.getElementById("add_creteria")
+            let add_creteria_value = add_creteria.value
+            // let criteria = input_criteria.value
+            let add_goal = [...(modal_body.getElementsByClassName("add_goal"))]
+            let goals = add_goal.map((el) => {
+                return el.value
+            })
+            try {
+                await makeRequest(url, 'POST', {'id': id, 'add_creteria': add_creteria_value, 'goals': goals});
+
+
+                $("#exampleModal").modal("hide")
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 }
+
 
 function add_new_input_goal(){
     const modal_body = document.getElementById("add_new_goal");
@@ -119,10 +121,10 @@ function add_new_input_goal(){
 async function open_modal(event){
     event.preventDefault()
     document.getElementById("add_creteria").value = ""
-    const criteria = document.getElementById("criteria")
-    if(criteria){
-        criteria.remove()
-    }
+    // const criteria = document.getElementById("criteria")
+    // if(criteria){
+    //     criteria.remove()
+    // }
     let modal_body = document.getElementById("modal_body")
     const main_goal = document.getElementById("add_goal")
     let add_goal = [...(modal_body.getElementsByClassName("add_goal"))]

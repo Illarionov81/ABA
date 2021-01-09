@@ -1,18 +1,23 @@
 {% extends 'base.html' %}
 {% block title %}Личные данные ребенка{% endblock %}
 {% block menu %}
-    <li><a class="btn btn-primary" href="{% url 'webapp:child_tests' child.pk %}">Оценка навыков</a></li>
+    <li class="nav-item active mx-1"><a class="nav-link" href="{% url 'webapp:child_tests' child.pk %}">Оценка навыков</a></li>
+    {% if user.is_authenticated %}
+   <li class="nav-item active mx-1"> <a class="nav-link" href="{% url 'webapp:program_create' child.pk %}">Создать прогарамму</a></li>
+    {% endif %}
 {% endblock %}
 {% block content %}
-    <h1>Личные  данные ребенка</h1>
-    <div class="box">
-        <p>Имя: {{ child.first_name }}</p>
-        <p>Фамилия: {{ child.last_name }}</p>
-        <p>Отчество: {{ child.third_name }}</p>
+    <h1 class="text-center">Личные  данные ребенка</h1>
+    <div class="box px-lg-5">
+    <div class="row mx-lg-n5">
+    <div class="col py-3 px-lg-5">
+        <p>ФИО: {{ child.last_name }} {{ child.first_name }} {{ child.third_name }}</p>
         <p>Дата рождения: {{ child.birthday }}</p>
         <p>Возраст: {{ child.age}}</p>
         <p>Адрес: {{ child.address }}</p>
         <p>Характеристика на ребенка: {{ child.characteristic }}</p>
+    </div>
+    <div class="col py-3 px-lg-5">
         <p>Предпочтения ребенка: {{ child.preferences }}</p>
         <p>Родитель: {{ child.first_parent }}</p>
         <p>Второй родитель: {{ child.second_parent }}</p>
@@ -23,16 +28,16 @@
         {% endif %}
         <p>Система коммуникации: {{ child.communication_system }}</p>
     </div>
+    </div>
+    </div>
     <div>
-    <h2>Список программ ребенка</h2>
+    <h2 class="text-center">Список программ ребенка</h2>
         {% for program in  programs %}
 
-            <a class="btn btn-primary m-2" href="{% url 'webapp:program_detail' program.pk %}">Дата начала:{{program.start_date|date:"d.m.Y" }}</a>
+            <a class="btn btn-secondary btn-sm m-2 " href="{% url 'webapp:program_detail' program.pk %}">Дата начала: {{program.start_date|date:"d.m.Y" }}</a>
 
         {% endfor %}
-    {% if user.is_authenticated %}
-    <a class="btn btn-primary" href="{% url 'webapp:program_create' child.pk %}">Создать прогарамму.</a>
-    {% endif %}
+
     </div>
 
 {% endblock %}

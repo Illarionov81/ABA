@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}Сессии{% endblock %}
 {% block menu %}
-        <li><a class="btn btn-primary" href="{% url 'webapp:session_create' program.pk %}" role="button">Подготовить сессию</a></li>
-        <li><a class="btn btn-primary" href="{% url 'webapp:session_data_collection' program.pk %}" role="button">Провести сессию</a></li>
+       <li class="nav-item active mx-1"><a class="nav-link" href="{% url 'webapp:session_create' program.pk %}" role="button">Подготовить сессию</a></li>
+       <li class="nav-item active mx-1"><a class="nav-link" href="{% url 'webapp:session_data_collection' program.pk %}" role="button">Провести сессию</a></li>
 {% endblock %}
 {% block content %}
     <div class="box">
