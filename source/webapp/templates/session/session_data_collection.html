@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block title %}Session Data Collection{% endblock %}
 {% block menu %}
-    <li><a class="btn btn-primary" href="#" role="button">Просмотр сессии</a></li>
+   <li class="nav-item active mx-1"><a class="nav-link" href="#" role="button">Просмотр сессии</a></li>
 {% endblock %}
 {% block content %}
     {% if session.status == 'closed' %}

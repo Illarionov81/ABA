@@ -1,5 +1,6 @@
 import json
 
+from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -8,7 +9,7 @@ from django.views.generic.base import View, TemplateView
 
 from webapp.forms import ProgramForm
 from webapp.models import Program, SKILL_STATUS_OPEN, PROGRAM_STATUS_CLOSED, PROGRAM_STATUS_OPEN, Child, ProgramSkill, \
-    GOAL_STATUS_OPEN, ProrgamSkillGoal, Skill, SkillLevel
+    GOAL_STATUS_OPEN, ProrgamSkillGoal, Skill, SkillLevel, Session
 
 
 class ProgramDetailView(DetailView):
@@ -114,7 +115,15 @@ class DeleteGoalView(DeleteView):
     model = ProrgamSkillGoal
 
     def get(self, request, *args, **kwargs):
-        return self.delete(request, *args, **kwargs)
+        prskill = get_object_or_404(ProrgamSkillGoal, pk=self.kwargs.get('pk'))
+        session = Session.objects.filter(program=prskill.skill.program)
+        if session:
+            messages.error(self.request, 'Нельзя удалить цель ведуться ссесии')
+            return redirect('webapp:program_detail', prskill.skill.program.pk)
+        else:
+            return self.delete(request, *args, **kwargs)
+
+
 
     def get_success_url(self):
         return reverse('webapp:program_detail', kwargs={'pk': self.object.skill.program.pk})
@@ -125,7 +134,13 @@ class DeleteCreteriaView(DeleteView):
     model = ProgramSkill
 
     def get(self, request, *args, **kwargs):
-        return self.delete(request, *args, **kwargs)
+        prskill = get_object_or_404(ProgramSkill, pk=self.kwargs.get('pk'))
+        session = Session.objects.filter(program=prskill.program)
+        if session:
+            messages.error(self.request, 'Нельзя удалить навык  ведуться ссесии')
+            return redirect('webapp:program_detail', prskill.program.pk)
+        else:
+            return self.delete(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse('webapp:program_detail', kwargs={'pk': self.object.program.pk})
@@ -134,10 +149,15 @@ class DeleteCreteriaView(DeleteView):
 class DeleteAddCreteriaView(View):
     def get(self, request, *args, **kwargs):
         prskill = get_object_or_404(ProgramSkill, pk=self.kwargs.get('pk'))
-        prskill.add_creteria = None
-        self.prskill = prskill
-        prskill.save()
-        return self.get_success_url()
+        session = Session.objects.filter(program=prskill.program)
+        if session:
+            messages.error(self.request, 'По программе ведуться ссесии')
+            return redirect('webapp:program_detail', prskill.program.pk)
+        else:
+            prskill.add_creteria = None
+            self.prskill = prskill
+            prskill.save()
+            return self.get_success_url()
 
     def get_success_url(self):
         return redirect("webapp:program_detail", self.prskill.program.pk)
@@ -149,17 +169,27 @@ class RemoveProgramView(TemplateView):
         skill_lvl = SkillLevel.objects.get(pk=self.kwargs.get('s_pk'))
         p_pk = self.kwargs.get('p_pk')
         program_skill = skill_lvl.program_skill.all().filter(program__pk=p_pk)[0]
-        goals = program_skill.goal.all()
-        g = []
-        for goal in goals:
-            g.append(goal.goal)
-        print(goals)
-        responseData = {
-            # 'criteria': skill_lvl.criteria,
-            'add_creteria': program_skill.add_creteria,
-            'goals': g or []
-        }
-        return HttpResponse(json.dumps(responseData), content_type="application/json")
+        session = Session.objects.filter(program=program_skill.program)
+        if session:
+            responseData = {
+                # 'criteria': skill_lvl.criteria,
+                'error': 'По даннрму навыку введетсся ссесия'
+            }
+            return HttpResponse(json.dumps(responseData), content_type="application/json")
+
+
+        else:
+            goals = program_skill.goal.all()
+            g = []
+            for goal in goals:
+                g.append(goal.goal)
+            print(goals)
+            responseData = {
+                # 'criteria': skill_lvl.criteria,
+                'add_creteria': program_skill.add_creteria,
+                'goals': g or []
+            }
+            return HttpResponse(json.dumps(responseData), content_type="application/json")
 
     def post(self, request, *args, **kwargs):
 
@@ -167,7 +197,6 @@ class RemoveProgramView(TemplateView):
         p_pk = self.kwargs.get('p_pk')
         program_skill = skill_lvl.program_skill.all().filter(program__pk=p_pk)[0]
         program_skill.goal.all().delete()
-
 
         program = get_object_or_404(Program, pk=self.kwargs.get('p_pk'))
         data = json.loads(request.body)
@@ -199,8 +228,12 @@ class RemoveProgramView(TemplateView):
 
         return redirect('webapp:update_program', pk=program.pk)
 
-class ExportWord(View):
-    pass
+
+class ExportWord(TemplateView):
+    def get(self, request, *args, **kwargs):
+        pr = get_object_or_404(Program, pk=self.kwargs.get('pk'))
+
+
 
 
 

@@ -1,18 +1,28 @@
 {% extends 'base.html' %}
 {% block title %}Детальный просмотр программы{% endblock %}
 {% block menu %}
-    <li><a class="btn btn-primary" href="{% url 'webapp:session_list' programs.pk %}">Сессии</a></li>
+    <li class="nav-item active mx-1"><a class="nav-link" href="{% url 'webapp:session_list' programs.pk %}">Сессии</a></li>
+    <li class="nav-item active mx-1"><a class="nav-link" href="{% url 'webapp:update_program' programs.pk %}">Добавить навык</a></li>
+    <li class="nav-item active mx-1"><a class="nav-link" href="{% url 'webapp:program_delete' programs.pk %}">Удалить программу</a></li>
+
 {% endblock %}
 {% block content %}
-    <h1>Детальный просмотр программы: {{ programs.child.first_name }} {{ programs.child.last_name }}</h1>
-    <div class="box">
+    <h1 class="text-center">Детальный просмотр программы: {{ programs.child.first_name }} {{ programs.child.last_name }}</h1>
+
+    <div class="box px-lg-5">
+    <div class="row mx-lg-n5">
+    <div class="col py-3 px-lg-5">
         <p>Дата создания: {{ programs.created_date|date:"d.m.Y" }}</p>
         <p>Дата начала: {{ programs.start_date|date:"d.m.Y" }}</p>
         <p>Ребенок: {{ programs.child }}</p>
         <p>Автор: {{ programs.author }}</p>
+    </div>
+        <div class="col py-3 px-lg-5">
         <p>Статус программы: {{ programs.get_status_display }}</p>
         <p>Название программы: {{ programs.name }}</p>
         <p>Описание: {{ programs.description }}</p>
+        </div>
+    </div>
 
 
 
@@ -81,7 +91,5 @@
             </tbody>
         </table>
     </div>
-        <a class="btn btn-primary" href="{% url 'webapp:update_program' programs.pk %}">Добавить навык</a>
-        <a class="btn btn-primary" href="{% url 'webapp:program_delete' programs.pk %}">Удалить программу</a>
 
 {% endblock %}

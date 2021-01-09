@@ -2,7 +2,7 @@
 {% block title %}Оценка навыков{% endblock %}
 {% block menu %}
     {% if user.is_authenticated %}
-        <li><a class="btn btn-primary" href="{% url 'webapp:child_create_test' child_pk %}" role="button">Новый тест</a></li>
+        <li class="nav-item active mx-1"><a class="nav-link " href="{% url 'webapp:child_create_test' child_pk %}" role="button">Новый тест</a></li>
     {% endif %}
 {% endblock %}
 {% block content %}
