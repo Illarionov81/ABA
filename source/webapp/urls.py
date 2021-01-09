@@ -4,8 +4,7 @@ from webapp.views import DoneSelf, DoneWithHint, SessionCloseView, SessionAddGoa
 from webapp.views.child import IndexView, ChildDetailView
 from webapp.views.child_test import TestResultView, TestsView, ChildTestUpdateView, ChildMakeTestView
 from webapp.views.program import ProgramDetailView, ProgramCreateView, UpdateProgram, ProgrmDelete, DeleteGoalView, \
-    DeleteCreteriaView, DeleteAddCreteriaView
-from webapp.views.session import SessionListView, SessionCreateView, SessionSkillCreateView
+    DeleteCreteriaView, DeleteAddCreteriaView, RemoveProgramView
 from webapp.views.session import SessionListView, SessionCreateView, SessionSkillCreateView, SessionAddSkill, \
     SessionDeleteSkill
 
@@ -21,6 +20,8 @@ urlpatterns = [
     path('delete/<int:pk>/critaria', DeleteCreteriaView.as_view(), name='delete_creteria'),
     path('delete/<int:pk>/add_critaria', DeleteAddCreteriaView.as_view(), name='delete_add_creteria'),
     path('program/<int:pk>/update/', UpdateProgram.as_view(), name='update_program'),
+    path('program/<int:p_pk>/remove/<int:s_pk>', RemoveProgramView.as_view(), name='update_all_program'),
+
     path('program/<int:pk>/add-goal/to-level/<int:level>/', SessionAddGoalView.as_view(), name='session_add_goal'),
     path('program/<int:pk>/data-collection/', SessionDataCollectionView.as_view(), name='session_data_collection'),
     path('session', include([
