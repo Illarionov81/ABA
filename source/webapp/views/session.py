@@ -34,7 +34,7 @@ class SessionCreateView(View):
             return redirect('webapp:session_prepear', pk=session.pk)
 
 
-class SessionSkillCreateView(TemplateView):
+class SessionSkillUpdateView(TemplateView):
     template_name = 'session/session_create.html'
     model = Session
 
