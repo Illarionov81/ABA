@@ -16,7 +16,7 @@ class SessionListView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
-        sessions = Session.objects.filter(child=program.child.pk)
+        sessions = Session.objects.filter(program=program)
         context['sessions'] = sessions
         context['program'] = program
         return context
@@ -25,8 +25,13 @@ class SessionListView(ListView):
 class SessionCreateView(View):
     def get(self, request, *args, **kwargs):
         program = get_object_or_404(Program, pk=kwargs.get('pk'))
-        session = Session.objects.create(program=program, child=program.child, therapist=self.request.user)
-        return redirect('webapp:session_prepear', pk=session.pk)
+        sessions = Session.objects.filter(program=program).last()
+        print(sessions.pk)
+        if sessions.status == 'open':
+            return redirect('webapp:session_prepear', pk=sessions.pk)
+        else:
+            session = Session.objects.create(program=program, child=program.child, therapist=self.request.user)
+            return redirect('webapp:session_prepear', pk=session.pk)
 
 
 class SessionSkillCreateView(TemplateView):
@@ -69,16 +74,3 @@ class SessionDeleteSkill(View):
             return JsonResponse({'remove': 'remove'})
         except:
             return JsonResponse({'remove': False})
-
-# class SessionDeleteSkill(View):
-#     def delete(self, request, *args, **kwargs):
-#         session = get_object_or_404(Session, pk=kwargs.get('pk'))
-#         print(session)
-#         data = json.loads(request.body)
-#         skill_lvl = SkillLevel.objects.get(pk=data['id'])
-#         print(skill_lvl)
-#         session_skill = SessionSkill.objects.get(session=session)
-#         print(session_skill)
-#         session_skill.skill_level.remove(skill_lvl)
-#         session_skill.save()
-#         return HttpResponse(session_skill)
