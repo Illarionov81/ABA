@@ -37,6 +37,8 @@ class SessionSkillCreateView(TemplateView):
         context = super().get_context_data(**kwargs)
         session = get_object_or_404(Session, pk=self.kwargs.get('pk'))
         goal = ProrgamSkillGoal.objects.filter(skill__program=session.program.pk)
+        goal_in_session = SessionSkill.objects.filter(session=session).values_list('skill', flat=True)
+        context['goal_in_session'] = goal_in_session
         context['goals'] = goal
         context['sessions'] = session
         context['programs'] = session.program
