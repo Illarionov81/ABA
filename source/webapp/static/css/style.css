@@ -322,6 +322,9 @@ a:hover {
     color: red;
     font-weight: bold;
 }
+.red_2 {
+    color: red;
+}
 .add_goal {
     margin: 5px;
     border-radius: 5px;
