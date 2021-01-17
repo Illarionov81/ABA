@@ -1,8 +1,9 @@
 import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.views import View
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DeleteView
 from webapp.models import Session, Program, ProrgamSkillGoal, SessionSkill
 
 
@@ -20,6 +21,14 @@ class SessionListView(ListView):
         context['sessions'] = sessions
         context['program'] = program
         return context
+
+
+class SessionDeleteView(DeleteView):
+    template_name = 'session/session_delete.html'
+    model = Session
+
+    def get_success_url(self):
+        return reverse('webapp:session_list', kwargs={'pk': self.object.program.pk})
 
 
 class SessionCreateView(View):

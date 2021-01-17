@@ -5,7 +5,7 @@ from webapp.views.child import IndexView, ChildDetailView
 from webapp.views.child_test import TestResultView, TestsView, ChildTestUpdateView, ChildMakeTestView
 from webapp.views.program import ProgramDetailView, ProgramCreateView, UpdateProgram, ProgrmDelete, DeleteGoalView, \
     DeleteCreteriaView, DeleteAddCreteriaView, RemoveProgramView
-from webapp.views.session import SessionListView, SessionCreateView, SessionSkillUpdateView, SessionAddSkill, \
+from webapp.views.session import SessionListView, SessionCreateView, SessionDeleteView ,SessionSkillUpdateView, SessionAddSkill, \
     SessionDeleteSkill
 
 app_name = 'webapp'
@@ -31,6 +31,7 @@ urlpatterns = [
             path('', SessionListView.as_view(), name='session_list'),
             path('close', SessionCloseView.as_view(), name='session_close'),
             path('create', SessionCreateView.as_view(), name='session_create'),
+            path('delete/', SessionDeleteView.as_view(), name='session_delete'),
             path('create/skill', SessionSkillUpdateView.as_view(), name='session_prepear'),
             path('create/skill/add', SessionAddSkill.as_view(), name='add_skill'),
             path('create/skill/delete', SessionDeleteSkill.as_view(), name='delete_skill'),

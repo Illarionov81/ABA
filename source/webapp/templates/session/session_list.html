@@ -7,7 +7,8 @@
 {% block content %}
     <div class="box">
         {% for i in sessions %}
-            <li class="session_list_text"><a href="{% url 'webapp:session_prepear' i.pk %}"  {% if i.status == 'closed'%} class='red' {% endif %} >Сессия №: {{ i.pk }} - Статус -{{ i.get_status_display }}</a></li>
+            <li class="session_list_text"><a href="{% url 'webapp:session_prepear' i.pk %}"  {% if i.status == 'closed'%} class='red' {% endif %} >Сессия №: {{ i.pk }} - Статус - {{ i.get_status_display }}</a>
+            <a class="mx-5" href="{% url 'webapp:session_delete' i.pk %}">Удалить</a></li>
         {% endfor %}
     </div>
 {% endblock %}
