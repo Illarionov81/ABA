@@ -6,8 +6,8 @@
     <li class="nav-item active mx-1"><a class="nav-link" href="{% url 'webapp:session_list' programs.pk %}" role="button">Список сессий</a></li>{% endblock %}
 {% block content %}
     <div class="box">
-        <h3>Ребенок - <a href="{% url  'webapp:child_view' sessions.child.pk %}">{{ sessions.child.first_name }}.</a></h3>
-        <h4>Терапист - {{ test.therapist }} | Дата начала: {{ sessions.created_date | date:"d.m.Y" }}</h4>
+        <h3>Ребенок - <a href="{% url  'webapp:child_view' sessions.child.pk %}">{{ sessions.child.last_name }} {{ sessions.child.first_name }}</a></h3>
+        <h4>Терапист - {{ programs.author }} | Дата начала: {{ sessions.created_date | date:"d.m.Y" }}</h4>
         <div class="row">
             <div class="col-sm-11"><div class=" legend_btn_1 mx-1"></div>Закрытый навык</div>
             <div class="col-sm-11"><div class=" legend_btn_2 mx-1"></div>Открытый навык</div>
@@ -30,7 +30,7 @@
                         {% if i.goal %}
                             <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп. цель: {{ i.goal }}</p>
                         {% elif i.skill.add_creteria %}
-                            <p class="box-inline">{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп.критерий: {{ i.skill.add_creteria }}</p>
+                            <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп.критерий: {{ i.skill.add_creteria }}</p>
                         {% else %}
                             <p>{{ i.skill.level }}</p>
                         {% endif %}

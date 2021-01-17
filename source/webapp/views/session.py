@@ -35,8 +35,7 @@ class SessionCreateView(View):
     def get(self, request, *args, **kwargs):
         program = get_object_or_404(Program, pk=kwargs.get('pk'))
         sessions = Session.objects.filter(program=program).last()
-        print(sessions.pk)
-        if sessions.status == 'open':
+        if sessions and sessions.status == 'open':
             return redirect('webapp:session_prepear', pk=sessions.pk)
         else:
             session = Session.objects.create(program=program, child=program.child, therapist=self.request.user)
