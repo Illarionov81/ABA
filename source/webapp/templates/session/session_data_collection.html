@@ -2,12 +2,12 @@
 {% load staticfiles %}
 {% block title %}Session Data Collection{% endblock %}
 {% block menu %}
-   <li class="nav-item active mx-1"><a class="nav-link" href="#" role="button">Просмотр сессии</a></li>
+   <li class="nav-item active mx-1"><a class="nav-link" href="{% url 'webapp:session_prepear' session.pk %}" role="button">Просмотр сессии</a></li>
 {% endblock %}
 {% block content %}
     {% if session.status == 'closed' %}
         <div class="box">
-            <h1 class="text-center">Последняя сессия имеет статус - closed!<br><a href="#">Создайте новую сессию.</a></h1>
+            <h1 class="text-center">Последняя сессия имеет статус - closed!<br><a href="{% url 'webapp:session_create' program.pk %}">Создайте новую сессию.</a></h1>
         </div>
     {% else %}
     <div class="box">
