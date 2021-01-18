@@ -28,9 +28,11 @@ SKILL_STATUS_CHOICES = (
 
 GOAL_STATUS_OPEN = 'open'
 GOAL_STATUS_CLOSED = 'closed'
+GOAL_STATUS_PAUSE = 'pause'
 GOAL_STATUS_CHOICES = (
     (GOAL_STATUS_OPEN, 'Открыт'),
-    (GOAL_STATUS_CLOSED, 'Закрыт')
+    (GOAL_STATUS_CLOSED, 'Закрыт'),
+    (GOAL_STATUS_PAUSE, 'Пауза'),
 )
 
 
