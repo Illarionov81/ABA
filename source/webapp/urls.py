@@ -29,12 +29,12 @@ urlpatterns = [
         path('done_with_hint/<int:pk>/', DoneWithHint.as_view(), name='done_with_hint'),
         path('<int:pk>/', include([
             path('', SessionListView.as_view(), name='session_list'),
-            path('close', SessionCloseView.as_view(), name='session_close'),
-            path('create', SessionCreateView.as_view(), name='session_create'),
+            path('close/', SessionCloseView.as_view(), name='session_close'),
+            path('create/', SessionCreateView.as_view(), name='session_create'),
             path('delete/', SessionDeleteView.as_view(), name='session_delete'),
-            path('create/skill', SessionSkillUpdateView.as_view(), name='session_prepear'),
-            path('create/skill/add', SessionAddSkill.as_view(), name='add_skill'),
-            path('create/skill/delete', SessionDeleteSkill.as_view(), name='delete_skill'),
+            path('create/skill/', SessionSkillUpdateView.as_view(), name='session_prepear'),
+            path('create/skill/add/', SessionAddSkill.as_view(), name='add_skill'),
+            path('create/skill/delete/', SessionDeleteSkill.as_view(), name='delete_skill'),
         ]))
     ])),
     path('child/', include([
