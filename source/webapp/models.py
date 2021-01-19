@@ -42,7 +42,6 @@ class SoftDeleteManager(models.Manager):
         return self.filter(is_deleted=True)
 
 
-
 class Child(models.Model):
     first_name = models.CharField(max_length=100, verbose_name='Имя ребенка')
     last_name = models.CharField(max_length=100, verbose_name='Фамилия ребенка', blank=True, null=True)
@@ -182,7 +181,6 @@ class Program(models.Model):
 
     def is_open(self):
         return self.status == PROGRAM_STATUS_OPEN
-
 
     def __str__(self):
         return "%s %s" % (self.child, self.created_date)

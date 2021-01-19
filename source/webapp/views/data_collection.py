@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import DetailView
 
 from webapp.models import Session, Program, SkillLevel, SessionSkill, Skill, ProrgamSkillGoal, ProgramSkill, \
-    SESSION_STATUS_CLOSED
+    SESSION_STATUS_CLOSED, GOAL_STATUS_CLOSED, SKILL_STATUS_CLOSED
 
 
 class SessionCloseView(View):
@@ -15,6 +15,22 @@ class SessionCloseView(View):
         session = get_object_or_404(Session, pk=self.kwargs.get('pk'))
         session.status = SESSION_STATUS_CLOSED
         session.save()
+        program = Program.objects.get(sessions=session)
+        massive = []
+        all_session = program.sessions.all()
+        if len(all_session) > 1:
+            for i in all_session:
+                massive.append(i)
+            massive = massive[-2:]
+            previous_session = massive[0]
+            this_session = massive[1]
+            this_session_skill = this_session.skills.all()
+            previous_session_skill = previous_session.skills.all()
+            for i in this_session_skill:
+                for j in previous_session_skill:
+                    if i.skill_id == j.skill_id and i.success_percent >= 80 and j.success_percent >= 80:
+                        i.skill.status = GOAL_STATUS_CLOSED
+                        i.skill.save()
         messages.add_message(self.request, messages.SUCCESS, 'Сессия успешно закрыта.')
         return redirect('webapp:child_view', pk=session.program.child.pk)
 
