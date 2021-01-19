@@ -34,6 +34,8 @@
         </div>
         {% for i in session.skills.all %}
             {% if i.skill.skill.level.skill.category.code == category_code %}
+                {% if i.skill.status == 'pause' %}
+                {% else %}
                 <div class="box box_category" id="{{ i.skill.skill.level.skill.code }}">
                     <form class="float-right" action="{% url 'webapp:session_add_goal' program.pk i.skill.skill.level.pk %}?next={{ request.get_full_path }}" method="POST">
                         {% csrf_token %}
@@ -41,12 +43,11 @@
                         <input type="submit" value="Добавить">
                     </form>
                     <b><p class="py-1 my-0">
-                        {{ i.skill.skill.level.skill.code }} - {{ i.skill.skill.level.level }} | Статус: {{ i.skill.get_status_display }}
+                        {{ i.skill.skill.level.skill.code }} - {{ i.skill.skill.level.level }} |
+                        Статус: {{ i.skill.get_status_display }}
                     </p></b>
                     {% if i.skill.skill.add_creteria %}
                         <p>Доп критерий: {{ i.skill.skill.add_creteria }} pk - {{ i.skill.skill.pk }}</p>
-                    {% else %}
-    {#                    <p>Стандартный критерий</p>#}
                     {% endif %}
                     {% if i.skill.goal %}
                         <span>Доп цель:</span>
@@ -64,6 +65,7 @@
                         </a>
                     </div>
                 </div>
+                {% endif %}
             {% endif %}
         {% endfor %}
     </div>

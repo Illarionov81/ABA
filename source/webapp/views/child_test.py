@@ -41,7 +41,6 @@ class TestResultView(ListView):
         data = c.all_test(test_pk, category_cod=category_cod, checkbox=checkbox)
         all_filtered_skill_code = data
         context['all_filtered_skill_code'] = all_filtered_skill_code
-        print(all_filtered_skill_code)
         return context
 
 
