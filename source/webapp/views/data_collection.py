@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import DetailView
 
 from webapp.models import Session, Program, SkillLevel, SessionSkill, Skill, ProrgamSkillGoal, ProgramSkill, \
-    SESSION_STATUS_CLOSED, GOAL_STATUS_CLOSED, SKILL_STATUS_CLOSED
+    SESSION_STATUS_CLOSED, GOAL_STATUS_CLOSED
 
 
 class SessionCloseView(View):
