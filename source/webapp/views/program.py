@@ -1,15 +1,18 @@
 import json
+from datetime import date
+from io import BytesIO
 
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import DetailView, CreateView, DeleteView
 from django.views.generic.base import View, TemplateView
+from docx import *
 
 from webapp.forms import ProgramForm
-from webapp.models import Program, SKILL_STATUS_OPEN, PROGRAM_STATUS_CLOSED, PROGRAM_STATUS_OPEN, Child, ProgramSkill, \
-    GOAL_STATUS_OPEN, ProrgamSkillGoal, Skill, SkillLevel, Session
+from webapp.models import Program, PROGRAM_STATUS_CLOSED, PROGRAM_STATUS_OPEN, Child, ProgramSkill, \
+    GOAL_STATUS_OPEN, GOAL_STATUS_CLOSED, ProrgamSkillGoal, Skill, SkillLevel, Session
 
 
 class ProgramDetailView(DetailView):
@@ -21,10 +24,9 @@ class ProgramDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
         goals = ProrgamSkillGoal.objects.filter(skill__program=program)
-        skill_open = program.program_skill.all().filter(status=SKILL_STATUS_OPEN)
         goal_open = goals.filter(status=GOAL_STATUS_OPEN)
-        pr_skill = program.program_skill.all().order_by('-status', 'level')
-        if not skill_open and not goal_open:
+        pr_skill = program.program_skill.all().order_by('level')
+        if not goal_open:
             program.status = PROGRAM_STATUS_CLOSED
         else:
             program.status = PROGRAM_STATUS_OPEN
@@ -46,7 +48,6 @@ class ProgramCreateView(CreateView):
         form.instance.author = self.request.user
         program.save()
         return super().form_valid(form)
-
 
     def get_success_url(self):
         program = get_object_or_404(Program, pk=self.object.pk)
@@ -87,16 +88,16 @@ class UpdateProgram(TemplateView):
         prorgam_skill.level = skill_lvl
         prorgam_skill.program = program
         prorgam_skill.save()
-        goals = data['goals']
+        goals = [g for g in data['goals'] if g]
         if goals:
             for g in goals:
-                if g:
-                    goal = ProrgamSkillGoal()
-                    goal.skill = prorgam_skill
-                    goal.goal = g
-                    goal.save()
+                goal = ProrgamSkillGoal()
+                goal.skill = prorgam_skill
+                goal.goal = g
+                goal.save()
         else:
             goal = ProrgamSkillGoal()
+            goal.skill = prorgam_skill
             goal.save()
 
         return redirect('webapp:update_program', pk=program.pk)
@@ -173,7 +174,7 @@ class RemoveProgramView(TemplateView):
         if session:
             responseData = {
                 # 'criteria': skill_lvl.criteria,
-                'error': 'По даннрму навыку введетсся ссесия'
+                'error': 'По данному навыку введетсся ссесия'
             }
             return HttpResponse(json.dumps(responseData), content_type="application/json")
 
@@ -211,9 +212,7 @@ class RemoveProgramView(TemplateView):
             program_skill.add_creteria = None
         else:
             program_skill.add_creteria = data['add_creteria']
-
         program_skill.save()
-
         goals = data['goals']
         if goals:
             for g in goals:
@@ -229,9 +228,75 @@ class RemoveProgramView(TemplateView):
         return redirect('webapp:update_program', pk=program.pk)
 
 
-class ExportWord(TemplateView):
+class ExportWord(View):
+    def export_program(self, pr):
+        document = Document()
+        document.add_paragraph('Программа составленна: ' '%s' % str(pr.author))
+        document.add_paragraph('Дата скачивания программы: ' "%s" % date.today().strftime('%d. %m. %Y'))
+        document.add_paragraph('Ребенок: ' '%s' % str(pr.child))
+        document.add_paragraph()
+
+        table = document.add_table(rows=1, cols=4)
+        table.style = 'Light Shading Accent 1'
+        hdr_cells = table.rows[0].cells
+        hdr_cells[0].text = 'Код'
+        hdr_cells[1].text = 'Описание навыка'
+        hdr_cells[2].text = 'Критерии'
+        hdr_cells[3].text = 'Доп.цель'
+        document.add_paragraph()
+        for i in pr.program_skill.all():
+            row_cells = table.add_row()
+            row_cells.cells[0].text = str(i.level.skill.category)
+            if len(i.goal.all()) > 0:
+                for j in i.goal.all():
+                    row_cells = table.add_row()
+                    row_cells.cells[0].text = str(i.level.skill.code)
+                    row_cells.cells[1].text = str(i.level.skill.description)
+                    if i.add_creteria:
+                        row_cells.cells[2].text = str(i.add_creteria)
+                    else:
+                        row_cells.cells[2].text = str(i.level.criteria)
+                    row_cells.cells[3].text = str(j.goal)
+            else:
+                row_cells = table.add_row()
+                row_cells.cells[0].text = str(i.level.skill.code)
+                row_cells.cells[1].text = str(i.level.skill.description)
+                row_cells.cells[2].text = str(i.level.criteria)
+        return document
+
     def get(self, request, *args, **kwargs):
         pr = get_object_or_404(Program, pk=self.kwargs.get('pk'))
+        document = self.export_program(pr)
+        docx_title = pr.name + '   ' + date.today().strftime('%d. %m. %Y') + '.docx'
+
+        f = BytesIO()
+        document.save(f)
+        length = f.tell()
+        f.seek(0)
+        response = HttpResponse(
+            f.getvalue(),
+            content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        )
+        response['Content-Disposition'] = 'attachment; filename=' + docx_title
+        response['Content-Length'] = length
+        return response
+
+
+class OpenCloseView(View):
+    def get(self, request, **kwargs):
+        data = json.loads(request.body)
+        goals = get_object_or_404(ProrgamSkillGoal, pk=data['pk'])
+        if goals.status == GOAL_STATUS_CLOSED:
+            return Http404('Вы пытаетесть  статус закрытого навыка')
+        goals.status = data['status']
+        goals.save()
+
+
+
+
+
+
+
 
 
 
