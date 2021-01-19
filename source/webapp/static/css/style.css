@@ -167,6 +167,22 @@ body {
     display: inline-block;
 }
 
+.legend_btn_1 {
+    width: 75px;
+    height: 15px;
+    border: solid black 1px;
+    background-color: lightgray;
+    display: inline-block;
+}
+
+.legend_btn_2 {
+    width: 75px;
+    height: 15px;
+    border: solid black 1px;
+    background-color: white;
+    display: inline-block;
+}
+
 .empty {
     border: solid black 1px;
     width: 75px;
@@ -306,6 +322,9 @@ a:hover {
     color: red;
     font-weight: bold;
 }
+.red_2 {
+    color: red;
+}
 .add_goal {
     margin: 5px;
     border-radius: 5px;
@@ -326,4 +345,9 @@ a:hover {
 .logo{
     border-radius: 50%;
 }
-
+.remove-button{
+    display: none;
+}
+.status-close{
+    background-color: lightgray;
+}

@@ -48,13 +48,14 @@ async function addSkill(event) {
     let id = skill.id;
     console.log(id)
     let url = skill.href;
-    let remove = skill.parentElement.childNodes[3]
     console.log(url)
+    let remove = skill.parentElement.childNodes[3]
+    console.log(remove)
     try {
         let response = await makeRequest(url, 'POST', {'id': id}).then((response) => response.json());
         if (response['add'] === 'add'){
-            skill.style.display = "none";
-            remove.style.display = 'inline'
+             skill.style.display = 'none';
+             remove.style.display = 'inline';
         }
         console.log(response)
     } catch (error) {
@@ -73,12 +74,12 @@ async function deleteSkill(event) {
     console.log(url)
     skill.style.display = 'none'
     let add = skill.parentElement.childNodes[1]
+    console.log(add)
     try {
         let response = await makeRequest(url, 'DELETE', {'id': id}).then((response) => response.json());
         console.log(response)
         if (response['remove'] === 'remove'){
-            skill.style.display = "none";
-            add.style.display = ''
+            add.style.display = 'inline';
         }
         console.log(response)
     } catch (error) {

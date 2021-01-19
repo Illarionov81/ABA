@@ -1,8 +1,9 @@
 import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.views import View
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DeleteView
 from webapp.models import Session, Program, ProrgamSkillGoal, SessionSkill
 
 
@@ -16,20 +17,32 @@ class SessionListView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
-        sessions = Session.objects.filter(child=program.child.pk)
+        sessions = Session.objects.filter(program=program)
         context['sessions'] = sessions
         context['program'] = program
         return context
 
 
+class SessionDeleteView(DeleteView):
+    template_name = 'session/session_delete.html'
+    model = Session
+
+    def get_success_url(self):
+        return reverse('webapp:session_list', kwargs={'pk': self.object.program.pk})
+
+
 class SessionCreateView(View):
     def get(self, request, *args, **kwargs):
         program = get_object_or_404(Program, pk=kwargs.get('pk'))
-        session = Session.objects.create(program=program, child=program.child, therapist=self.request.user)
-        return redirect('webapp:session_prepear', pk=session.pk)
+        sessions = Session.objects.filter(program=program).last()
+        if sessions and sessions.status == 'open':
+            return redirect('webapp:session_prepear', pk=sessions.pk)
+        else:
+            session = Session.objects.create(program=program, child=program.child, therapist=self.request.user)
+            return redirect('webapp:session_prepear', pk=session.pk)
 
 
-class SessionSkillCreateView(TemplateView):
+class SessionSkillUpdateView(TemplateView):
     template_name = 'session/session_create.html'
     model = Session
 
@@ -37,6 +50,8 @@ class SessionSkillCreateView(TemplateView):
         context = super().get_context_data(**kwargs)
         session = get_object_or_404(Session, pk=self.kwargs.get('pk'))
         goal = ProrgamSkillGoal.objects.filter(skill__program=session.program.pk)
+        goal_in_session = SessionSkill.objects.filter(session=session).values_list('skill', flat=True)
+        context['goal_in_session'] = goal_in_session
         context['goals'] = goal
         context['sessions'] = session
         context['programs'] = session.program
@@ -67,16 +82,3 @@ class SessionDeleteSkill(View):
             return JsonResponse({'remove': 'remove'})
         except:
             return JsonResponse({'remove': False})
-
-# class SessionDeleteSkill(View):
-#     def delete(self, request, *args, **kwargs):
-#         session = get_object_or_404(Session, pk=kwargs.get('pk'))
-#         print(session)
-#         data = json.loads(request.body)
-#         skill_lvl = SkillLevel.objects.get(pk=data['id'])
-#         print(skill_lvl)
-#         session_skill = SessionSkill.objects.get(session=session)
-#         print(session_skill)
-#         session_skill.skill_level.remove(skill_lvl)
-#         session_skill.save()
-#         return HttpResponse(session_skill)
