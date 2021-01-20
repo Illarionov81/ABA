@@ -14,9 +14,12 @@
         </div>
     </div>
     <div class="box">
-    <ul class="nav nav-pills mb-2">
+    <ul class="nav nav-pills justify-content-center mb-2">
         <li class="nav-item">
             <a class="nav-link active black" data-toggle="tab" href="#open">Open</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link black" data-toggle="tab" href="#pause">Pause</a>
         </li>
         <li class="nav-item">
             <a class="nav-link black" data-toggle="tab" href="#closed">Closed</a>
@@ -34,6 +37,7 @@
                             <a class="mx-5" {% if i.pk in goal_in_session %}style="display: none" {% endif %}
                                onclick="addSkill(event)" id="{{ i.pk }}"
                                href="{% url 'webapp:add_skill' sessions.pk %}">ADD</a>
+
                             <a class="mx-5" {% if i.pk not in goal_in_session %} style="display: none" {% endif %}
                                                                     onclick="deleteSkill (event)" id="{{ i.pk }}"
                                                                     href="{% url 'webapp:delete_skill' sessions.pk %}">REMOVE</a></p>
@@ -71,6 +75,68 @@
                         </p>
                     {% endif %}
                 {% elif i.status == 'open' and sessions.status == 'close' %}
+                    {% if i.goal and i.skill.add_creteria %}
+                        <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп.критерий: {{ i.skill.add_creteria }},
+                            Доп. цель: {{ i.goal }}</p>
+                    {% elif i.goal %}
+                        <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп. цель: {{ i.goal }}</p>
+                    {% elif i.skill.add_creteria %}
+                        <p> {{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп.критерий: {{ i.skill.add_creteria }}</p>
+                    {% else %}
+                        <p>{{ i.skill.level }}</p>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="tab-pane active in" id="pause">
+            {% for i in goals %}
+                {% if i.status == 'pause' and sessions.status == 'open' %}
+                    {% if i.goal and i.skill.add_creteria %}
+                        <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп.
+                            критерий: {{ i.skill.add_creteria }}, Доп. цель: {{ i.goal }}
+
+                            <a class="mx-5" {% if i.pk in goal_in_session %}style="display: none" {% endif %}
+                               onclick="addSkill(event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:add_skill' sessions.pk %}">ADD</a>
+
+                            <a class="mx-5" {% if i.pk not in goal_in_session %} style="display: none" {% endif %}
+                                                                    onclick="deleteSkill (event)" id="{{ i.pk }}"
+                                                                    href="{% url 'webapp:delete_skill' sessions.pk %}">REMOVE</a></p>
+
+                    {% elif i.goal %}
+                        <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп. цель: {{ i.goal }}
+
+                            <a class="mx-5" {% if i.pk in goal_in_session %}style="display: none" {% endif %}
+                               onclick="addSkill(event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:add_skill' sessions.pk %}">ADD</a>
+                            <a class="mx-5" {% if i.pk not in goal_in_session %} style="display: none" {% endif %}
+                                                                    onclick="deleteSkill (event)" id="{{ i.pk }}"
+                                                                    href="{% url 'webapp:delete_skill' sessions.pk %}">REMOVE</a>
+                        </p>
+                    {% elif i.skill.add_creteria %}
+                        <p> {{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп.
+                            критерий: {{ i.skill.add_creteria }}
+
+                            <a class="mx-5" {% if i.pk in goal_in_session %}style="display: none" {% endif %}
+                               onclick="addSkill(event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:add_skill' sessions.pk %}">ADD</a>
+                            <a class="mx-5" {% if i.pk not in goal_in_session %} style="display: none" {% endif %}
+                                                                    onclick="deleteSkill (event)" id="{{ i.pk }}"
+                                                                    href="{% url 'webapp:delete_skill' sessions.pk %}">REMOVE</a>
+                        </p>
+                    {% else %}
+                        <p>{{ i.skill.level }}
+
+                            <a class="mx-5" {% if i.pk in goal_in_session %}style="display: none" {% endif %}
+                               onclick="addSkill(event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:add_skill' sessions.pk %}">ADD</a>
+                            <a class="mx-5" {% if i.pk not in goal_in_session %} style="display: none" {% endif %}
+                                                                    onclick="deleteSkill (event)" id="{{ i.pk }}"
+                                                                    href="{% url 'webapp:delete_skill' sessions.pk %}">REMOVE</a>
+                        </p>
+                    {% endif %}
+                {% elif i.status == 'pause' and sessions.status == 'close' %}
                     {% if i.goal and i.skill.add_creteria %}
                         <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп.критерий: {{ i.skill.add_creteria }},
                             Доп. цель: {{ i.goal }}</p>
