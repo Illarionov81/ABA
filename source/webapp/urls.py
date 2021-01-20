@@ -1,6 +1,7 @@
 from django.urls import path, include
 
-from webapp.views import DoneSelf, DoneWithHint, SessionCloseView, SessionAddGoalView, SessionDataCollectionView
+from webapp.views import DoneSelf, DoneWithHint, SessionCloseView, SessionAddGoalView, SessionDataCollectionView, \
+    SessionDeleteView
 from webapp.views.child import IndexView, ChildDetailView
 from webapp.views.child_test import TestResultView, TestsView, ChildTestUpdateView, ChildMakeTestView
 from webapp.views.program import ProgramDetailView, ProgramCreateView, UpdateProgram, ProgrmDelete, DeleteGoalView, \
