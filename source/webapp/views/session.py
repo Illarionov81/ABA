@@ -63,8 +63,9 @@ class SessionAddSkill(View):
         session = get_object_or_404(Session, pk=kwargs.get('pk'))
         data = json.loads(request.body)
         skill = ProrgamSkillGoal.objects.get(pk=data['id'])
-        if skill.status == 'closed':
-            skill = skill.status == 'open'
+        if skill.status == 'closed' or skill.status == 'pause':
+            skill.status = 'open'
+            skill.save()
         sessionSkill, _ = SessionSkill.objects.get_or_create(session=session, skill=skill)
         try:
             sessionSkill.save()
