@@ -3,7 +3,7 @@ from datetime import date
 from io import BytesIO
 
 from django.contrib import messages
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import DetailView, CreateView, DeleteView
@@ -12,7 +12,7 @@ from docx import *
 
 from webapp.forms import ProgramForm
 from webapp.models import Program, PROGRAM_STATUS_CLOSED, PROGRAM_STATUS_OPEN, Child, ProgramSkill, \
-    GOAL_STATUS_OPEN, GOAL_STATUS_CLOSED, ProrgamSkillGoal, Skill, SkillLevel, Session
+    GOAL_STATUS_OPEN, GOAL_STATUS_CLOSED, ProrgamSkillGoal, Skill, SkillLevel, Session, GOAL_STATUS_PAUSE
 
 
 class ProgramDetailView(DetailView):
@@ -26,10 +26,10 @@ class ProgramDetailView(DetailView):
         goals = ProrgamSkillGoal.objects.filter(skill__program=program)
         goal_open = goals.filter(status=GOAL_STATUS_OPEN)
         pr_skill = program.program_skill.all().order_by('level')
-        if not goal_open:
-            program.status = PROGRAM_STATUS_CLOSED
-        else:
+        if goal_open:
             program.status = PROGRAM_STATUS_OPEN
+        else:
+            program.status = PROGRAM_STATUS_CLOSED
         program.save()
         context['skills'] = pr_skill
         return context
@@ -268,28 +268,45 @@ class ExportWord(View):
         pr = get_object_or_404(Program, pk=self.kwargs.get('pk'))
         document = self.export_program(pr)
         docx_title = pr.name + '   ' + date.today().strftime('%d. %m. %Y') + '.docx'
+        ex = Exporter(document, docx_title)
+        return ex.working()
 
-        f = BytesIO()
-        document.save(f)
-        length = f.tell()
-        f.seek(0)
+
+class Exporter:
+    def __init__(self, document, docx_title):
+        self.document = document
+        self.docx_title = docx_title
+        self.f = BytesIO()
+
+    def working(self):
+        self.document.save(self.f)
+        length = self.f.tell()
+        self.f.seek(0)
         response = HttpResponse(
-            f.getvalue(),
+            self.f.getvalue(),
             content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         )
-        response['Content-Disposition'] = 'attachment; filename=' + docx_title
+        response['Content-Disposition'] = 'attachment; filename=' + self.docx_title
         response['Content-Length'] = length
         return response
 
 
 class OpenCloseView(View):
-    def get(self, request, **kwargs):
+    def post(self, request, **kwargs):
         data = json.loads(request.body)
         goals = get_object_or_404(ProrgamSkillGoal, pk=data['pk'])
-        if goals.status == GOAL_STATUS_CLOSED:
-            return Http404('Вы пытаетесть  статус закрытого навыка')
-        goals.status = data['status']
+        if data['status'] == "open":
+            status = GOAL_STATUS_OPEN
+        elif data['status'] == "close":
+            status = GOAL_STATUS_CLOSED
+        else:
+            status = GOAL_STATUS_PAUSE
+        goals.status = status
         goals.save()
+
+        program = get_object_or_404(Program, pk=self.kwargs.get('pk'))
+        return redirect('webapp:program_detail', pk=program.pk)
+
 
 
 

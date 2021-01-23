@@ -7,7 +7,7 @@ from webapp.views.child_test import TestResultView, TestsView, ChildTestUpdateVi
 from webapp.views.homework import HomeworkListView, HomeWorkDeleteView, HomeworkCreateView, HomeworkUpdateView, \
     HomeworkAddSkill, HomeworkDeleteSkill
 from webapp.views.program import ProgramDetailView, ProgramCreateView, UpdateProgram, ProgrmDelete, DeleteGoalView, \
-    DeleteCreteriaView, DeleteAddCreteriaView, RemoveProgramView, ExportWord
+    DeleteCreteriaView, DeleteAddCreteriaView, RemoveProgramView, ExportWord, OpenCloseView
 from webapp.views.session import SessionListView, SessionCreateView, SessionSkillUpdateView, SessionAddSkill, \
     SessionDeleteSkill
 
@@ -24,7 +24,8 @@ urlpatterns = [
     path('delete/<int:pk>/add_critaria', DeleteAddCreteriaView.as_view(), name='delete_add_creteria'),
     path('program/<int:pk>/update/', UpdateProgram.as_view(), name='update_program'),
     path('program/<int:pk>/export/', ExportWord.as_view(), name='export_word'),
-    path('program/<int:p_pk>/remove/<int:s_pk>', RemoveProgramView.as_view(), name='update_all_program'),
+    path('program/<int:p_pk>/remove/<int:s_pk>/', RemoveProgramView.as_view(), name='update_all_program'),
+    path('goals/status/<int:pk>/', OpenCloseView.as_view(), name='close_open'),
 
     path('program/<int:pk>/add-goal/to-level/<int:level>/', SessionAddGoalView.as_view(), name='session_add_goal'),
     path('program/<int:pk>/data-collection/', SessionDataCollectionView.as_view(), name='session_data_collection'),
