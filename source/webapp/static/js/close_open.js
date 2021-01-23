@@ -41,5 +41,24 @@ async function makeRequest(url, method = 'GET', data = undefined) {
     }
 }
 
-let close1 = document.getElementsByClassName('open')
-    console.log(close1)
+
+
+async function open_close(event){
+    event.preventDefault()
+    let my_elem = event.target.closest('a');
+
+    const goal_id = my_elem.getAttribute("id")
+    let status = goal_id.split("-")[0]
+    let id = goal_id.split("-")[1]
+    let url = my_elem.getAttribute("href");
+    console.log(status);
+    console.log(id);
+    console.log(url);
+    try {
+        await makeRequest(url, 'POST', {'pk': id, 'status': status});
+        location.reload()
+        }
+    catch (error) {
+            console.log(error);
+        }
+}

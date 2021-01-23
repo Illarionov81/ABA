@@ -72,9 +72,12 @@
                             {{ goals.get_status_display }}
                             <br>
 
-                            <button class="open" id="open-{{ goals.pk }}">o</button>
-                            <button class="closed" id="close-{{ goals.pk }}">з</button>
-                            <button class="pause" id="pause-{{ goals.pk }}">п</button>
+                            <a onclick="open_close(event)" title="Открыть навык" class="open-goal" id="open-{{ goals.pk }}" href="{% url 'webapp:close_open' programs.pk %}">
+                                <img src="{% static 'img/play.png' %}" width="25" height="25" alt="пауза"></a>
+                            <a onclick="open_close(event)" title="Закрыть навык" class="close-goal " id="close-{{ goals.pk }}" href="{% url 'webapp:close_open' programs.pk %}">
+                                <img src="{% static 'img/stop.png' %}" width="25" height="25" alt="пауза">  </a>
+                            <a onclick="open_close(event)" title="Поставить на паузу" class="pause-goal" id="pause-{{ goals.pk }}" href="{% url 'webapp:close_open' programs.pk %}">
+                                <img src="{% static 'img/pausewithcircularbutton_80264.png' %}" width="25" height="25" alt="пауза"></a>
 
                         </td>
                     </tr>
