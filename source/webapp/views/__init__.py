@@ -3,3 +3,4 @@ from .child_test import *
 from .data_collection import *
 from .program import *
 from .session import *
+from .homework import *
