@@ -46,7 +46,7 @@ class HomeworkUpdateView(TemplateView):
         context = super().get_context_data(**kwargs)
         homework = get_object_or_404(HomeWork, pk=self.kwargs.get('pk'))
         goal = ProrgamSkillGoal.objects.filter(skill__program=homework.program.pk)
-        goal_in_homework = homework.skill.all()
+        goal_in_homework = homework.skill.values_list('pk', flat=True)
         context['goal_in_homework'] = goal_in_homework
         context['goals'] = goal
         context['homework'] = homework
