@@ -1,5 +1,3 @@
-from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView, ListView
 from webapp.models import Child, Program
 
@@ -11,16 +9,13 @@ class IndexView(ListView):
     paginate_orphans = 0
     model = Child
 
-
     def get_context_data(self, *, object_list=None, **kwargs):
         if self.request.user.is_authenticated:
             context = super().get_context_data(**kwargs)
-            print(context)
             user = self.request.user
             child = Child.objects.filter(therapy=user)
             context['child'] = child
             return context
-
 
 
 class ChildDetailView(DetailView):

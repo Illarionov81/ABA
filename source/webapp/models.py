@@ -205,6 +205,22 @@ class Session(models.Model):
         verbose_name_plural = 'Сессии'
 
 
+class HomeWork(models.Model):
+    program = models.ForeignKey('Program', related_name='homework', null=True, blank=True, on_delete=models.PROTECT,
+                                verbose_name='Программа')
+    comment = models.TextField(max_length=1000, blank=True, null=True, verbose_name="Комментарий")
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    edited_date = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name="Дата редактирования")
+    skill = models.ManyToManyField('ProrgamSkillGoal', related_name='homework_skills', verbose_name='Навык')
+
+    def __str__(self):
+        return "{} {}".format(self.program.child, self.created_date.strftime('%d.%m.%Y'))
+
+    class Meta:
+        verbose_name = 'Домашнее задание'
+        verbose_name_plural = 'Домашнии задания'
+
+
 class SessionSkill(models.Model):
     session = models.ForeignKey('Session', related_name='skills', on_delete=models.CASCADE, verbose_name='Сессия')
     skill = models.ForeignKey('ProrgamSkillGoal', related_name='session_skills', on_delete=models.CASCADE, verbose_name='Навык')
