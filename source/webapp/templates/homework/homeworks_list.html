@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Домашнии задания{% endblock %}
+{% block menu %}
+       <li class="nav-item active mx-1">
+           <a class="nav-link" href="{% url 'webapp:homework_create' program.pk %}" role="button">
+               Создать домашнее задание.
+           </a>
+       </li>
+{% endblock %}
+{% block content %}
+    <div class="box text-center">
+        <h3>Ребенок - <a href="{% url  'webapp:child_view' program.child.pk %}">
+            {{ program.child.last_name }} {{ program.child.first_name }} </a>
+             | Домашние задания .
+        </h3>
+        <h4>Терапист - {{ program.author }} |
+            <a href="{% url 'webapp:program_detail' program.pk %}">
+                Программа: {{ program.created_date | date:"d.m.Y H:i" }}
+            </a>
+        </h4>
+    </div>
+    <div class="box">
+        {% for i in homeworks %}
+            <li class="session_list_text mb-1 mr-0 pr-0">{{ forloop.revcounter }} -
+                <a href="{% url 'webapp:homework_update' i.pk %}">
+                    Домашнее задание - {{ i.created_date|date:"d.m.Y h:i:s" }}
+                </a>
+            <a class="btn-sm btn-danger ml-5" href="{% url 'webapp:homework_delete' i.pk %}">Удалить</a>
+            </li>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Delete Homework{% endblock %}
+
+{% block content %}
+    <h1>Вы уверенны что хотите удалить это домашнее задание? "{{ homework.pk }}"?</h1>
+    <form action="{% url "webapp:homework_delete" homework.pk %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Да, Удалить!" class="btn-danger btn">
+        <a href="{% url "webapp:homeworks" homework.program.pk %}" class="btn btn-primary">Отмена</a>
+    </form>
+{% endblock %}

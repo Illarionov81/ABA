@@ -4,6 +4,8 @@ from webapp.views import DoneSelf, DoneWithHint, SessionCloseView, SessionAddGoa
     SessionDeleteView
 from webapp.views.child import IndexView, ChildDetailView
 from webapp.views.child_test import TestResultView, TestsView, ChildTestUpdateView, ChildMakeTestView
+from webapp.views.homework import HomeworkListView, HomeWorkDeleteView, HomeworkCreateView, HomeworkUpdateView, \
+    HomeworkAddSkill, HomeworkDeleteSkill
 from webapp.views.program import ProgramDetailView, ProgramCreateView, UpdateProgram, ProgrmDelete, DeleteGoalView, \
     DeleteCreteriaView, DeleteAddCreteriaView, RemoveProgramView, ExportWord
 from webapp.views.session import SessionListView, SessionCreateView, SessionSkillUpdateView, SessionAddSkill, \
@@ -44,6 +46,12 @@ urlpatterns = [
             path('tests/', TestsView.as_view(), name='child_tests'),
             path('program/create/', ProgramCreateView.as_view(), name='program_create'),
             path('create_test/', ChildMakeTestView.as_view(), name='child_create_test'),
+            path('homeworks/', HomeworkListView.as_view(), name='homeworks'),
+            path('homework-create/', HomeworkCreateView.as_view(), name='homework_create'),
+            path('homework-update/', HomeworkUpdateView.as_view(), name='homework_update'),
+            path('homework-delete/', HomeWorkDeleteView.as_view(), name='homework_delete'),
+            path('homework-add-skill/', HomeworkAddSkill.as_view(), name='homework_add_skill'),
+            path('homework-delete-skill/', HomeworkDeleteSkill.as_view(), name='homework_delete_skill'),
         ])),
     ])),
 ]

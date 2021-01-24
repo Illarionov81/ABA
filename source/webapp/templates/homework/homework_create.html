@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Create Homework{% endblock %}
+{% block menu %}
+    <li class="nav-item active mx-1">
+        <a class="nav-link" href="{% url 'webapp:homeworks' programs.pk %}" role="button">Домашние задания</a>
+    </li>
+{% endblock %}
+{% block content %}
+    <div class="box">
+        <h3>Ребенок - <a href="{% url  'webapp:child_view' homework.program.child.pk %}">
+            {{ homework.program.child.last_name }} {{ homework.program.child.first_name }} </a>
+             | Домашнее задание - редактирование.
+        </h3>
+        <h4>Терапист - {{ programs.author }} | Дата составления: {{ homework.created_date | date:"d.m.Y H:i" }}</h4>
+        <div class="row">
+            <div class="col-sm-11"><div class=" legend_btn_1 mx-1"></div>Закрытый навык</div>
+            <div class="col-sm-11"><div class=" legend_btn_2 mx-1"></div>Открытый навык</div>
+        </div>
+    </div>
+    <div class="box">
+    <ul class="nav nav-pills justify-content-center mb-2">
+        <li class="nav-item">
+            <a class="nav-link active black" data-toggle="tab" href="#open">Open</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link black" data-toggle="tab" href="#pause">Pause</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link black" data-toggle="tab" href="#closed">Closed</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active in" id="open">
+            {% for i in goals %}
+                {% if i.status == 'open' %}
+                    {% if i.goal and i.skill.add_creteria %}
+                        <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп.
+                            критерий: {{ i.skill.add_creteria }}, Доп. цель: {{ i.goal }}
+                            <a class="mx-5" {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
+                               onclick="addSkill(event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_add_skill' homework.pk %}">ADD</a>
+
+                            <a class="mx-5" {% if i.pk not in goal_in_homework %} style="display: none" {% endif %}
+                                                                    onclick="deleteSkill (event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_delete_skill' homework.pk %}">REMOVE</a></p>
+
+                    {% elif i.goal %}
+                        <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп. цель: {{ i.goal }}
+                            <a class="mx-5" {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
+                               onclick="addSkill(event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_add_skill' homework.pk %}">ADD</a>
+                            <a class="mx-5" {% if i.pk not in goal_in_homework %} style="display: none" {% endif %}
+                                                                    onclick="deleteSkill (event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_delete_skill' homework.pk %}">REMOVE</a>
+                        </p>
+                    {% elif i.skill.add_creteria %}
+                        <p> {{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп.
+                            критерий: {{ i.skill.add_creteria }}
+                            <a class="mx-5" {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
+                               onclick="addSkill(event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_add_skill' homework.pk %}">ADD</a>
+                            <a class="mx-5" {% if i.pk not in goal_in_homework %} style="display: none" {% endif %}
+                                                                    onclick="deleteSkill (event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_delete_skill' homework.pk %}">REMOVE</a>
+                        </p>
+                    {% else %}
+                        <p>{{ i.skill.level }}
+                            <a class="mx-5" {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
+                               onclick="addSkill(event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_add_skill' homework.pk %}">ADD</a>
+                            <a class="mx-5" {% if i.pk not in goal_in_homework %} style="display: none" {% endif %}
+                                                                    onclick="deleteSkill (event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_delete_skill' homework.pk %}">REMOVE</a>
+                        </p>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="tab-pane fade" id="pause">
+            {% for i in goals %}
+                {% if i.status == 'pause'%}
+                    {% if i.goal and i.skill.add_creteria %}
+                        <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп.
+                            критерий: {{ i.skill.add_creteria }}, Доп. цель: {{ i.goal }}
+                            <a class="mx-5" {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
+                               onclick="addSkill(event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_add_skill' homework.pk %}">ADD</a>
+                            <a class="mx-5" {% if i.pk not in goal_in_homework %} style="display: none" {% endif %}
+                                                                    onclick="deleteSkill (event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_delete_skill' homework.pk %}">REMOVE</a></p>
+                    {% elif i.goal %}
+                        <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп. цель: {{ i.goal }}
+                            <a class="mx-5" {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
+                               onclick="addSkill(event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_add_skill' homework.pk %}">ADD</a>
+                            <a class="mx-5" {% if i.pk not in goal_in_homework %} style="display: none" {% endif %}
+                                                                    onclick="deleteSkill (event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_delete_skill' homework.pk %}">REMOVE</a>
+                        </p>
+                    {% elif i.skill.add_creteria %}
+                        <p> {{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп.
+                            критерий: {{ i.skill.add_creteria }}
+                            <a class="mx-5" {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
+                               onclick="addSkill(event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_add_skill' homework.pk %}">ADD</a>
+                            <a class="mx-5" {% if i.pk not in goal_in_homework %} style="display: none" {% endif %}
+                                                                    onclick="deleteSkill (event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_delete_skill' homework.pk %}">REMOVE</a>
+                        </p>
+                    {% else %}
+                        <p>{{ i.skill.level }}
+                            <a class="mx-5" {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
+                               onclick="addSkill(event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_add_skill' homework.pk %}">ADD</a>
+                            <a class="mx-5" {% if i.pk not in goal_in_homework %} style="display: none" {% endif %}
+                                                                    onclick="deleteSkill (event)" id="{{ i.pk }}"
+                               href="{% url 'webapp:homework_delete_skill' homework.pk %}">REMOVE</a>
+                        </p>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="tab-pane fade" id="closed">
+             <div class="status-close">
+                 {% for i in goals %}
+                    {% if i.status == 'closed' %}
+                        {% if i.goal %}
+                            <p>{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп. цель: {{ i.goal }}
+                                <a class="mx-5" {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
+                                   onclick="addSkill(event)" id="{{ i.pk }}"
+                                   href="{% url 'webapp:homework_add_skill' homework.pk %}">ADD</a>
+                                <a class="mx-5" {% if i.pk not in goal_in_homework %} style="display: none" {% endif %}
+                                                                        onclick="deleteSkill (event)" id="{{ i.pk }}"
+                                   href="{% url 'webapp:homework_delete_skill' homework.pk %}">REMOVE</a>
+                            </p>
+                        {% elif i.skill.add_creteria %}
+                            <p class="box-inline">{{ i.skill.level.skill.code }} - {{ i.skill.level.level }} | Доп.
+                                критерий: {{ i.skill.add_creteria }}
+                                <a class="mx-5" {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
+                                   onclick="addSkill(event)" id="{{ i.pk }}"
+                                   href="{% url 'webapp:homework_add_skill' homework.pk %}">ADD</a>
+                                <a class="mx-5" {% if i.pk not in goal_in_homework %} style="display: none" {% endif %}
+                                                                        onclick="deleteSkill (event)" id="{{ i.pk }}"
+                                   href="{% url 'webapp:homework_delete_skill' homework.pk %}">REMOVE</a>
+                            </p>
+                        {% else %}
+                            <p>{{ i.skill.level }}
+                                <a class="mx-5" {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
+                                   onclick="addSkill(event)" id="{{ i.pk }}"
+                                   href="{% url 'webapp:homework_add_skill' homework.pk %}">ADD</a>
+                                <a class="mx-5" {% if i.pk not in goal_in_homework %} style="display: none" {% endif %}
+                                                                        onclick="deleteSkill (event)" id="{{ i.pk }}"
+                                   href="{% url 'webapp:homework_delete_skill' homework.pk %}">REMOVE</a>
+                            </p>
+                        {% endif %}
+                {% endif %}
+             {% endfor %}
+         </div>
+    </div>
+</div>
+</div>
+    <script type="application/javascript" src="{% static "js/session_add_skill.js" %}"></script>
+{% endblock %}
+
+
