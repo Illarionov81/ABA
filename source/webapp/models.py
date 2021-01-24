@@ -219,6 +219,7 @@ class HomeWork(models.Model):
     class Meta:
         verbose_name = 'Домашнее задание'
         verbose_name_plural = 'Домашнии задания'
+        ordering = ['-created_date']
 
 
 class SessionSkill(models.Model):
