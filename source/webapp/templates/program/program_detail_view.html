@@ -24,7 +24,7 @@
             <p>Статус программы: {{ programs.get_status_display }}</p>
             <p>Название программы: {{ programs.name }}</p>
             <a href="{% url 'webapp:homeworks' programs.pk %}">
-                <button class="btn btn-success">Домашнии задания</button>
+                <button class="btn btn-secondary btn-sm">Домашнии задания</button>
             </a>
         </div>
     </div>
