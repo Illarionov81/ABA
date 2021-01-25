@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, TemplateView, DeleteView
-from webapp.models import Session, Program, ProrgamSkillGoal, SessionSkill
+from webapp.models import Session, Program, ProrgamSkillGoal, SessionSkill, ProgramSkill, SkillLevel, Skill
 
 
 class SessionListView(ListView):
@@ -45,11 +45,39 @@ class SessionCreateView(View):
 class SessionSkillUpdateView(TemplateView):
     template_name = 'session/session_create.html'
     model = Session
+#
+#     def get_code_in_session(self, goal):
+#         codes = []
+#         sorted_code = []
+#         final_code = []
+#         later = []
+#         abc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+#                           'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+#         for g in goal:
+#             add_criteria = ProgramSkill.objects.filter(goal=g)
+#             for add_crit in add_criteria:
+#                 skill_level = SkillLevel.objects.filter(program_skill=add_crit)
+#                 for level in skill_level:
+#                     skill = Skill.objects.get(levels=level)
+#                     if skill not in codes:
+#                         codes.append(skill)
+#         for symbol in abc:
+#             for i in codes:
+#                 if i.category.code == symbol:
+#                     print(i.category.code)
+#                     sorted_code.append(int(i.code[1:]))
+#         # sorted_code.sort()
+#         # later.sort()
+#         # for i in sorted_code:
+#         #     i = category_code + str(i)
+#         #     final_code.append(i)
+#         return  final_code
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         session = get_object_or_404(Session, pk=self.kwargs.get('pk'))
         goal = ProrgamSkillGoal.objects.filter(skill__program=session.program.pk)
+        # g = self.get_code_in_session(goal=goal)
         goal_in_session = SessionSkill.objects.filter(session=session).values_list('skill', flat=True)
         context['goal_in_session'] = goal_in_session
         context['goals'] = goal

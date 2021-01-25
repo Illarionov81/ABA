@@ -89,7 +89,7 @@
             {% endfor %}
         </div>
 
-        <div class="tab-pane active in" id="pause">
+        <div class="tab-pane fade" id="pause">
             {% for i in goals %}
                 {% if i.status == 'pause' and sessions.status == 'open' %}
                     {% if i.goal and i.skill.add_creteria %}
