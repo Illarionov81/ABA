@@ -3,10 +3,10 @@
 {% block menu %}
 {% endblock %}
 {% block content %}
-    <h1>Are you sure want to delete article "{{ session.pk }}"?</h1>
+    <h1>Вы уверенны что хотите удалить сессию "{{ session.pk }}"?</h1>
     <form action="{% url "webapp:session_delete" session.pk %}" method="post">
         {% csrf_token %}
         <p><input type="submit" value="Confirm"></p>
-        <p><a href="{% url "webapp:session_list" session.program.pk %}">Cancel</a></p>
+        <p><a href="{% url "webapp:session_list" session.program.pk %}">Отмена</a></p>
     </form>
 {% endblock %}
