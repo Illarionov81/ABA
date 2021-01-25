@@ -267,7 +267,7 @@ class ExportWord(View):
     def get(self, request, *args, **kwargs):
         pr = get_object_or_404(Program, pk=self.kwargs.get('pk'))
         document = self.export_program(pr)
-        docx_title = pr.name + '   ' + date.today().strftime('%d. %m. %Y') + '.docx'
+        docx_title = str(pr.name) + '   ' + date.today().strftime('%d. %m. %Y') + '.docx'
         ex = Exporter(document, docx_title)
         return ex.working()
 
