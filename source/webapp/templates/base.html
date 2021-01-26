@@ -18,23 +18,23 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg" style="background-color: #00a1e3;">
+    <nav class="navbar navbar-expand-lg " style="background-color: #00a1e3;">
         <div class="container">
 
             <a class=" logo navbar-brand " href="{% url "webapp:index" %}">
                 <img src={% static "img/logo.png" %} class="logo">
             </a>
-             <nav class="navbar navbar-dark">
+{#             <nav class="navbar navbar-dark">#}
             <button class="navbar-toggler border-white " type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-             </nav>
+{#             </nav>#}
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav navbar-txt mr-auto ">
-                    <li class="nav-item active mx-3">
+                    <li class="nav-item active">
                         <a class="nav-link" href="/admin/">Admin </a>
                     </li>
-                    <li class="nav-item active mx-1">
+                    <li class="nav-item active">
                         <a class="nav-link" href="{% url 'webapp:index' %}">На главную</a>
                     </li>
 
