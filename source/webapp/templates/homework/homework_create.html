@@ -5,6 +5,9 @@
     <li class="nav-item active mx-1">
         <a class="nav-link" href="{% url 'webapp:homeworks' programs.pk %}" role="button">Домашние задания</a>
     </li>
+    <li>
+        <a class="nav-link" href="{% url 'webapp:homework_export_word' homework.pk %}">Експорт в Word</a>
+    </li>
 {% endblock %}
 {% block content %}
     <div class="box">
