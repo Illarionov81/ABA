@@ -57,13 +57,13 @@
                                     <i class="fa fa-fw fa-trash fa-lg"></i></a>
                             {% else %}
                                 {{ program_skills.add_creteria }}
-                                <a class="btn-outline-dark " title="Удалить доп критерий" href="{% url 'webapp:delete_add_creteria' program_skills.pk%}">
+                                <a class="btn-outline-dark float-right " title="Удалить доп критерий" href="{% url 'webapp:delete_add_creteria' program_skills.pk%}">
                                     <i class="fa fa-fw fa-trash fa-lg"></i></a>
                             {% endif %}
                             <hr align="left" width="100%" size="2" color="black" />
                         {% if goals.goal %}
                             Цель: {{ goals.goal }}
-                            <a class="btn-outline-dark" title="Удалить цель" href="{% url 'webapp:delete_goal' goals.pk%}">
+                            <a class="btn-outline-dark float-right" title="Удалить цель" href="{% url 'webapp:delete_goal' goals.pk%}">
                                 <i class="fa fa-fw fa-trash fa-lg"></i></a>
                         {% endif %}
                         </td>
@@ -88,11 +88,11 @@
                     <td class="text-left">
                         {% if not program_skills.add_creteria  %}
                             {{program_skills.level.criteria }}
-                            <a class="btn-outline-dark " title="Удалить навык" href="{% url 'webapp:delete_creteria' program_skills.pk%}">
+                            <a class="btn-outline-dark float-right " title="Удалить навык" href="{% url 'webapp:delete_creteria' program_skills.pk%}">
                                 <i class="fa fa-fw fa-trash fa-lg"></i></a>
                         {% else %}
                             {{ program_skills.add_creteria }}
-                            <a class="btn-outline-dark " title="Удалить доп критерий" href="{% url 'webapp:delete_add_creteria' program_skills.pk%}">
+                            <a class="btn-outline-dark float-right " title="Удалить доп критерий" href="{% url 'webapp:delete_add_creteria' program_skills.pk%}">
                                 <i class="fa fa-fw fa-trash fa-lg"></i></a>
                         {% endif %}
                     </td>
