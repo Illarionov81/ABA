@@ -1,10 +1,14 @@
 import json
-from django.http import HttpResponse, JsonResponse
+from datetime import date
+from io import BytesIO
+
+from docx import *
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, TemplateView, DeleteView
-from webapp.models import Program, ProrgamSkillGoal, SessionSkill, HomeWork
+from webapp.models import Program, ProrgamSkillGoal, HomeWork
 
 
 class HomeworkListView(ListView):
@@ -70,3 +74,57 @@ class HomeworkDeleteSkill(View):
         skill = ProrgamSkillGoal.objects.get(pk=data['id'])
         homework.skill.remove(skill)
         return JsonResponse({'remove': 'remove'})
+
+
+class HomeworkExportWord(View):
+    def export_program(self, homework):
+        document = Document()
+        document.add_paragraph('Домашнее задание: ' '%s' % str(homework.created_date.strftime('%d. %m. %Y')))
+        document.add_paragraph('Терапист: ' '%s' % str(homework.program.author))
+        document.add_paragraph('Дата скачивания программы: ' "%s" % date.today().strftime('%d. %m. %Y'))
+        document.add_paragraph('Ребенок: ' '%s' % str(homework.program.child))
+        document.add_paragraph()
+
+        table = document.add_table(rows=1, cols=5)
+        table.style = 'Light Shading Accent 1'
+        hdr_cells = table.rows[0].cells
+        hdr_cells[0].text = 'Код'
+        hdr_cells[1].text = 'Описание навыка'
+        hdr_cells[2].text = 'Критерии'
+        hdr_cells[3].text = 'Доп.цель'
+        hdr_cells[4].text = 'Комментарии'
+        document.add_paragraph()
+        for i in homework.skill.all():
+            row_cells = table.add_row()
+            row_cells.cells[0].text = str(i.skill.level.skill.category)
+
+            row_cells = table.add_row()
+            row_cells.cells[0].text = str(i.skill.level.skill.code)
+            row_cells.cells[1].text = str(i.skill.level.skill.description)
+            if i.skill.add_creteria:
+                row_cells.cells[2].text = str(i.skill.add_creteria)
+            else:
+                row_cells.cells[2].text = str(i.skill.level.criteria)
+            if i.goal:
+                row_cells.cells[3].text = str(i.goal)
+            else:
+                row_cells.cells[3].text = str(i.skill.level.skill.name)
+            row_cells.cells[4].text = ''
+        return document
+
+    def get(self, request, *args, **kwargs):
+        homework = get_object_or_404(HomeWork, pk=self.kwargs.get('pk'))
+        document = self.export_program(homework)
+        docx_title = homework.program.name + '   ' + date.today().strftime('%d. %m. %Y') + '.docx'
+
+        f = BytesIO()
+        document.save(f)
+        length = f.tell()
+        f.seek(0)
+        response = HttpResponse(
+            f.getvalue(),
+            content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        )
+        response['Content-Disposition'] = 'attachment; filename=' + docx_title
+        response['Content-Length'] = length
+        return response
