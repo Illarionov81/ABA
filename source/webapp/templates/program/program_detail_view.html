@@ -2,10 +2,10 @@
 {% load staticfiles %}
 {% block title %}Детальный просмотр программы{% endblock %}
 {% block menu %}
-    <li class="nav-item active "><a class="nav-link" href="{% url 'webapp:session_list' programs.pk %}">Сессии</a></li>
-    <li class="nav-item active "><a class="nav-link" href="{% url 'webapp:update_program' programs.pk %}">Добавить навык</a></li>
-    <li class="nav-item active "><a class="nav-link" href="{% url 'webapp:program_delete' programs.pk %}">Удалить программу</a></li>
-    <li class="nav-item active "><a class="nav-link" href="{% url 'webapp:export_word' programs.pk %}">Експорт в Word</a>
+    <li class="nav-item active"><a class="nav-link" href="{% url 'webapp:session_list' programs.pk %}">Сессии</a></li>
+    <li class="nav-item active"><a class="nav-link" href="{% url 'webapp:update_program' programs.pk %}">Добавить навык</a></li>
+    <li class="nav-item active"><a class="nav-link" href="{% url 'webapp:program_delete' programs.pk %}">Удалить программу</a></li>
+    <li class="nav-item active"><a class="nav-link" href="{% url 'webapp:export_word' programs.pk %}">Експорт в Word</a>
 
 
 {% endblock %}
