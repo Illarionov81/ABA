@@ -32,7 +32,7 @@ class SessionCloseView(View):
                         i.skill.status = GOAL_STATUS_CLOSED
                         i.skill.save()
         messages.add_message(self.request, messages.SUCCESS, 'Сессия успешно закрыта.')
-        return redirect('webapp:child_view', pk=session.program.child.pk)
+        return redirect('webapp:program_detail', pk=session.program.pk)
 
 
 class SessionAddGoalView(View):

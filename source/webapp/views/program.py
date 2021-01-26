@@ -26,6 +26,7 @@ class ProgramDetailView(DetailView):
         goals = ProrgamSkillGoal.objects.filter(skill__program=program)
         goal_open = goals.filter(status=GOAL_STATUS_OPEN)
         pr_skill = program.program_skill.all().order_by('level')
+        print(self.object.pk)
         if goal_open:
             program.status = PROGRAM_STATUS_OPEN
         else:

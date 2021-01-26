@@ -4,6 +4,7 @@ from webapp.views import DoneSelf, DoneWithHint, SessionCloseView, SessionAddGoa
     SessionDeleteView
 from webapp.views.child import IndexView, ChildDetailView
 from webapp.views.child_test import TestResultView, TestsView, ChildTestUpdateView, ChildMakeTestView
+from webapp.views.exelgraph import export_exel
 from webapp.views.homework import HomeworkListView, HomeWorkDeleteView, HomeworkCreateView, HomeworkUpdateView, \
     HomeworkAddSkill, HomeworkDeleteSkill
 from webapp.views.program import ProgramDetailView, ProgramCreateView, UpdateProgram, ProgrmDelete, DeleteGoalView, \
@@ -24,6 +25,7 @@ urlpatterns = [
     path('delete/<int:pk>/add_critaria', DeleteAddCreteriaView.as_view(), name='delete_add_creteria'),
     path('program/<int:pk>/update/', UpdateProgram.as_view(), name='update_program'),
     path('program/<int:pk>/export/', ExportWord.as_view(), name='export_word'),
+    path('program/<int:pk_program>/<int:pk_skill>/', export_exel, name='exel_skill'),
     path('program/<int:p_pk>/remove/<int:s_pk>/', RemoveProgramView.as_view(), name='update_all_program'),
     path('goals/status/<int:pk>/', OpenCloseView.as_view(), name='close_open'),
 
@@ -32,7 +34,9 @@ urlpatterns = [
     path('session', include([
         path('done_self/<int:pk>/', DoneSelf.as_view(), name='done_self'),
         path('done_with_hint/<int:pk>/', DoneWithHint.as_view(), name='done_with_hint'),
+
         path('<int:pk>/', include([
+
             path('', SessionListView.as_view(), name='session_list'),
             path('close/', SessionCloseView.as_view(), name='session_close'),
             path('create/', SessionCreateView.as_view(), name='session_create'),
@@ -40,6 +44,7 @@ urlpatterns = [
             path('create/skill/', SessionSkillUpdateView.as_view(), name='session_prepear'),
             path('create/skill/add/', SessionAddSkill.as_view(), name='add_skill'),
             path('create/skill/delete/', SessionDeleteSkill.as_view(), name='delete_skill'),
+
         ]))
     ])),
     path('child/', include([
@@ -57,3 +62,4 @@ urlpatterns = [
         ])),
     ])),
 ]
+
