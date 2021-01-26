@@ -53,7 +53,7 @@
                         <td class="text-left">
                             {% if not program_skills.add_creteria  %}
                                 {{program_skills.level.criteria }}
-                                <a class="btn-outline-dark " title="Удалить навык" href="{% url 'webapp:delete_creteria' program_skills.pk%}">
+                                <a class="btn-outline-dark float-right " title="Удалить навык" href="{% url 'webapp:delete_creteria' program_skills.pk%}">
                                     <i class="fa fa-fw fa-trash fa-lg"></i></a>
                             {% else %}
                                 {{ program_skills.add_creteria }}
