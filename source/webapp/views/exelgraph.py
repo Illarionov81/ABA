@@ -20,7 +20,6 @@ def export_exel(request, **kwargs):
     percent = []
     count = 0
     for i in session_skill:
-        number = 0
         count += 1
         done_with_hint.append(i.done_with_hint)
         done_self.append(i.done_self)
@@ -55,7 +54,7 @@ def export_exel(request, **kwargs):
         'data_labels': {'value': True},
 
     })
-    chart.set_title({'name': 'Программа: '+str(program.created_date.strftime('%d. %m. %Y'))})
+    chart.set_title({'name': 'С подсказкой и без подсказки'})
 
     chart.set_x_axis({'name': 'Сессии', 'min': 0})
     chart.set_y_axis({'name': 'Ответы', 'major_gridlines': {'visible': False}})
