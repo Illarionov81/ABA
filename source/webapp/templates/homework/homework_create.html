@@ -69,7 +69,7 @@
                         </p>
                     {% else %}
                         <p>{{ i.skill.level }}
-                            <a class="mx-5float-right " {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
+                            <a class="mx-5 float-right " {% if i.pk in goal_in_homework %}style="display: none" {% endif %}
                                onclick="addSkill(event)" id="{{ i.pk }}"
                                href="{% url 'webapp:homework_add_skill' homework.pk %}">ADD</a>
                             <a class="mx-5 float-right " {% if i.pk not in goal_in_homework %} style="display: none" {% endif %}
