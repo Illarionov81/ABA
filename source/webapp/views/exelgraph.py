@@ -94,8 +94,8 @@ def export_exel(request, **kwargs):
     })
     chart_3.set_title({'name': 'С подсказкой и сумма'})
 
-    chart.set_x_axis({'name': 'Сессии', 'min': 0})
-    chart.set_y_axis({'name': 'Ответы', 'major_gridlines': {'visible': False}})
+    chart_3.set_x_axis({'name': 'Сессии', 'min': 0})
+    chart_3.set_y_axis({'name': 'Ответы', 'major_gridlines': {'visible': False}})
 
     worksheet.insert_chart('E3', chart)
     worksheet.insert_chart('M3', chart_2)
