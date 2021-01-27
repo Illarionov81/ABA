@@ -69,13 +69,6 @@ class UsersChildModelAdmin(admin.ModelAdmin):
     list_display = ['user', 'child']
 
 
-# class TestResultModelAdmin(admin.ModelAdmin):
-#     list_display = ['test', 'skill_level', 'created_date']
-#     search_fields = ['test']
-#     list_filter = ['created_date',  'test']
-#     ordering = ['test', 'skill_level']
-
-
 class TestModelAdmin(admin.ModelAdmin):
     list_display = ['pk', 'previus_test', 'child', 'therapist', 'created_date']
     search_fields = ['child']
@@ -110,8 +103,6 @@ class SessionModelAdmin(admin.ModelAdmin):
 
 
 admin.site.site_header = 'Administrate your website'
-# admin.site.unregister(User)
-# admin.site.register(User, UserInfoAdmin)
 admin.site.register(Skill, SkillModelAdmin)
 admin.site.register(SessionSkill)
 admin.site.register(StudyMethod)
@@ -122,7 +113,6 @@ admin.site.register(Therapy, UsersChildModelAdmin)
 admin.site.register(Session, SessionModelAdmin)
 admin.site.register(Child, ChildrenModelAdmin)
 admin.site.register(Category, CategoryModelAdmin)
-# admin.site.register(TestResult, TestResultModelAdmin)
 admin.site.register(Test, TestModelAdmin)
 admin.site.register(SkillLevel)
 admin.site.register(ProgramSkill, ProgramGoal)
