@@ -159,22 +159,22 @@
     "model": "prorgamskillgoal"
   }
 },
-{
-  "model": "contenttypes.contenttype",
-  "pk": 21,
-  "fields": {
-    "app_label": "accounts",
-    "model": "user"
-  }
-},
-{
-  "model": "contenttypes.contenttype",
-  "pk": 22,
-  "fields": {
-    "app_label": "webapp",
-    "model": "homework"
-  }
-},
+//{
+//  "model": "contenttypes.contenttype",
+//  "pk": 21,
+//  "fields": {
+//    "app_label": "accounts",
+//    "model": "user"
+//  }
+//},
+//{
+//  "model": "contenttypes.contenttype",
+//  "pk": 22,
+//  "fields": {
+//    "app_label": "webapp",
+//    "model": "homework"
+//  }
+//},
 {
   "model": "sessions.session",
   "pk": "4nsc109hkzua0im8uz5w8nr4293jmsan",

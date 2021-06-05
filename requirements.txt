@@ -3,7 +3,6 @@ Django==2.2.13
 django-widget-tweaks==1.4.8
 lxml==4.6.2
 Pillow==8.0.1
-psycopg2==2.8.6
 psycopg2-binary==2.8.6
 python-docx==0.8.10
 pytz==2020.5
